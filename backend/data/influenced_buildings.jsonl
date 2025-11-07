@@ -1,0 +1,3 @@
+{"type": "fertility", "buildings": ["Farm"], "description": "受肥力影响的建筑（影响生产效率/时间）", "multiplier_field": "fert", "base_value": 100, "effect": "生产时间 = 原时间 / (肥力值/100)"}
+{"type": "abundance", "buildings": ["Mine", "Pump", "Gas Collector"], "description": "受丰度影响的建筑（影响生产效率/时间）", "multiplier_field": "ab", "base_value": 100, "effect": "生产时间 = 原时间 / (丰度值/100)"}
+
