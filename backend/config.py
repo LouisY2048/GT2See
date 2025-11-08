@@ -3,8 +3,9 @@ import os
 
 try:
     from pydantic_settings import BaseSettings
+    from pydantic import field_validator
 except ImportError:
-    from pydantic import BaseSettings
+    from pydantic import BaseSettings, validator as field_validator
 
 class Settings(BaseSettings):
     # API配置
@@ -23,23 +24,30 @@ class Settings(BaseSettings):
     # 默认允许本地开发环境和 GitHub Pages 部署
     # 生产环境可通过环境变量 CORS_ORIGINS 配置，多个域名用逗号分隔
     # 例如：CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+    # 注意：环境变量是字符串，会自动解析为列表
     CORS_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://localhost:5173",
         "https://louisy2048.github.io",  # GitHub Pages 部署地址
     ]
     
+    @field_validator('CORS_ORIGINS', mode='before')
+    @classmethod
+    def parse_cors_origins(cls, v):
+        """将逗号分隔的字符串转换为列表"""
+        if isinstance(v, str):
+            # 如果是字符串，按逗号分割并去除空白
+            origins = [origin.strip() for origin in v.split(',') if origin.strip()]
+            return origins if origins else []
+        # 如果已经是列表，直接返回
+        if isinstance(v, list):
+            return v
+        # 其他情况返回空列表
+        return []
+    
     class Config:
         env_file = ".env"
 
 # 创建settings实例
 settings = Settings()
-
-# 从环境变量读取CORS_ORIGINS（如果存在）
-# 如果环境变量是逗号分隔的字符串，转换为列表并覆盖默认值
-_cors_origins_env = os.getenv('CORS_ORIGINS')
-if _cors_origins_env:
-    _cors_origins_list = [origin.strip() for origin in _cors_origins_env.split(',') if origin.strip()]
-    if _cors_origins_list:
-        settings.CORS_ORIGINS = _cors_origins_list
 
