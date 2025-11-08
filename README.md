@@ -58,6 +58,69 @@ GT2See 是一个强大的市场分析工具，提供实时市场数据、建筑�
 - 丰富的数据可视化
 - 直观的用户交互
 
+## 🌐 在线访问
+
+**前端应用（GitHub Pages）**: [https://louisy2048.github.io/GT2See/](https://louisy2048.github.io/GT2See/)
+
+> ⚠️ **注意**: 前端需要后端API支持才能正常工作。请参考 [部署指南](DEPLOYMENT_GUIDE.md) 配置后端服务。
+
+## 🚀 部署指南
+
+### GitHub Pages 部署（前端）
+
+1. **启用 GitHub Pages**
+   - 进入仓库 Settings → Pages
+   - Source 选择 "GitHub Actions"
+   - 保存设置
+
+2. **配置后端API地址**
+   - 进入仓库 Settings → Secrets and variables → Actions
+   - 添加 Secret: `VITE_API_BASE_URL`，值为你的后端部署地址（如：`https://your-backend.railway.app`）
+
+3. **自动部署**
+   - 推送代码到 `main` 分支后，GitHub Actions 会自动构建并部署
+   - 部署完成后，访问：`https://你的用户名.github.io/GT2See/`
+
+### 后端部署建议
+
+#### 方案一：Railway（推荐，免费层可用）
+
+1. 访问 [Railway](https://railway.app)
+2. 使用 GitHub 账号登录
+3. 点击 "New Project" → "Deploy from GitHub repo"
+4. 选择你的仓库
+5. 配置环境变量（如需要）
+6. Railway 会自动检测 Python 项目并部署
+7. 部署完成后，复制生成的 URL（如：`https://your-app.railway.app`）
+
+#### 方案二：Render（免费层可用）
+
+1. 访问 [Render](https://render.com)
+2. 使用 GitHub 账号登录
+3. 点击 "New" → "Web Service"
+4. 连接你的 GitHub 仓库
+5. 配置：
+   - **Build Command**: `cd backend && pip install -r requirements.txt`
+   - **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+6. 点击 "Create Web Service"
+7. 部署完成后，复制生成的 URL
+
+#### 方案三：其他平台
+
+- **Heroku**: 需要信用卡验证（免费层已停止）
+- **Fly.io**: 免费层可用，适合小型项目
+- **DigitalOcean App Platform**: 付费但稳定
+
+### 配置前后端连接
+
+部署后端后，需要更新前端的API地址：
+
+1. **GitHub Pages部署**：在仓库 Settings → Secrets 中设置 `VITE_API_BASE_URL`
+2. **本地开发**：创建 `frontend/.env.local` 文件：
+   ```env
+   VITE_API_BASE_URL=https://your-backend-url.com
+   ```
+
 ## 快速开始
 
 ### 环境要求
