@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Card, Table, Select, Space, Spin, message, Row, Col, Statistic, Tag, Tooltip, Alert, InputNumber, Modal } from 'antd'
+import { useState, useEffect, useMemo } from 'react'
+import { Card, Table, Select, Space, Spin, message, Row, Col, Statistic, Tag, Tooltip, Alert, InputNumber, Modal, AutoComplete } from 'antd'
 import { 
   BarChart, 
   Bar, 
@@ -40,6 +40,21 @@ const RecipeAnalysis = () => {
   const [fertilityAbundance, setFertilityAbundance] = useState<number>(100)
   const [marketLoading, setMarketLoading] = useState<boolean>(false)
   const [marketInfo, setMarketInfo] = useState<{ avgQtySoldDaily: number | null; avgPrice: number | null; marketSize: number | null } | null>(null)
+  const [searchText, setSearchText] = useState<string>('')
+  const [isMobile, setIsMobile] = useState(false)
+  const [isTablet, setIsTablet] = useState(false)
+  
+  // 响应式检测
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1024)
+    }
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
 
   // 获取数据
   const fetchData = async () => {
@@ -69,12 +84,65 @@ const RecipeAnalysis = () => {
       const profitsRes = await calculatorApi.calculateRecipeProfits(sort, building, undefined, fertAbund)
       const profits = (profitsRes as any).recipeProfits || []
       setRecipeProfits(profits)
-      setFilteredProfits(profits)
+      applyFilters(profits, searchText)
     } catch (error) {
       console.error('Failed to fetch profits:', error)
       message.error('加载收益数据失败')
     }
   }
+
+  // 应用搜索过滤
+  const applyFilters = (profits: RecipeProfit[], search: string) => {
+    if (!search.trim()) {
+      setFilteredProfits(profits)
+      return
+    }
+    
+    const searchLower = search.toLowerCase().trim()
+    const filtered = profits.filter(profit => {
+      const recipeName = profit.recipeName || ''
+      return recipeName.toLowerCase().includes(searchLower)
+    })
+    setFilteredProfits(filtered)
+  }
+
+  // 获取建筑名称
+  const getBuildingName = (buildingId: number) => {
+    const building = buildings.find(b => b.id === buildingId)
+    return building?.name || `Building ${buildingId}`
+  }
+
+  // 生成自动完成选项（模糊匹配）
+  const autocompleteOptions = useMemo(() => {
+    if (!searchText.trim()) {
+      return []
+    }
+    
+    const searchLower = searchText.toLowerCase().trim()
+    const matchedRecipes = recipeProfits
+      .filter(profit => {
+        const recipeName = profit.recipeName || ''
+        return recipeName.toLowerCase().includes(searchLower)
+      })
+      .slice(0, 10) // 最多显示10个选项
+    
+    return matchedRecipes.map(profit => ({
+      value: profit.recipeName,
+      label: (
+        <div>
+          <span>{profit.recipeName}</span>
+          <span style={{ color: '#999', marginLeft: 8, fontSize: '12px' }}>
+            {getBuildingName(profit.buildingId)}
+          </span>
+        </div>
+      ),
+    }))
+  }, [searchText, recipeProfits, buildings])
+
+  // 搜索文本变化时应用过滤
+  useEffect(() => {
+    applyFilters(recipeProfits, searchText)
+  }, [searchText, recipeProfits])
 
   useEffect(() => {
     fetchData()
@@ -133,12 +201,6 @@ const RecipeAnalysis = () => {
     return 'N/A'
   }
 
-  // 获取建筑名称
-  const getBuildingName = (buildingId: number) => {
-    const building = buildings.find(b => b.id === buildingId)
-    return building?.name || `Building ${buildingId}`
-  }
-
   // 检查建筑是否受肥力/丰度影响
   const isBuildingInfluenced = (buildingId: number): boolean => {
     const buildingName = getBuildingName(buildingId)
@@ -159,75 +221,75 @@ const RecipeAnalysis = () => {
     return ''
   }
 
-  // 表格列定义
+  // 表格列定义（响应式）
   const columns = [
     {
       title: '配方名称',
       dataIndex: 'recipeName',
       key: 'recipeName',
       fixed: 'left' as const,
-      width: 200,
+      width: isMobile ? 150 : 200,
     },
     {
       title: '产物级别',
       key: 'outputTier',
-      width: 100,
+      width: isMobile ? 80 : 100,
       render: (_: any, record: RecipeProfit) => {
         const tier = getMaterialTier(record.outputDetails.materialId)
         const tierNum = tier.replace('T', '')
         const color = tierNum === '1' ? 'default' : tierNum === '2' ? 'blue' : tierNum === '3' ? 'purple' : tierNum === '4' ? 'gold' : 'default'
-        return <Tag color={color}>{tier}</Tag>
+        return <Tag color={color} style={{ fontSize: isMobile ? '11px' : '12px' }}>{tier}</Tag>
       },
     },
     {
       title: '建筑',
       dataIndex: 'buildingId',
       key: 'buildingId',
-      width: 150,
-      render: (id: number) => getBuildingName(id),
+      width: isMobile ? 120 : 150,
+      render: (id: number) => <span style={{ fontSize: isMobile ? '12px' : '14px' }}>{getBuildingName(id)}</span>,
     },
     {
       title: '生产时间',
       dataIndex: 'timeHours',
       key: 'timeHours',
-      width: 120,
-      render: (hours: number) => `${hours.toFixed(2)}小时`,
+      width: isMobile ? 100 : 120,
+      render: (hours: number) => <span style={{ fontSize: isMobile ? '12px' : '14px' }}>{hours.toFixed(2)}小时</span>,
     },
     {
       title: '输入成本',
       dataIndex: 'inputCost',
       key: 'inputCost',
-      width: 120,
+      width: isMobile ? 100 : 120,
       render: (cost: number | null, record: RecipeProfit) => {
         if (!record.priceAvailable || cost === null) {
-          return <Tag color="default">未知</Tag>
+          return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
         }
-        return formatPrice(cost)
+        return <span style={{ fontSize: isMobile ? '12px' : '14px' }}>{formatPrice(cost)}</span>
       },
     },
     {
       title: '输出价值',
       dataIndex: 'outputValue',
       key: 'outputValue',
-      width: 120,
+      width: isMobile ? 100 : 120,
       render: (value: number | null, record: RecipeProfit) => {
         if (!record.priceAvailable || value === null) {
-          return <Tag color="default">未知</Tag>
+          return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
         }
-        return formatPrice(value)
+        return <span style={{ fontSize: isMobile ? '12px' : '14px' }}>{formatPrice(value)}</span>
       },
     },
     {
       title: '总收益',
       dataIndex: 'totalProfit',
       key: 'totalProfit',
-      width: 120,
+      width: isMobile ? 100 : 120,
       render: (profit: number | null, record: RecipeProfit) => {
         if (!record.priceAvailable || profit === null) {
-          return <Tag color="default">未知</Tag>
+          return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
         }
         return (
-          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontWeight: 'bold' }}>
+          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontWeight: 'bold', fontSize: isMobile ? '12px' : '14px' }}>
             {formatPrice(profit)}
           </span>
         )
@@ -237,13 +299,13 @@ const RecipeAnalysis = () => {
       title: '每小时收益',
       dataIndex: 'profitPerHour',
       key: 'profitPerHour',
-      width: 130,
+      width: isMobile ? 110 : 130,
       render: (profit: number | null, record: RecipeProfit) => {
         if (!record.priceAvailable || profit === null) {
-          return <Tag color="default">未知</Tag>
+          return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
         }
         return (
-          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322' }}>
+          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontSize: isMobile ? '12px' : '14px' }}>
             {formatPrice(profit)}/小时
           </span>
         )
@@ -253,20 +315,20 @@ const RecipeAnalysis = () => {
       title: 'ROI',
       dataIndex: 'roi',
       key: 'roi',
-      width: 120,
+      width: isMobile ? 80 : 120,
       render: (roi: number | null, record: RecipeProfit) => {
         if (!record.priceAvailable) {
           return (
             <Tooltip title="价格数据不可用">
-              <Tag icon={<WarningOutlined />} color="warning">未知</Tag>
+              <Tag icon={<WarningOutlined />} color="warning" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
             </Tooltip>
           )
         }
         if (roi === null || roi === Infinity) {
-          return <Tag color="gold">N/A</Tag>
+          return <Tag color="gold" style={{ fontSize: isMobile ? '11px' : '12px' }}>N/A</Tag>
         }
         return (
-          <Tag color={roi > 50 ? 'green' : roi > 0 ? 'blue' : 'red'}>
+          <Tag color={roi > 50 ? 'green' : roi > 0 ? 'blue' : 'red'} style={{ fontSize: isMobile ? '11px' : '12px' }}>
             {roi.toFixed(2)}%
           </Tag>
         )
@@ -275,10 +337,10 @@ const RecipeAnalysis = () => {
     {
       title: '操作',
       key: 'action',
-      width: 100,
+      width: isMobile ? 80 : 100,
       fixed: 'right' as const,
       render: (_: any, record: RecipeProfit) => (
-        <a onClick={() => setSelectedRecipe(record)}>查看详情</a>
+        <a onClick={() => setSelectedRecipe(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>查看详情</a>
       ),
     },
   ]
@@ -350,11 +412,11 @@ const RecipeAnalysis = () => {
 
   return (
     <div>
-      <h1 style={{ marginBottom: 24 }}>配方分析</h1>
+      <h1 style={{ marginBottom: isMobile ? 16 : 24, fontSize: isMobile ? '20px' : '24px' }}>配方分析</h1>
 
       {/* 统计卡片 */}
-      <Row gutter={16} style={{ marginBottom: 24 }}>
-        <Col span={6}>
+      <Row gutter={[16, 16]} style={{ marginBottom: isMobile ? 16 : 24 }}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="配方总数"
@@ -363,7 +425,7 @@ const RecipeAnalysis = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="盈利配方"
@@ -373,7 +435,7 @@ const RecipeAnalysis = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="平均收益"
@@ -382,7 +444,7 @@ const RecipeAnalysis = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="最高时均收益"
@@ -395,8 +457,8 @@ const RecipeAnalysis = () => {
       </Row>
 
       {/* 收益图表 */}
-      <Card title="收益排行 TOP 10" style={{ marginBottom: 24 }}>
-        <ResponsiveContainer width="100%" height={300}>
+      <Card title="收益排行 TOP 10" style={{ marginBottom: isMobile ? 16 : 24 }}>
+        <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
@@ -411,57 +473,82 @@ const RecipeAnalysis = () => {
 
       {/* 筛选和排序 */}
       <Card style={{ marginBottom: 16 }}>
-        <Space wrap>
-          <span>排序方式：</span>
-          <Select
-            value={sortBy}
-            onChange={setSortBy}
-            style={{ width: 150 }}
-          >
-            <Option value="totalProfit">总收益</Option>
-            <Option value="profitPerHour">每小时收益</Option>
-            <Option value="roi">ROI</Option>
-          </Select>
-          <span>建筑筛选：</span>
-          <Select
-            value={buildingFilter}
-            onChange={(value) => {
-              setBuildingFilter(value)
-              // 当切换建筑时，重置肥力/丰度值为100
-              if (!value || !isBuildingInfluenced(value)) {
-                setFertilityAbundance(100)
+        <Space 
+          direction={isMobile ? 'vertical' : 'horizontal'} 
+          wrap 
+          size={isMobile ? 'middle' : 'large'}
+          style={{ width: '100%' }}
+        >
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>搜索配方：</span>
+            <AutoComplete
+              placeholder="输入配方名称搜索（支持模糊匹配）"
+              value={searchText}
+              onChange={(value) => setSearchText(value)}
+              onSearch={(value) => setSearchText(value)}
+              options={autocompleteOptions}
+              allowClear
+              style={{ width: isMobile ? '100%' : 300 }}
+              filterOption={false} // 禁用默认过滤，使用自定义逻辑
+              onSelect={(value) => {
+                setSearchText(value)
+              }}
+            />
+          </Space>
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>排序方式：</span>
+            <Select
+              value={sortBy}
+              onChange={setSortBy}
+              style={{ width: isMobile ? '100%' : 150 }}
+            >
+              <Option value="totalProfit">总收益</Option>
+              <Option value="profitPerHour">每小时收益</Option>
+              <Option value="roi">ROI</Option>
+            </Select>
+          </Space>
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>建筑筛选：</span>
+            <Select
+              value={buildingFilter}
+              onChange={(value) => {
+                setBuildingFilter(value)
+                // 当切换建筑时，重置肥力/丰度值为100
+                if (!value || !isBuildingInfluenced(value)) {
+                  setFertilityAbundance(100)
+                }
+              }}
+              style={{ width: isMobile ? '100%' : 200 }}
+              allowClear
+              placeholder="全部建筑"
+            >
+              {buildings
+                .slice()
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(building => (
+                  <Option key={building.id} value={building.id}>
+                    {building.name}
+                  </Option>
+                ))
               }
-            }}
-            style={{ width: 200 }}
-            allowClear
-            placeholder="全部建筑"
-          >
-            {buildings
-              .slice()
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map(building => (
-                <Option key={building.id} value={building.id}>
-                  {building.name}
-                </Option>
-              ))
-            }
-          </Select>
+            </Select>
+          </Space>
           {buildingFilter && isBuildingInfluenced(buildingFilter) && (
-            <>
-              <span>{getInfluenceType(buildingFilter)}值：</span>
+            <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+              <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{getInfluenceType(buildingFilter)}值：</span>
               <InputNumber
                 value={fertilityAbundance}
                 onChange={(value) => setFertilityAbundance(value || 100)}
                 min={0}
                 max={1000}
                 step={10}
-                style={{ width: 120 }}
+                style={{ width: isMobile ? '100%' : 120 }}
                 addonAfter="%"
               />
               <Tooltip title={`标准值为100。${getInfluenceType(buildingFilter)}值影响生产效率，例如150表示1.5倍效率（生产时间缩短到原来的67%）`}>
-                <Tag color="blue">提示</Tag>
+                <Tag color="blue" style={{ fontSize: isMobile ? '11px' : '12px' }}>提示</Tag>
               </Tooltip>
-            </>
+            </Space>
           )}
         </Space>
       </Card>
@@ -474,10 +561,13 @@ const RecipeAnalysis = () => {
             dataSource={filteredProfits}
             rowKey="recipeId"
             pagination={{
-              pageSize: 20,
+              pageSize: isMobile ? 10 : 20,
               showTotal: (total) => `共 ${total} 个配方`,
+              showSizeChanger: !isMobile,
+              simple: isMobile,
             }}
-            scroll={{ x: 1200 }}
+            scroll={{ x: isMobile ? 800 : 1200 }}
+            size={isMobile ? 'small' : 'middle'}
           />
         </Spin>
       </Card>
@@ -488,8 +578,9 @@ const RecipeAnalysis = () => {
         open={!!selectedRecipe}
         onCancel={() => setSelectedRecipe(null)}
         footer={null}
-        width={1200}
-        style={{ top: 20 }}
+        width={isMobile ? '95%' : isTablet ? 900 : 1200}
+        style={{ top: isMobile ? 10 : 20 }}
+        styles={{ body: { maxHeight: isMobile ? 'calc(100vh - 120px)' : 'auto', overflowY: 'auto' } }}
       >
         {selectedRecipe && (
           <>
@@ -501,7 +592,7 @@ const RecipeAnalysis = () => {
                     <p style={{ marginBottom: 8 }}>以下材料缺少市场价格数据，收益计算可能不准确：</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {selectedRecipe.unavailableMaterials.map(mat => (
-                        <Tag key={mat.materialId} color="warning">
+                        <Tag key={mat.materialId} color="warning" style={{ fontSize: isMobile ? '11px' : '12px' }}>
                           {mat.materialNameZh || mat.materialName}
                         </Tag>
                       ))}
@@ -514,8 +605,8 @@ const RecipeAnalysis = () => {
                 style={{ marginBottom: 16 }}
               />
             )}
-            <Row gutter={16}>
-              <Col span={12}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} md={12}>
                 <h3>输入材料</h3>
                 <Table
                   columns={inputColumns}
@@ -534,7 +625,7 @@ const RecipeAnalysis = () => {
                 {/* 输入材料成本饼图 */}
                 {selectedRecipe.priceAvailable && selectedRecipe.inputDetails && selectedRecipe.inputDetails.length > 0 && (
                   <Card size="small" style={{ marginTop: 16 }} title="输入材料成本分布">
-                    <ResponsiveContainer width="100%" height={300}>
+                    <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
                       <PieChart>
                         <Pie
                           data={selectedRecipe.inputDetails.map(item => ({
@@ -568,7 +659,7 @@ const RecipeAnalysis = () => {
                   </Card>
                 )}
               </Col>
-              <Col span={12}>
+              <Col xs={24} md={12}>
                 <h3>输出产品</h3>
                 <Card size="small">
                   <p><strong>材料：</strong>{getMaterialName(selectedRecipe.outputDetails.materialId)}</p>

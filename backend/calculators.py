@@ -211,9 +211,17 @@ class RecipeCalculator:
         recipe_id = recipe.get('id')
         building_id = recipe.get('producedIn')  # API文档中是producedIn
         
+        # 生成配方名称：{输出产物名称}({第一种输入原材料的名称})
+        output_name_zh = get_material_name(output_mat_id, 'zh')
+        first_input_name_zh = ''
+        if inputs and len(inputs) > 0:
+            first_input_id = inputs[0].get('id')
+            first_input_name_zh = get_material_name(first_input_id, 'zh')
+        recipe_name = f"{output_name_zh}({first_input_name_zh})" if first_input_name_zh else output_name_zh
+        
         return {
             'recipeId': recipe_id,
-            'recipeName': recipe.get('name', f"Recipe {recipe_id}"),
+            'recipeName': recipe_name,
             'buildingId': building_id,
             'buildingName': get_building_name(building_id, 'en'),
             'buildingNameZh': get_building_name(building_id, 'zh'),

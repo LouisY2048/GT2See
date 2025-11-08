@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Card, Table, Select, Space, Spin, message, Row, Col, Statistic, Tag, Tooltip, InputNumber, Alert, Modal } from 'antd'
+import { useState, useEffect, useMemo } from 'react'
+import { Card, Table, Select, Space, Spin, message, Row, Col, Statistic, Tag, Tooltip, InputNumber, Alert, Modal, AutoComplete } from 'antd'
 import { 
   PieChart, 
   Pie, 
@@ -77,6 +77,7 @@ const ComprehensiveAnalysis = () => {
   const [buildings, setBuildings] = useState<Building[]>([])
   const [materials, setMaterials] = useState<Material[]>([])
   const [comprehensiveData, setComprehensiveData] = useState<ComprehensiveProfit[]>([])
+  const [filteredData, setFilteredData] = useState<ComprehensiveProfit[]>([])
   const [sortBy, setSortBy] = useState('comprehensiveProfitPerHour')
   const [buildingFilter, setBuildingFilter] = useState<number | undefined>(undefined)
   const [totalPopulation, setTotalPopulation] = useState<number>(0)
@@ -84,6 +85,21 @@ const ComprehensiveAnalysis = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<ComprehensiveProfit | null>(null)
   const [marketLoading, setMarketLoading] = useState<boolean>(false)
   const [marketInfo, setMarketInfo] = useState<{ avgQtySoldDaily: number | null; avgPrice: number | null; marketSize: number | null } | null>(null)
+  const [searchText, setSearchText] = useState<string>('')
+  const [isMobile, setIsMobile] = useState(false)
+  const [isTablet, setIsTablet] = useState(false)
+  
+  // 响应式检测
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1024)
+    }
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
 
   // 获取数据
   const fetchData = async () => {
@@ -111,11 +127,66 @@ const ComprehensiveAnalysis = () => {
       const response = await comprehensiveApi.analyzeRecipeProfits(sort, building, population, fertAbund)
       const data = (response as any).comprehensiveAnalysis || []
       setComprehensiveData(data)
+      // 应用当前搜索过滤
+      applyFilters(data, searchText)
     } catch (error) {
       console.error('Failed to fetch comprehensive data:', error)
       message.error('加载综合收益数据失败')
     }
   }
+
+  // 应用搜索过滤
+  const applyFilters = (data: ComprehensiveProfit[], search: string) => {
+    if (!search.trim()) {
+      setFilteredData(data)
+      return
+    }
+    
+    const searchLower = search.toLowerCase().trim()
+    const filtered = data.filter(item => {
+      const recipeName = item.recipeName || ''
+      return recipeName.toLowerCase().includes(searchLower)
+    })
+    setFilteredData(filtered)
+  }
+
+  // 获取建筑名称
+  const getBuildingName = (buildingId: number) => {
+    const building = buildings.find(b => b.id === buildingId)
+    return building?.name || `Building ${buildingId}`
+  }
+
+  // 生成自动完成选项（模糊匹配）
+  const autocompleteOptions = useMemo(() => {
+    if (!searchText.trim()) {
+      return []
+    }
+    
+    const searchLower = searchText.toLowerCase().trim()
+    const matchedRecipes = comprehensiveData
+      .filter(item => {
+        const recipeName = item.recipeName || ''
+        return recipeName.toLowerCase().includes(searchLower)
+      })
+      .slice(0, 10) // 最多显示10个选项
+    
+    return matchedRecipes.map(item => ({
+      value: item.recipeName,
+      label: (
+        <div>
+          <span>{item.recipeName}</span>
+          <span style={{ color: '#999', marginLeft: 8, fontSize: '12px' }}>
+            {item.buildingName || getBuildingName(item.buildingId)}
+          </span>
+        </div>
+      ),
+    }))
+  }, [searchText, comprehensiveData, buildings])
+
+  // 搜索文本变化时应用过滤
+  useEffect(() => {
+    applyFilters(comprehensiveData, searchText)
+  }, [searchText, comprehensiveData])
 
   useEffect(() => {
     fetchData()
@@ -167,11 +238,6 @@ const ComprehensiveAnalysis = () => {
     return 'N/A'
   }
 
-  const getBuildingName = (buildingId: number) => {
-    const building = buildings.find(b => b.id === buildingId)
-    return building?.name || `Building ${buildingId}`
-  }
-
   const isBuildingInfluenced = (buildingId: number): boolean => {
     const buildingName = getBuildingName(buildingId)
     return [...INFLUENCED_BUILDINGS.fertility, ...INFLUENCED_BUILDINGS.abundance].some(
@@ -190,19 +256,19 @@ const ComprehensiveAnalysis = () => {
     return ''
   }
 
-  // 表格列定义
+  // 表格列定义（响应式）
   const columns = [
     {
       title: '配方名称',
       dataIndex: 'recipeName',
       key: 'recipeName',
       fixed: 'left' as const,
-      width: 200,
+      width: isMobile ? 150 : 200,
     },
     {
       title: '产物级别',
       key: 'outputTier',
-      width: 100,
+      width: isMobile ? 80 : 100,
       render: (_: any, record: ComprehensiveProfit) => {
         const tier = getMaterialTier(record.outputDetails.materialId)
         const tierNum = tier.replace('T', '')
@@ -214,19 +280,19 @@ const ComprehensiveAnalysis = () => {
       title: '建筑',
       dataIndex: 'buildingName',
       key: 'buildingName',
-      width: 150,
+      width: isMobile ? 120 : 150,
     },
     {
       title: '配方收益/小时',
       dataIndex: 'profitPerHour',
       key: 'profitPerHour',
-      width: 140,
+      width: isMobile ? 120 : 140,
       render: (profit: number | null, record: ComprehensiveProfit) => {
         if (!record.priceAvailable || profit === null) {
           return <Tag color="default">未知</Tag>
         }
         return (
-          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322' }}>
+          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontSize: isMobile ? '12px' : '14px' }}>
             {formatPrice(profit)}/h
           </span>
         )
@@ -236,25 +302,25 @@ const ComprehensiveAnalysis = () => {
       title: '劳动力成本/小时',
       dataIndex: 'workforceCostPerHour',
       key: 'workforceCostPerHour',
-      width: 150,
+      width: isMobile ? 130 : 150,
       render: (cost: number | null, record: ComprehensiveProfit) => {
         if (!record.workforceCostAvailable || cost === null) {
           return <Tag icon={<WarningOutlined />} color="warning">未知</Tag>
         }
-        return <span style={{ color: '#fa8c16' }}>{formatPrice(cost)}/h</span>
+        return <span style={{ color: '#fa8c16', fontSize: isMobile ? '12px' : '14px' }}>{formatPrice(cost)}/h</span>
       },
     },
     {
       title: '综合收益/小时',
       dataIndex: 'comprehensiveProfitPerHour',
       key: 'comprehensiveProfitPerHour',
-      width: 150,
+      width: isMobile ? 130 : 150,
       render: (profit: number | null, record: ComprehensiveProfit) => {
         if (!record.priceAvailable || !record.workforceCostAvailable || profit === null) {
           return <Tag color="default">未知</Tag>
         }
         return (
-          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontWeight: 'bold', fontSize: '15px' }}>
+          <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontWeight: 'bold', fontSize: isMobile ? '13px' : '15px' }}>
             {formatPrice(profit)}/h
           </span>
         )
@@ -263,18 +329,18 @@ const ComprehensiveAnalysis = () => {
     {
       title: '操作',
       key: 'action',
-      width: 100,
+      width: isMobile ? 80 : 100,
       fixed: 'right' as const,
       render: (_: any, record: ComprehensiveProfit) => (
-        <a onClick={() => setSelectedRecipe(record)}>查看详情</a>
+        <a onClick={() => setSelectedRecipe(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>查看详情</a>
       ),
     },
   ]
 
-  // 计算统计数据
-  const availableData = comprehensiveData.filter(r => r.priceAvailable && r.workforceCostAvailable && r.comprehensiveProfitPerHour !== null)
+  // 计算统计数据（使用过滤后的数据）
+  const availableData = filteredData.filter(r => r.priceAvailable && r.workforceCostAvailable && r.comprehensiveProfitPerHour !== null)
   const stats = {
-    totalRecipes: comprehensiveData.length,
+    totalRecipes: filteredData.length,
     profitableRecipes: availableData.filter(r => r.comprehensiveProfitPerHour! > 0).length,
     avgComprehensiveProfit: availableData.length > 0
       ? availableData.reduce((sum, r) => sum + r.comprehensiveProfitPerHour!, 0) / availableData.length
@@ -286,7 +352,7 @@ const ComprehensiveAnalysis = () => {
 
   return (
     <div>
-      <h1 style={{ marginBottom: 24 }}>综合收益分析</h1>
+      <h1 style={{ marginBottom: isMobile ? 16 : 24, fontSize: isMobile ? '20px' : '24px' }}>综合收益分析</h1>
 
       {/* 说明 */}
       <Alert
@@ -294,12 +360,12 @@ const ComprehensiveAnalysis = () => {
         description="此分析在配方收益基础上，扣除了劳动力消耗品成本，并考虑了人口扩张惩罚（超过2000人口时，每增加1000人增加0.1%消耗品需求）。只有Essential消耗品（前3项）价格可用时，才能计算综合收益。"
         type="info"
         showIcon
-        style={{ marginBottom: 24 }}
+        style={{ marginBottom: isMobile ? 16 : 24 }}
       />
 
       {/* 统计卡片 */}
-      <Row gutter={16} style={{ marginBottom: 24 }}>
-        <Col span={6}>
+      <Row gutter={[16, 16]} style={{ marginBottom: isMobile ? 16 : 24 }}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="配方总数"
@@ -308,7 +374,7 @@ const ComprehensiveAnalysis = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="综合盈利配方"
@@ -318,7 +384,7 @@ const ComprehensiveAnalysis = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="平均综合收益"
@@ -328,7 +394,7 @@ const ComprehensiveAnalysis = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="最高综合收益"
@@ -342,13 +408,34 @@ const ComprehensiveAnalysis = () => {
 
       {/* 筛选和参数 */}
       <Card style={{ marginBottom: 16 }}>
-        <Space wrap size="large">
-          <Space>
-            <span>排序方式：</span>
+        <Space 
+          direction={isMobile ? 'vertical' : 'horizontal'} 
+          wrap 
+          size={isMobile ? 'middle' : 'large'}
+          style={{ width: '100%' }}
+        >
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>搜索配方：</span>
+            <AutoComplete
+              placeholder="输入配方名称搜索（支持模糊匹配）"
+              value={searchText}
+              onChange={(value) => setSearchText(value)}
+              onSearch={(value) => setSearchText(value)}
+              options={autocompleteOptions}
+              allowClear
+              style={{ width: isMobile ? '100%' : 300 }}
+              filterOption={false} // 禁用默认过滤，使用自定义逻辑
+              onSelect={(value) => {
+                setSearchText(value)
+              }}
+            />
+          </Space>
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>排序方式：</span>
             <Select
               value={sortBy}
               onChange={setSortBy}
-              style={{ width: 180 }}
+              style={{ width: isMobile ? '100%' : 180 }}
             >
               <Option value="comprehensiveProfitPerHour">综合收益/小时</Option>
               <Option value="comprehensiveTotalProfit">综合总收益</Option>
@@ -356,8 +443,8 @@ const ComprehensiveAnalysis = () => {
             </Select>
           </Space>
 
-          <Space>
-            <span>建筑筛选：</span>
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>建筑筛选：</span>
             <Select
               value={buildingFilter}
               onChange={(value) => {
@@ -366,7 +453,7 @@ const ComprehensiveAnalysis = () => {
                   setFertilityAbundance(100)
                 }
               }}
-              style={{ width: 200 }}
+              style={{ width: isMobile ? '100%' : 200 }}
               allowClear
               placeholder="全部建筑"
             >
@@ -383,30 +470,30 @@ const ComprehensiveAnalysis = () => {
           </Space>
 
           {buildingFilter && isBuildingInfluenced(buildingFilter) && (
-            <Space>
-              <span>{getInfluenceType(buildingFilter)}值：</span>
+            <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
+              <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{getInfluenceType(buildingFilter)}值：</span>
               <InputNumber
                 value={fertilityAbundance}
                 onChange={(value) => setFertilityAbundance(value || 100)}
                 min={0}
                 max={1000}
                 step={10}
-                style={{ width: 120 }}
+                style={{ width: isMobile ? '100%' : 120 }}
                 addonAfter="%"
               />
             </Space>
           )}
 
-          <Space>
+          <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
             <TeamOutlined style={{ fontSize: '18px', color: '#1890ff' }} />
-            <span>总人口：</span>
+            <span style={{ minWidth: isMobile ? 'auto' : 60 }}>总人口：</span>
             <InputNumber
               value={totalPopulation}
               onChange={(value) => setTotalPopulation(value || 0)}
               min={0}
               max={100000}
               step={100}
-              style={{ width: 150 }}
+              style={{ width: isMobile ? '100%' : 150 }}
               placeholder="0"
             />
             {totalPopulation > 2000 && (
@@ -425,13 +512,16 @@ const ComprehensiveAnalysis = () => {
         <Spin spinning={loading}>
           <Table
             columns={columns}
-            dataSource={comprehensiveData}
+            dataSource={filteredData}
             rowKey="recipeId"
             pagination={{
-              pageSize: 20,
+              pageSize: isMobile ? 10 : 20,
               showTotal: (total) => `共 ${total} 个配方`,
+              showSizeChanger: !isMobile,
+              simple: isMobile,
             }}
-            scroll={{ x: 1300 }}
+            scroll={{ x: isMobile ? 800 : 1300 }}
+            size={isMobile ? 'small' : 'middle'}
           />
         </Spin>
       </Card>
@@ -442,13 +532,14 @@ const ComprehensiveAnalysis = () => {
         open={!!selectedRecipe}
         onCancel={() => setSelectedRecipe(null)}
         footer={null}
-        width={1400}
-        style={{ top: 20 }}
+        width={isMobile ? '95%' : isTablet ? 900 : 1400}
+        style={{ top: isMobile ? 10 : 20 }}
+        styles={{ body: { maxHeight: isMobile ? 'calc(100vh - 120px)' : 'auto', overflowY: 'auto' } }}
       >
         {selectedRecipe && (
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             {/* 左侧：输入输出详情 */}
-            <Col span={12}>
+            <Col xs={24} md={12}>
               <Card size="small" title="配方信息" style={{ marginBottom: 16 }}>
                 <p><strong>建筑：</strong>{selectedRecipe.buildingName}</p>
                 <p><strong>生产时间：</strong>{selectedRecipe.timeHours.toFixed(2)} 小时</p>
@@ -557,7 +648,7 @@ const ComprehensiveAnalysis = () => {
             </Col>
 
             {/* 右侧：收益分析和饼图 */}
-            <Col span={12}>
+            <Col xs={24} md={12}>
               <Card size="small" title="收益分析" style={{ marginBottom: 16 }}>
                 <Space direction="vertical" style={{ width: '100%' }} size="large">
                   <div style={{ 
@@ -666,7 +757,7 @@ const ComprehensiveAnalysis = () => {
               {/* 成本分布饼图 - 按输入原料和劳动力消耗品划分 */}
               {selectedRecipe.priceAvailable && selectedRecipe.workforceCostAvailable && (
                 <Card size="small" title="成本分布（详细）">
-                  <ResponsiveContainer width="100%" height={350}>
+                  <ResponsiveContainer width="100%" height={isMobile ? 250 : 350}>
                     <PieChart>
                       <Pie
                         data={(() => {
@@ -752,22 +843,22 @@ const ComprehensiveAnalysis = () => {
                     </PieChart>
                   </ResponsiveContainer>
                   <div style={{ textAlign: 'center', marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
-                    <Row gutter={16}>
-                      <Col span={8}>
+                    <Row gutter={[16, 16]}>
+                      <Col xs={24} sm={8}>
                         <div style={{ color: '#666', fontSize: '12px' }}>输入材料</div>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }}>
+                        <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold', color: '#1890ff' }}>
                           {formatPrice(selectedRecipe.inputCost || 0)}
                         </div>
                       </Col>
-                      <Col span={8}>
+                      <Col xs={24} sm={8}>
                         <div style={{ color: '#666', fontSize: '12px' }}>劳动力</div>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#fa8c16' }}>
+                        <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold', color: '#fa8c16' }}>
                           {formatPrice(selectedRecipe.workforceCost || 0)}
                         </div>
                       </Col>
-                      <Col span={8}>
+                      <Col xs={24} sm={8}>
                         <div style={{ color: '#666', fontSize: '12px' }}>总成本</div>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#f5222d' }}>
+                        <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold', color: '#f5222d' }}>
                           {formatPrice((selectedRecipe.inputCost || 0) + (selectedRecipe.workforceCost || 0))}
                         </div>
                       </Col>

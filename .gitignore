@@ -1,3 +1,7 @@
+# Backend data directory
+backend/data/
+
+
 # Python
 __pycache__/
 *.py[cod]

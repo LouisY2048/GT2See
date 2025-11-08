@@ -26,6 +26,17 @@ const BuildingAnalysis = () => {
   const [materials, setMaterials] = useState<Material[]>([])
   const [buildingCosts, setBuildingCosts] = useState<BuildingCost[]>([])
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingCost | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // 响应式检测
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
 
   // 获取数据
   const fetchData = async () => {
@@ -56,20 +67,20 @@ const BuildingAnalysis = () => {
     return material?.name || `Material ${materialId}`
   }
 
-  // 表格列定义
+  // 表格列定义（响应式）
   const columns = [
     {
       title: '建筑名称',
       dataIndex: 'buildingName',
       key: 'buildingName',
       fixed: 'left' as const,
-      width: 200,
+      width: isMobile ? 150 : 200,
     },
     {
       title: '总成本',
       dataIndex: 'totalCost',
       key: 'totalCost',
-      width: 180,
+      width: isMobile ? 140 : 180,
       sorter: (a: BuildingCost, b: BuildingCost) => {
         // 价格不可用的排到最后
         if (!a.priceAvailable && !b.priceAvailable) return 0
@@ -81,25 +92,27 @@ const BuildingAnalysis = () => {
         if (!record.priceAvailable) {
           return (
             <Tooltip title="市场中缺乏相应原料">
-              <Tag icon={<WarningOutlined />} color="warning">未知</Tag>
+              <Tag icon={<WarningOutlined />} color="warning" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
             </Tooltip>
           )
         }
-        return <span style={{ fontWeight: 'bold' }}>{formatPrice(cost)}</span>
+        return <span style={{ fontWeight: 'bold', fontSize: isMobile ? '12px' : '14px' }}>{formatPrice(cost)}</span>
       },
     },
     {
       title: '材料种类',
       key: 'materialCount',
-      width: 120,
-      render: (_: any, record: BuildingCost) => record.materialCosts.length,
+      width: isMobile ? 100 : 120,
+      render: (_: any, record: BuildingCost) => (
+        <span style={{ fontSize: isMobile ? '12px' : '14px' }}>{record.materialCosts.length}</span>
+      ),
     },
     {
       title: '操作',
       key: 'action',
-      width: 100,
+      width: isMobile ? 80 : 100,
       render: (_: any, record: BuildingCost) => (
-        <a onClick={() => setSelectedBuilding(record)}>查看详情</a>
+        <a onClick={() => setSelectedBuilding(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>查看详情</a>
       ),
     },
   ]
@@ -205,9 +218,9 @@ const BuildingAnalysis = () => {
 
   return (
     <div className="fade-in">
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: isMobile ? 16 : 32 }}>
         <h1 style={{ 
-          fontSize: '32px', 
+          fontSize: isMobile ? '24px' : '32px', 
           fontWeight: 'bold',
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           WebkitBackgroundClip: 'text',
@@ -216,7 +229,7 @@ const BuildingAnalysis = () => {
         }}>
           建筑分析
         </h1>
-        <p style={{ color: '#8c8c8c', fontSize: '16px' }}>
+        <p style={{ color: '#8c8c8c', fontSize: isMobile ? '14px' : '16px' }}>
           建筑建造成本计算 · 材料分解与对比
         </p>
       </div>
@@ -281,11 +294,14 @@ const BuildingAnalysis = () => {
             dataSource={buildingCosts}
             rowKey="buildingId"
             pagination={{
-              pageSize: 15,
+              pageSize: isMobile ? 10 : 15,
               showTotal: (total) => `共 ${total} 个建筑`,
-              showSizeChanger: true,
+              showSizeChanger: !isMobile,
               pageSizeOptions: ['10', '15', '20', '50'],
+              simple: isMobile,
             }}
+            scroll={{ x: isMobile ? 600 : 800 }}
+            size={isMobile ? 'small' : 'middle'}
           />
         </Spin>
       </Card>
@@ -296,12 +312,13 @@ const BuildingAnalysis = () => {
         open={!!selectedBuilding}
         onCancel={() => setSelectedBuilding(null)}
         footer={null}
-        width={selectedBuilding?.priceAvailable ? 1200 : 800}
-        style={{ top: 20 }}
+        width={isMobile ? '95%' : (selectedBuilding?.priceAvailable ? 1200 : 800)}
+        style={{ top: isMobile ? 10 : 20 }}
+        styles={{ body: { maxHeight: isMobile ? 'calc(100vh - 120px)' : 'auto', overflowY: 'auto' } }}
       >
         {selectedBuilding && (
-          <Row gutter={16}>
-            <Col span={selectedBuilding.priceAvailable ? 12 : 24}>
+          <Row gutter={[16, 16]}>
+            <Col xs={24} md={selectedBuilding.priceAvailable ? 12 : 24}>
               <Card title="材料成本详情" size="small">
                 {!selectedBuilding.priceAvailable && selectedBuilding.unavailableMaterials && selectedBuilding.unavailableMaterials.length > 0 && (
                   <Alert
@@ -353,9 +370,9 @@ const BuildingAnalysis = () => {
               </Card>
             </Col>
             {selectedBuilding.priceAvailable && (
-              <Col span={12}>
+              <Col xs={24} md={12}>
                 <Card title={<span style={{ fontSize: '16px', fontWeight: 'bold' }}>成本占比分布</span>} size="small">
-                  <ResponsiveContainer width="100%" height={400}>
+                  <ResponsiveContainer width="100%" height={isMobile ? 300 : 400}>
                     <PieChart>
                       <Pie
                         data={pieChartData}

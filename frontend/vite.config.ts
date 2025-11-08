@@ -13,6 +13,14 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       port: 5173,
+      host: '0.0.0.0', // 允许外部访问
+      // 允许的域名（通过 Nginx 反向代理访问时使用）
+      allowedHosts: [
+        'louisy.top',
+        'www.louisy.top',
+        'localhost',
+        '127.0.0.1'
+      ],
       // 仅在开发环境配置代理
       proxy: mode === 'development' ? {
         '/api': {
