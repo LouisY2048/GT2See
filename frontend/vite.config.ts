@@ -9,12 +9,26 @@ export default defineConfig(({ mode }) => {
   // 获取API目标地址（开发环境使用，生产环境不需要代理）
   const apiTarget = env.VITE_API_TARGET || 'http://localhost:8001'
   
-  // 检查是否是 GitHub Pages 部署（通过环境变量或仓库名称判断）
+  // 检查是否是 GitHub Pages 或 GitCode Pages 部署（通过环境变量判断）
   const isGitHubPages = env.GITHUB_PAGES === 'true' || process.env.GITHUB_PAGES === 'true'
+  const isGitCodePages = env.GITCODE_PAGES === 'true' || process.env.GITCODE_PAGES === 'true'
+  
+  // 确定 base 路径
+  // GitHub Pages: /GT2See/
+  // GitCode Pages: 通常也需要设置 base 路径，格式为 /仓库名/
+  // 如果仓库名是 GT2See，则使用 /GT2See/，否则使用根路径
+  let basePath = '/'
+  if (isGitHubPages) {
+    basePath = '/GT2See/'
+  } else if (isGitCodePages) {
+    // GitCode Pages 路径格式：https://用户名.gitcode.net/仓库名/
+    // 这里假设仓库名是 GT2See，如果不同需要修改
+    basePath = '/GT2See/'
+  }
   
   return {
-    // GitHub Pages 部署需要设置 base 路径
-    base: isGitHubPages ? '/GT2See/' : '/',
+    // Pages 部署需要设置 base 路径
+    base: basePath,
     plugins: [react()],
     server: {
       port: 5173,

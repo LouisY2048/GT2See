@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <script>
+    // GitHub Pages / GitCode Pages 404 重定向到根路径
+    // 支持 GitHub Pages 和 GitCode Pages（基于 GitLab Pages）
+    // 将所有路径重定向到 /GT2See/
+    var basePath = '/GT2See/';
+    
+    // 直接重定向到根路径（保留查询参数和哈希）
+    var redirectUrl = basePath;
+    if (window.location.search) {
+      redirectUrl += window.location.search;
+    }
+    if (window.location.hash) {
+      redirectUrl += window.location.hash;
+    }
+    
+    // 使用 replace 避免在历史记录中留下 404 页面
+    window.location.replace(redirectUrl);
+  </script>
+  <meta http-equiv="refresh" content="0; url=/GT2See/">
+</head>
+<body>
+  <p>正在重定向到首页...</p>
+  <p>如果页面没有自动跳转，请 <a href="/GT2See/">点击这里</a>。</p>
+</body>
+</html>
+

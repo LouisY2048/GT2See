@@ -1,0 +1,60 @@
+# GitCode Pages 部署配置
+# GitCode 基于 GitLab，使用 GitLab CI/CD 格式
+
+stages:
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: "18"
+  # API基础URL（包含 /api 后缀）
+  VITE_API_BASE_URL: "https://gt2see.onrender.com/api"
+  # 标识这是 GitCode Pages 部署，需要设置 base 路径
+  GITCODE_PAGES: "true"
+
+cache:
+  paths:
+    - frontend/node_modules/
+
+# 构建前端
+build:
+  stage: build
+  image: node:${NODE_VERSION}
+  before_script:
+    - cd frontend
+    - npm ci
+  script:
+    - echo "Building frontend with API URL: ${VITE_API_BASE_URL}"
+    - echo "GitCode Pages mode: ${GITCODE_PAGES}"
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/dist
+    expire_in: 1 hour
+  only:
+    - main
+    - master
+  variables:
+    VITE_API_BASE_URL: "${VITE_API_BASE_URL}"
+    GITCODE_PAGES: "${GITCODE_PAGES}"
+
+# 部署到 GitCode Pages
+pages:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - build
+  before_script:
+    - apk add --no-cache rsync
+  script:
+    - echo "Deploying to GitCode Pages..."
+    - mkdir -p public
+    - rsync -av --delete frontend/dist/ public/
+    - echo "Deployment completed!"
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+    - master
+
