@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Layout, Menu, theme, Drawer, Button } from 'antd'
+import { Layout, Menu, Drawer, Button } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   StockOutlined,
@@ -54,9 +54,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken()
 
   // 检测屏幕尺寸
   useEffect(() => {
