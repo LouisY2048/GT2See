@@ -9,7 +9,12 @@ export default defineConfig(({ mode }) => {
   // 获取API目标地址（开发环境使用，生产环境不需要代理）
   const apiTarget = env.VITE_API_TARGET || 'http://localhost:8001'
   
+  // 检查是否是 GitHub Pages 部署（通过环境变量或仓库名称判断）
+  const isGitHubPages = env.GITHUB_PAGES === 'true' || process.env.GITHUB_PAGES === 'true'
+  
   return {
+    // GitHub Pages 部署需要设置 base 路径
+    base: isGitHubPages ? '/GT2See/' : '/',
     plugins: [react()],
     server: {
       port: 5173,

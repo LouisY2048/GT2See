@@ -20,10 +20,14 @@ class Settings(BaseSettings):
     CACHE_PRICE_DATA_TTL: int = 60  # 价格数据缓存60秒
     
     # CORS配置
-    # 默认允许本地开发环境
+    # 默认允许本地开发环境和 GitHub Pages 部署
     # 生产环境可通过环境变量 CORS_ORIGINS 配置，多个域名用逗号分隔
     # 例如：CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://louisy2048.github.io",  # GitHub Pages 部署地址
+    ]
     
     class Config:
         env_file = ".env"
