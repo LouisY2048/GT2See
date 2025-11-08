@@ -31,13 +31,13 @@ VITE_API_TARGET=http://localhost:8001
 # 生产环境配置
 # 部署到云服务器时使用，请根据实际情况修改
 
-# API基础URL（生产环境使用完整域名，例如：https://api.yourdomain.com/api）
+# API基础URL（生产环境使用完整域名，例如：https://gt2see.onrender.com）
 # 如果前后端部署在同一域名下，可以使用相对路径：/api
-VITE_API_BASE_URL=/api
+VITE_API_BASE_URL=https://gt2see.onrender.com
 
 # 后端服务器地址（生产环境，如果前后端分离部署，填写后端API的完整URL）
 # 如果前后端部署在同一域名下，可以留空或使用相对路径
-# VITE_API_TARGET=https://api.yourdomain.com
+# VITE_API_TARGET=https://gt2see.onrender.com
 ```
 
 #### 后端环境变量配置
@@ -152,7 +152,7 @@ sudo systemctl reload nginx  # 重新加载配置
 1. **前端配置**：
    - 在 `frontend/.env.production` 中设置：
      ```env
-     VITE_API_BASE_URL=https://api.yourdomain.com/api
+     VITE_API_BASE_URL=https://gt2see.onrender.com
      ```
 
 2. **后端配置**：
@@ -340,7 +340,7 @@ pm2 startup
 - `VITE_API_BASE_URL`：API基础URL
   - 开发环境：`/api`（相对路径，通过Vite代理）
   - 生产环境（同域名）：`/api`（相对路径）
-  - 生产环境（分离部署）：`https://api.yourdomain.com/api`（完整URL）
+  - 生产环境（分离部署）：`https://gt2see.onrender.com`（完整URL）
 
 - `VITE_API_TARGET`：后端服务器地址（仅开发环境使用，用于Vite代理配置）
   - 开发环境：`http://localhost:8001`
@@ -432,7 +432,7 @@ VITE_API_BASE_URL=/api
 
 ### 前端 `.env.production`（分离部署）
 ```env
-VITE_API_BASE_URL=https://api.yourdomain.com/api
+VITE_API_BASE_URL=https://gt2see.onrender.com
 ```
 
 ### 后端 `.env`（开发环境）

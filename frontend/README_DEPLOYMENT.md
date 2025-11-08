@@ -69,7 +69,7 @@ server {
 
 ```env
 # API基础URL使用完整域名
-VITE_API_BASE_URL=https://api.yourdomain.com/api
+VITE_API_BASE_URL=https://gt2see.onrender.com
 
 # 后端服务器地址（不需要配置，因为使用完整URL）
 # VITE_API_TARGET=
@@ -77,7 +77,7 @@ VITE_API_BASE_URL=https://api.yourdomain.com/api
 
 **部署架构**：
 - 前端：`https://yourdomain.com/`
-- 后端：`https://api.yourdomain.com/`
+- 后端：`https://gt2see.onrender.com`
 
 ## 构建和部署步骤
 
@@ -141,7 +141,7 @@ VITE_API_BASE_URL=https://api.yourdomain.com/api
 - `VITE_API_BASE_URL`：API基础URL
   - 开发环境：`/api`（相对路径，通过Vite代理）
   - 生产环境（同域名）：`/api`（相对路径）
-  - 生产环境（分离部署）：`https://api.yourdomain.com/api`（完整URL）
+  - 生产环境（分离部署）：`https://gt2see.onrender.com`（完整URL）
 
 - `VITE_API_TARGET`：后端服务器地址（仅开发环境使用，用于Vite代理配置）
   - 开发环境：`http://localhost:8001`

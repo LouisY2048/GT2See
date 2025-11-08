@@ -24,7 +24,7 @@ GT2See 是一个全栈应用，需要分别部署前端和后端：
 2. 点击 **New repository secret**
 3. 添加以下 Secret：
    - **Name**: `VITE_API_BASE_URL`
-   - **Value**: 你的后端部署地址（例如：`https://gt2see-backend.railway.app`）
+   - **Value**: 你的后端部署地址（例如：`https://gt2see.onrender.com`）
 
 ### 步骤 3: 触发部署
 
@@ -159,7 +159,7 @@ GT2See 是一个全栈应用，需要分别部署前端和后端：
 2. **本地开发**
    - 创建 `frontend/.env.local`：
      ```env
-     VITE_API_BASE_URL=https://your-backend-url.com
+     VITE_API_BASE_URL=https://gt2see.onrender.com
      ```
 
 ### 方法二：修改代码
@@ -170,7 +170,7 @@ GT2See 是一个全栈应用，需要分别部署前端和后端：
 const getApiBaseUrl = () => {
   // 生产环境使用完整URL
   if (import.meta.env.PROD) {
-    return 'https://your-backend-url.com'
+    return 'https://gt2see.onrender.com'
   }
   // 开发环境使用代理
   return '/api'

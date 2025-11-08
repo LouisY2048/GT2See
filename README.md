@@ -75,7 +75,7 @@ GT2See 是一个强大的市场分析工具，提供实时市场数据、建筑�
 
 2. **配置后端API地址**
    - 进入仓库 Settings → Secrets and variables → Actions
-   - 添加 Secret: `VITE_API_BASE_URL`，值为你的后端部署地址（如：`https://your-backend.railway.app`）
+   - 添加 Secret: `VITE_API_BASE_URL`，值为你的后端部署地址（如：`https://gt2see.onrender.com`）
 
 3. **自动部署**
    - 推送代码到 `main` 分支后，GitHub Actions 会自动构建并部署
@@ -115,10 +115,10 @@ GT2See 是一个强大的市场分析工具，提供实时市场数据、建筑�
 
 部署后端后，需要更新前端的API地址：
 
-1. **GitHub Pages部署**：在仓库 Settings → Secrets 中设置 `VITE_API_BASE_URL`
+1. **GitHub Pages部署**：在仓库 Settings → Secrets 中设置 `VITE_API_BASE_URL`（如：`https://gt2see.onrender.com`）
 2. **本地开发**：创建 `frontend/.env.local` 文件：
    ```env
-   VITE_API_BASE_URL=https://your-backend-url.com
+   VITE_API_BASE_URL=https://gt2see.onrender.com
    ```
 
 ## 快速开始
