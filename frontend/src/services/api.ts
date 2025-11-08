@@ -6,9 +6,10 @@ import axios from 'axios'
 const getApiBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_BASE_URL
   
-  // 如果配置的是完整URL（包含http://或https://），直接使用
+  // 如果配置的是完整URL（包含http://或https://）
   if (envUrl && (envUrl.startsWith('http://') || envUrl.startsWith('https://'))) {
-    return envUrl
+    // 确保完整URL以 /api 结尾
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`
   }
   
   // 否则使用相对路径（开发环境通过代理，生产环境同域名）
