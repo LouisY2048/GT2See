@@ -1,6 +1,6 @@
-import { Button, Row, Col, Card, Space, Tag } from 'antd'
+import { Button, Row, Col, Space } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { RocketOutlined, StarOutlined, AppstoreOutlined } from '@ant-design/icons'
+import { RocketOutlined, StarOutlined } from '@ant-design/icons'
 
 const Landing = () => {
   const navigate = useNavigate()

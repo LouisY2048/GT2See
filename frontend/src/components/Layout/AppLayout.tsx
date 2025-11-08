@@ -8,7 +8,6 @@ import {
   ExperimentOutlined,
   GlobalOutlined,
   FundOutlined,
-  AppstoreOutlined,
   MenuOutlined,
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
