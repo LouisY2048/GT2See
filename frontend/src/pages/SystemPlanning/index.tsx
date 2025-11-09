@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { PlusOutlined, DeleteOutlined, SearchOutlined, RocketOutlined, ArrowUpOutlined } from '@ant-design/icons'
 import { analyzerApi, gameDataApi } from '../../services/api'
 import { useTranslationData } from '../../hooks/useTranslationData'
-import type { Material, SystemAnalysis, System } from '../../types'
+import type { Material, SystemAnalysis } from '../../types'
 
 const { Option } = Select
 
@@ -45,17 +45,14 @@ const SystemPlanning = () => {
   const [advancedSearchResults, setAdvancedSearchResults] = useState<AdvancedSearchResult[]>([])
   const [advancedSearchLoading, setAdvancedSearchLoading] = useState(false)
   const [materialFilters, setMaterialFilters] = useState<MaterialFilter[]>([])
-  const [exchangeX, setExchangeX] = useState<number>(3334.0)
-  const [exchangeY, setExchangeY] = useState<number>(1425.0)
+  const [exchangeX] = useState<number>(3334.0)
+  const [exchangeY] = useState<number>(1425.0)
   
   // 星系搜索状态
   const [systemSearchText, setSystemSearchText] = useState<string>('')
   
   // 原始星系数据（用于星系群搜索，包含行星信息）
   const [rawSystems, setRawSystems] = useState<any[]>([])
-  
-  // 相邻距离固定为4光年
-  const NEIGHBOR_DISTANCE = 4.0
 
   // 获取数据
   const fetchData = async () => {
@@ -101,102 +98,6 @@ const SystemPlanning = () => {
     }
   }
 
-  // 计算两个星系之间的距离（光年）
-  const calculateSystemDistance = (x1: number, y1: number, x2: number, y2: number): number => {
-    const euclideanDistance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-    return euclideanDistance / 50.0 // 转换为光年
-  }
-
-  // 聚合相邻星系的资源
-  const aggregateNeighborResources = (centerSystem: SystemAnalysis, neighborSystems: SystemAnalysis[]): AdvancedSearchResult => {
-    // 聚合所有相邻星系的资源
-    const aggregatedResources: { [key: number]: {
-      materialId: number
-      totalAbundance: number
-      planetCount: number
-      maxAbundance: number
-      systemNames: string[] // 记录哪些星系有这个资源
-    } } = {}
-
-    // 包含中心星系和所有相邻星系
-    const allSystems = [centerSystem, ...neighborSystems]
-
-    allSystems.forEach(system => {
-      system.resources.forEach(resource => {
-        const matId = resource.materialId
-        if (!aggregatedResources[matId]) {
-          aggregatedResources[matId] = {
-            materialId: matId,
-            totalAbundance: 0,
-            planetCount: 0,
-            maxAbundance: 0,
-            systemNames: []
-          }
-        }
-        aggregatedResources[matId].totalAbundance += resource.totalAbundance
-        aggregatedResources[matId].planetCount += resource.planetCount
-        // 使用每个星系的 maxAbundance（单个星球的最大丰度）来更新聚合后的 maxAbundance
-        const systemMaxAbundance = resource.maxAbundance || 0
-        if (systemMaxAbundance > aggregatedResources[matId].maxAbundance) {
-          aggregatedResources[matId].maxAbundance = systemMaxAbundance
-        }
-        if (!aggregatedResources[matId].systemNames.includes(system.systemName)) {
-          aggregatedResources[matId].systemNames.push(system.systemName)
-        }
-      })
-    })
-
-    // 转换为数组格式
-    const resources = Object.values(aggregatedResources).map(r => ({
-      materialId: r.materialId,
-      totalAbundance: r.totalAbundance,
-      planetCount: r.planetCount,
-      maxAbundance: r.maxAbundance,
-      systemNames: r.systemNames // 保留星系名称信息
-    }))
-
-    // 计算总行星数
-    const totalPlanets = allSystems.reduce((sum, s) => sum + s.planetCount, 0)
-
-    // 计算最大肥力
-    const maxFertility = Math.max(...allSystems.map(s => {
-      // 从原始数据中获取肥力信息（如果有的话）
-      return 0 // 暂时设为0，因为SystemAnalysis类型中没有肥力信息
-    }))
-
-    return {
-      systemId: centerSystem.systemId,
-      systemName: `${centerSystem.systemName} 及相邻星系 (${neighborSystems.length}个)`,
-      x: centerSystem.x || 0,
-      y: centerSystem.y || 0,
-      distanceToExchange: centerSystem.distanceToExchange || 0,
-      planetCount: totalPlanets,
-      maxFertility: maxFertility,
-      resources: resources as any
-    }
-  }
-
-  // 检查单个星系是否满足材料筛选条件（基于单个星球的丰度）
-  const checkSystemMeetsMaterialFilters = (rawSystem: any, filters: MaterialFilter[]): boolean => {
-    if (filters.length === 0) return true
-    
-    const planets = rawSystem.planets || []
-    if (planets.length === 0) return false
-    
-    // 检查每个材料筛选条件
-    return filters.every(filter => {
-      // 检查是否有至少一个行星满足该材料的丰度要求
-      for (const planet of planets) {
-        const resources = planet.mats || []
-        for (const resource of resources) {
-          if (resource.id === filter.materialId && resource.ab >= filter.minAbundance) {
-            return true // 找到满足条件的行星
-          }
-        }
-      }
-      return false // 没有找到满足条件的行星
-    })
-  }
 
   // 检查单个星球是否满足材料筛选条件
   const checkPlanetMeetsMaterialFilters = (planet: any, filters: MaterialFilter[]): boolean => {
@@ -679,7 +580,7 @@ const SystemPlanning = () => {
                       
                       // 渲染星球卡片的函数
                       const renderPlanetCard = (item: { planet: any, systemName: string, systemId: number, meetsFilters: boolean, metFilterCount: number }, index: number) => {
-                        const { planet, systemName, meetsFilters, metFilterCount } = item
+                        const { planet, systemName, metFilterCount } = item
                         const planetName = planet.name || `Planet ${planet.id}`
                         const resources = planet.mats || []
                         

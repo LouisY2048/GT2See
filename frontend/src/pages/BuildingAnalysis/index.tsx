@@ -25,7 +25,7 @@ const COLORS = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'
 
 const BuildingAnalysis = () => {
   const { t } = useTranslation()
-  const { getTranslatedName, loading: translationLoading } = useTranslationData()
+  const { getTranslatedName } = useTranslationData()
   const [loading, setLoading] = useState(false)
   const [materials, setMaterials] = useState<Material[]>([])
   const [buildingCosts, setBuildingCosts] = useState<BuildingCost[]>([])
