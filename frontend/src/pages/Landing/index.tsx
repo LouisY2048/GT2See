@@ -18,8 +18,8 @@ const Landing = () => {
     setLanguage(newLanguage)
     i18n.changeLanguage(newLanguage)
     localStorage.setItem('language', newLanguage)
-    // 刷新页面以更新 Antd 的 locale
-    window.location.reload()
+    // 触发自定义事件通知 ConfigProvider 更新
+    window.dispatchEvent(new CustomEvent('languagechange', { detail: newLanguage }))
   }
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
@@ -10,12 +10,36 @@ import './index.css'
 import './styles/animations.css'
 
 const AppWithLocale = () => {
-  const language = localStorage.getItem('language') || 'zh-CN'
+  const [language, setLanguage] = useState(() => localStorage.getItem('language') || 'zh-CN')
   const antdLocale = language === 'en-US' ? enUS : zhCN
+
+  // 监听 localStorage 中的语言变化
+  useEffect(() => {
+    // 监听自定义语言变化事件
+    const handleLanguageChange = (e: CustomEvent<string>) => {
+      setLanguage(e.detail)
+    }
+
+    // 监听 storage 事件（跨标签页）
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'language' && e.newValue) {
+        setLanguage(e.newValue)
+      }
+    }
+
+    window.addEventListener('languagechange', handleLanguageChange as EventListener)
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('languagechange', handleLanguageChange as EventListener)
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
 
   return (
     <ConfigProvider 
       locale={antdLocale} 
+      key={language} // 添加 key 以强制重新渲染 ConfigProvider
       theme={{
         token: {
           colorPrimary: '#667eea',

@@ -30,6 +30,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [language, setLanguage] = useState(i18n.language)
   const navigate = useNavigate()
   const location = useLocation()
+  
+  // 同步语言状态
+  useEffect(() => {
+    setLanguage(i18n.language)
+  }, [i18n.language])
 
   // 检测屏幕尺寸
   useEffect(() => {
@@ -56,8 +61,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     setLanguage(newLanguage)
     i18n.changeLanguage(newLanguage)
     localStorage.setItem('language', newLanguage)
-    // 刷新页面以更新 Antd 的 locale
-    window.location.reload()
+    // 触发自定义事件通知 ConfigProvider 更新
+    window.dispatchEvent(new CustomEvent('languagechange', { detail: newLanguage }))
   }
 
   const menuItems: MenuItem[] = [
