@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Card, Table, Select, Space, Spin, message, Row, Col, Statistic, Tag, Tooltip, InputNumber, Alert, Modal, AutoComplete } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { 
   PieChart, 
   Pie, 
@@ -10,6 +11,7 @@ import {
 } from 'recharts'
 import { WarningOutlined, TeamOutlined } from '@ant-design/icons'
 import { comprehensiveApi, gameDataApi, exchangeApi } from '../../services/api'
+import { useTranslationData } from '../../hooks/useTranslationData'
 import type { Building, Material } from '../../types'
 import { formatPrice } from '../../utils/format'
 
@@ -73,6 +75,8 @@ interface ComprehensiveProfit {
 }
 
 const ComprehensiveAnalysis = () => {
+  const { t } = useTranslation()
+  const { getTranslatedName } = useTranslationData()
   const [loading, setLoading] = useState(false)
   const [buildings, setBuildings] = useState<Building[]>([])
   const [materials, setMaterials] = useState<Material[]>([])
@@ -116,7 +120,7 @@ const ComprehensiveAnalysis = () => {
       await fetchComprehensiveData(sortBy, buildingFilter, totalPopulation, fertilityAbundance)
     } catch (error) {
       console.error('Failed to fetch data:', error)
-      message.error('加载数据失败')
+      message.error(t('comprehensive.loadingError'))
     } finally {
       setLoading(false)
     }
@@ -131,7 +135,7 @@ const ComprehensiveAnalysis = () => {
       applyFilters(data, searchText)
     } catch (error) {
       console.error('Failed to fetch comprehensive data:', error)
-      message.error('加载综合收益数据失败')
+      message.error(t('comprehensive.profitError'))
     }
   }
 
@@ -144,16 +148,53 @@ const ComprehensiveAnalysis = () => {
     
     const searchLower = search.toLowerCase().trim()
     const filtered = data.filter(item => {
-      const recipeName = item.recipeName || ''
+      // 搜索翻译后的配方名称
+      const recipeName = getRecipeName(item)
       return recipeName.toLowerCase().includes(searchLower)
     })
     setFilteredData(filtered)
   }
 
-  // 获取建筑名称
+  // 获取建筑名称（支持中英文切换）
   const getBuildingName = (buildingId: number) => {
     const building = buildings.find(b => b.id === buildingId)
-    return building?.name || `Building ${buildingId}`
+    const enName = building?.name || `Building ${buildingId}`
+    if (!enName) return `Building ${buildingId}`
+    try {
+      return getTranslatedName(enName)
+    } catch (error) {
+      console.warn('Translation error for building:', enName, error)
+      return enName
+    }
+  }
+  
+  // 获取材料名称（支持中英文切换）
+  const getMaterialName = (materialId: number) => {
+    const material = materials.find(m => m.id === materialId)
+    const enName = material?.sName || material?.name || `Material ${materialId}`
+    if (!enName) return `Material ${materialId}`
+    try {
+      return getTranslatedName(enName)
+    } catch (error) {
+      console.warn('Translation error for material:', enName, error)
+      return enName
+    }
+  }
+
+  // 获取配方名称（支持中英文切换）
+  // 格式：输出产品（第一种输入产品）
+  const getRecipeName = (recipe: ComprehensiveProfit) => {
+    try {
+      const outputName = getMaterialName(recipe.outputDetails.materialId)
+      if (recipe.inputDetails && recipe.inputDetails.length > 0) {
+        const firstInputName = getMaterialName(recipe.inputDetails[0].materialId)
+        return `${outputName}（${firstInputName}）`
+      }
+      return outputName
+    } catch (error) {
+      console.warn('Translation error for recipe:', recipe.recipeName, error)
+      return recipe.recipeName
+    }
   }
 
   // 生成自动完成选项（模糊匹配）
@@ -165,22 +206,26 @@ const ComprehensiveAnalysis = () => {
     const searchLower = searchText.toLowerCase().trim()
     const matchedRecipes = comprehensiveData
       .filter(item => {
-        const recipeName = item.recipeName || ''
+        // 搜索翻译后的配方名称
+        const recipeName = getRecipeName(item)
         return recipeName.toLowerCase().includes(searchLower)
       })
       .slice(0, 10) // 最多显示10个选项
     
-    return matchedRecipes.map(item => ({
-      value: item.recipeName,
-      label: (
-        <div>
-          <span>{item.recipeName}</span>
-          <span style={{ color: '#999', marginLeft: 8, fontSize: '12px' }}>
-            {item.buildingName || getBuildingName(item.buildingId)}
-          </span>
-        </div>
-      ),
-    }))
+    return matchedRecipes.map(item => {
+      const recipeName = getRecipeName(item)
+      return {
+        value: recipeName,
+        label: (
+          <div>
+            <span>{recipeName}</span>
+            <span style={{ color: '#999', marginLeft: 8, fontSize: '12px' }}>
+              {getBuildingName(item.buildingId)}
+            </span>
+          </div>
+        ),
+      }
+    })
   }, [searchText, comprehensiveData, buildings])
 
   // 搜索文本变化时应用过滤
@@ -225,11 +270,6 @@ const ComprehensiveAnalysis = () => {
     loadMarket()
   }, [selectedRecipe])
 
-  const getMaterialName = (materialId: number) => {
-    const material = materials.find(m => m.id === materialId)
-    return material?.name || `Material ${materialId}`
-  }
-
   const getMaterialTier = (materialId: number): string => {
     const material = materials.find(m => m.id === materialId)
     if (material && material.tier) {
@@ -259,14 +299,15 @@ const ComprehensiveAnalysis = () => {
   // 表格列定义（响应式）
   const columns = [
     {
-      title: '配方名称',
+      title: t('comprehensive.columns.recipeName'),
       dataIndex: 'recipeName',
       key: 'recipeName',
       fixed: 'left' as const,
       width: isMobile ? 150 : 200,
+      render: (_: string, record: ComprehensiveProfit) => getRecipeName(record),
     },
     {
-      title: '产物级别',
+      title: t('comprehensive.columns.outputTier'),
       key: 'outputTier',
       width: isMobile ? 80 : 100,
       render: (_: any, record: ComprehensiveProfit) => {
@@ -277,19 +318,20 @@ const ComprehensiveAnalysis = () => {
       },
     },
     {
-      title: '建筑',
-      dataIndex: 'buildingName',
-      key: 'buildingName',
+      title: t('comprehensive.columns.building'),
+      dataIndex: 'buildingId',
+      key: 'buildingId',
       width: isMobile ? 120 : 150,
+      render: (buildingId: number) => getBuildingName(buildingId),
     },
     {
-      title: '配方收益/小时',
+      title: t('comprehensive.columns.recipeProfitPerHour'),
       dataIndex: 'profitPerHour',
       key: 'profitPerHour',
       width: isMobile ? 120 : 140,
       render: (profit: number | null, record: ComprehensiveProfit) => {
         if (!record.priceAvailable || profit === null) {
-          return <Tag color="default">未知</Tag>
+          return <Tag color="default">{t('common.unknown')}</Tag>
         }
         return (
           <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontSize: isMobile ? '12px' : '14px' }}>
@@ -299,25 +341,25 @@ const ComprehensiveAnalysis = () => {
       },
     },
     {
-      title: '劳动力成本/小时',
+      title: t('comprehensive.columns.laborCostPerHour'),
       dataIndex: 'workforceCostPerHour',
       key: 'workforceCostPerHour',
       width: isMobile ? 130 : 150,
       render: (cost: number | null, record: ComprehensiveProfit) => {
         if (!record.workforceCostAvailable || cost === null) {
-          return <Tag icon={<WarningOutlined />} color="warning">未知</Tag>
+          return <Tag icon={<WarningOutlined />} color="warning">{t('common.unknown')}</Tag>
         }
         return <span style={{ color: '#fa8c16', fontSize: isMobile ? '12px' : '14px' }}>{formatPrice(cost)}/h</span>
       },
     },
     {
-      title: '综合收益/小时',
+      title: t('comprehensive.columns.comprehensiveProfitPerHour'),
       dataIndex: 'comprehensiveProfitPerHour',
       key: 'comprehensiveProfitPerHour',
       width: isMobile ? 130 : 150,
       render: (profit: number | null, record: ComprehensiveProfit) => {
         if (!record.priceAvailable || !record.workforceCostAvailable || profit === null) {
-          return <Tag color="default">未知</Tag>
+          return <Tag color="default">{t('common.unknown')}</Tag>
         }
         return (
           <span style={{ color: profit > 0 ? '#3f8600' : '#cf1322', fontWeight: 'bold', fontSize: isMobile ? '13px' : '15px' }}>
@@ -327,12 +369,12 @@ const ComprehensiveAnalysis = () => {
       },
     },
     {
-      title: '操作',
+      title: t('common.viewDetails'),
       key: 'action',
       width: isMobile ? 80 : 100,
       fixed: 'right' as const,
       render: (_: any, record: ComprehensiveProfit) => (
-        <a onClick={() => setSelectedRecipe(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>查看详情</a>
+        <a onClick={() => setSelectedRecipe(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>{t('common.viewDetails')}</a>
       ),
     },
   ]
@@ -352,12 +394,12 @@ const ComprehensiveAnalysis = () => {
 
   return (
     <div>
-      <h1 style={{ marginBottom: isMobile ? 16 : 24, fontSize: isMobile ? '20px' : '24px' }}>综合收益分析</h1>
+      <h1 style={{ marginBottom: isMobile ? 16 : 24, fontSize: isMobile ? '20px' : '24px' }}>{t('comprehensive.title')}</h1>
 
       {/* 说明 */}
       <Alert
-        message="综合收益分析说明"
-        description="此分析在配方收益基础上，扣除了劳动力消耗品成本，并考虑了人口扩张惩罚（超过2000人口时，每增加1000人增加0.1%消耗品需求）。只有Essential消耗品（前3项）价格可用时，才能计算综合收益。"
+        message={t('comprehensive.descriptionTitle')}
+        description={t('comprehensive.description')}
         type="info"
         showIcon
         style={{ marginBottom: isMobile ? 16 : 24 }}
@@ -368,18 +410,18 @@ const ComprehensiveAnalysis = () => {
         <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
-              title="配方总数"
+              title={t('comprehensive.stats.totalRecipes')}
               value={stats.totalRecipes}
-              suffix="个"
+              suffix={t('comprehensive.unitCount')}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
-              title="综合盈利配方"
+              title={t('comprehensive.stats.profitableRecipes')}
               value={stats.profitableRecipes}
-              suffix="个"
+              suffix={t('comprehensive.unitCount')}
               valueStyle={{ color: '#3f8600' }}
             />
           </Card>
@@ -387,20 +429,20 @@ const ComprehensiveAnalysis = () => {
         <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
-              title="平均综合收益"
+              title={t('comprehensive.stats.avgComprehensiveProfit')}
               value={formatPrice(stats.avgComprehensiveProfit, false)}
               prefix="$"
-              suffix="/小时"
+              suffix={t('comprehensive.units.perHour')}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
-              title="最高综合收益"
+              title={t('comprehensive.stats.maxComprehensiveProfit')}
               value={formatPrice(stats.maxComprehensiveProfit, false)}
               prefix="$"
-              suffix="/小时"
+              suffix={t('comprehensive.units.perHour')}
             />
           </Card>
         </Col>
@@ -415,9 +457,9 @@ const ComprehensiveAnalysis = () => {
           style={{ width: '100%' }}
         >
           <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
-            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>搜索配方：</span>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{t('comprehensive.filters.searchRecipe')}：</span>
             <AutoComplete
-              placeholder="输入配方名称搜索（支持模糊匹配）"
+              placeholder={t('comprehensive.filters.searchPlaceholder')}
               value={searchText}
               onChange={(value) => setSearchText(value)}
               onSearch={(value) => setSearchText(value)}
@@ -431,20 +473,20 @@ const ComprehensiveAnalysis = () => {
             />
           </Space>
           <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
-            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>排序方式：</span>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{t('comprehensive.filters.sortBy')}：</span>
             <Select
               value={sortBy}
               onChange={setSortBy}
               style={{ width: isMobile ? '100%' : 180 }}
             >
-              <Option value="comprehensiveProfitPerHour">综合收益/小时</Option>
-              <Option value="comprehensiveTotalProfit">综合总收益</Option>
-              <Option value="profitPerHour">配方收益/小时</Option>
+              <Option value="comprehensiveProfitPerHour">{t('comprehensive.filters.sortOptions.comprehensiveProfitPerHour')}</Option>
+              <Option value="comprehensiveTotalProfit">{t('comprehensive.filters.sortOptions.comprehensiveTotalProfit')}</Option>
+              <Option value="profitPerHour">{t('comprehensive.filters.sortOptions.profitPerHour')}</Option>
             </Select>
           </Space>
 
           <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
-            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>建筑筛选：</span>
+            <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{t('comprehensive.filters.buildingFilter')}：</span>
             <Select
               value={buildingFilter}
               onChange={(value) => {
@@ -455,7 +497,7 @@ const ComprehensiveAnalysis = () => {
               }}
               style={{ width: isMobile ? '100%' : 200 }}
               allowClear
-              placeholder="全部建筑"
+              placeholder={t('comprehensive.filters.allBuildings')}
             >
               {buildings
                 .slice()
@@ -471,7 +513,7 @@ const ComprehensiveAnalysis = () => {
 
           {buildingFilter && isBuildingInfluenced(buildingFilter) && (
             <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
-              <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{getInfluenceType(buildingFilter)}值：</span>
+              <span style={{ minWidth: isMobile ? 'auto' : 80 }}>{getInfluenceType(buildingFilter)}{t('comprehensive.filters.value')}：</span>
               <InputNumber
                 value={fertilityAbundance}
                 onChange={(value) => setFertilityAbundance(value || 100)}
@@ -486,7 +528,7 @@ const ComprehensiveAnalysis = () => {
 
           <Space direction={isMobile ? 'vertical' : 'horizontal'} align={isMobile ? 'start' : 'center'} style={{ width: isMobile ? '100%' : 'auto' }}>
             <TeamOutlined style={{ fontSize: '18px', color: '#1890ff' }} />
-            <span style={{ minWidth: isMobile ? 'auto' : 60 }}>总人口：</span>
+            <span style={{ minWidth: isMobile ? 'auto' : 60 }}>{t('comprehensive.filters.totalPopulation')}：</span>
             <InputNumber
               value={totalPopulation}
               onChange={(value) => setTotalPopulation(value || 0)}
@@ -497,9 +539,9 @@ const ComprehensiveAnalysis = () => {
               placeholder="0"
             />
             {totalPopulation > 2000 && (
-              <Tooltip title={`扩张惩罚：${((totalPopulation - 2000) / 10000).toFixed(1)}%`}>
+              <Tooltip title={t('comprehensive.filters.expansionPenalty', { penalty: ((totalPopulation - 2000) / 10000).toFixed(1) })}>
                 <Tag color="orange">
-                  <WarningOutlined /> 扩张惩罚生效
+                  <WarningOutlined /> {t('comprehensive.filters.expansionPenaltyActive')}
                 </Tag>
               </Tooltip>
             )}
@@ -508,7 +550,7 @@ const ComprehensiveAnalysis = () => {
       </Card>
 
       {/* 配方列表 */}
-      <Card title="综合收益列表">
+      <Card title={t('comprehensive.recipeList')}>
         <Spin spinning={loading}>
           <Table
             columns={columns}
@@ -516,7 +558,7 @@ const ComprehensiveAnalysis = () => {
             rowKey="recipeId"
             pagination={{
               pageSize: isMobile ? 10 : 20,
-              showTotal: (total) => `共 ${total} 个配方`,
+              showTotal: (total) => t('comprehensive.paginationTotal', { total }),
               showSizeChanger: !isMobile,
               simple: isMobile,
             }}
@@ -528,7 +570,7 @@ const ComprehensiveAnalysis = () => {
 
       {/* 配方详情弹窗 */}
       <Modal
-        title={selectedRecipe ? `${selectedRecipe.recipeName} - 综合收益详情` : ''}
+        title={selectedRecipe ? `${getRecipeName(selectedRecipe)} - ${t('comprehensive.details.title')}` : ''}
         open={!!selectedRecipe}
         onCancel={() => setSelectedRecipe(null)}
         footer={null}
@@ -540,23 +582,23 @@ const ComprehensiveAnalysis = () => {
           <Row gutter={[16, 16]}>
             {/* 左侧：输入输出详情 */}
             <Col xs={24} md={12}>
-              <Card size="small" title="配方信息" style={{ marginBottom: 16 }}>
-                <p><strong>建筑：</strong>{selectedRecipe.buildingName}</p>
-                <p><strong>生产时间：</strong>{selectedRecipe.timeHours.toFixed(2)} 小时</p>
-                <p><strong>产物：</strong>{getMaterialName(selectedRecipe.outputDetails.materialId)} × {selectedRecipe.outputDetails.amount}</p>
+              <Card size="small" title={t('comprehensive.details.recipeInfo')} style={{ marginBottom: 16 }}>
+                <p><strong>{t('comprehensive.details.building')}：</strong>{selectedRecipe.buildingName}</p>
+                <p><strong>{t('comprehensive.details.productionTime')}：</strong>{selectedRecipe.timeHours.toFixed(2)} {t('recipes.units.hours')}</p>
+                <p><strong>{t('comprehensive.details.output')}：</strong>{getMaterialName(selectedRecipe.outputDetails.materialId)} × {selectedRecipe.outputDetails.amount}</p>
               </Card>
 
               {/* 输入材料 */}
               {selectedRecipe.inputDetails && selectedRecipe.inputDetails.length > 0 && (
-                <Card size="small" title="输入材料" style={{ marginBottom: 16 }}>
+                <Card size="small" title={t('comprehensive.details.inputMaterials')} style={{ marginBottom: 16 }}>
                   <Table
                     columns={[
-                      { title: '材料', dataIndex: 'materialName', key: 'materialName' },
-                      { title: '数量', dataIndex: 'amount', key: 'amount' },
-                      { title: '单价', dataIndex: 'unitPrice', key: 'unitPrice', render: (price: number) => formatPrice(price) },
-                      { title: '总成本', dataIndex: 'totalCost', key: 'totalCost', render: (cost: number) => formatPrice(cost) },
+                      { title: t('comprehensive.details.material'), dataIndex: 'materialName', key: 'materialName' },
+                      { title: t('comprehensive.details.quantity'), dataIndex: 'amount', key: 'amount' },
+                      { title: t('comprehensive.details.unitPrice'), dataIndex: 'unitPrice', key: 'unitPrice', render: (price: number) => formatPrice(price) },
+                      { title: t('comprehensive.details.totalCost'), dataIndex: 'totalCost', key: 'totalCost', render: (cost: number) => formatPrice(cost) },
                       { 
-                        title: '占比', 
+                        title: t('comprehensive.details.proportion'), 
                         key: 'costPercentage',
                         render: (_: any, record: any) => {
                           if (!selectedRecipe.priceAvailable || !selectedRecipe.inputCost) {
@@ -577,41 +619,41 @@ const ComprehensiveAnalysis = () => {
                     size="small"
                   />
                   <div style={{ marginTop: 8, textAlign: 'right' }}>
-                    <strong>输入总成本：</strong>
+                    <strong>{t('comprehensive.details.inputTotalCost')}：</strong>
                     {selectedRecipe.priceAvailable && selectedRecipe.inputCost !== null 
                       ? formatPrice(selectedRecipe.inputCost) 
-                      : '未知'}
+                      : t('common.unknown')}
                   </div>
                 </Card>
               )}
 
               {/* 劳动力消耗 */}
               {selectedRecipe.workforceDetails && selectedRecipe.workforceDetails.length > 0 && (
-                <Card size="small" title="劳动力消耗" style={{ marginBottom: 16 }}>
+                <Card size="small" title={t('comprehensive.details.workforceConsumption')} style={{ marginBottom: 16 }}>
                   {selectedRecipe.workforceDetails.map((workforce, idx) => (
                     <div key={idx} style={{ marginBottom: 16 }}>
-                      <h4>{workforce.workforceType} × {workforce.workerCount}人</h4>
+                      <h4>{workforce.workforceType} × {workforce.workerCount}{t('comprehensive.details.people')}</h4>
                       <Table
                         columns={[
                           { 
-                            title: '消耗品', 
+                            title: t('comprehensive.details.consumable'), 
                             dataIndex: 'materialName', 
                             key: 'materialName',
                             render: (name: string, record: any) => (
                               <Space>
                                 {name}
-                                {record.essential && <Tag color="red" style={{ fontSize: '10px' }}>必需</Tag>}
+                                {record.essential && <Tag color="red" style={{ fontSize: '10px' }}>{t('comprehensive.details.essential')}</Tag>}
                               </Space>
                             )
                           },
                           { 
-                            title: '每轮消耗', 
+                            title: t('comprehensive.details.cycleConsumption'), 
                             dataIndex: 'cycleAmount', 
                             key: 'cycleAmount',
                             render: (amount: number) => amount.toFixed(2)
                           },
-                          { title: '单价', dataIndex: 'unitPrice', key: 'unitPrice', render: (price: number) => formatPrice(price) },
-                          { title: '总成本', dataIndex: 'totalCost', key: 'totalCost', render: (cost: number) => formatPrice(cost) },
+                          { title: t('comprehensive.details.unitPrice'), dataIndex: 'unitPrice', key: 'unitPrice', render: (price: number) => formatPrice(price) },
+                          { title: t('comprehensive.details.totalCost'), dataIndex: 'totalCost', key: 'totalCost', render: (cost: number) => formatPrice(cost) },
                         ]}
                         dataSource={workforce.consumables}
                         rowKey="materialId"
@@ -620,24 +662,24 @@ const ComprehensiveAnalysis = () => {
                       />
                       {workforce.costAvailable && (
                         <div style={{ marginTop: 8, textAlign: 'right' }}>
-                          <strong>{workforce.workforceType}成本：</strong>
-                          {workforce.totalCost !== null ? formatPrice(workforce.totalCost) : '未知'}
+                          <strong>{workforce.workforceType}{t('comprehensive.details.cost')}：</strong>
+                          {workforce.totalCost !== null ? formatPrice(workforce.totalCost) : t('common.unknown')}
                         </div>
                       )}
                     </div>
                   ))}
                   <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #f0f0f0', textAlign: 'right' }}>
-                    <strong style={{ fontSize: '16px' }}>劳动力总成本：</strong>
+                    <strong style={{ fontSize: '16px' }}>{t('comprehensive.details.totalWorkforceCost')}：</strong>
                     <span style={{ fontSize: '18px', color: '#fa8c16', fontWeight: 'bold', marginLeft: 8 }}>
                       {selectedRecipe.workforceCostAvailable && selectedRecipe.workforceCost !== null
                         ? formatPrice(selectedRecipe.workforceCost)
-                        : '未知'}
+                        : t('common.unknown')}
                     </span>
                   </div>
                   {selectedRecipe.expansionPenalty > 1.0 && (
                     <Alert
-                      message={`扩张惩罚：${((selectedRecipe.expansionPenalty - 1) * 100).toFixed(1)}%`}
-                      description={`当前总人口 ${totalPopulation}，超过2000人后每1000人增加0.1%消耗`}
+                      message={t('comprehensive.details.expansionPenalty', { penalty: ((selectedRecipe.expansionPenalty - 1) * 100).toFixed(1) })}
+                      description={t('comprehensive.details.expansionPenaltyDesc', { totalPopulation })}
                       type="warning"
                       showIcon
                       style={{ marginTop: 12 }}
@@ -684,7 +726,7 @@ const ComprehensiveAnalysis = () => {
                       : 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)',
                     borderRadius: '8px'
                   }}>
-                    <div style={{ color: '#666', marginBottom: 4 }}>综合收益/小时</div>
+                    <div style={{ color: '#666', marginBottom: 4 }}>{t('comprehensive.details.comprehensiveProfitPerHour')}</div>
                     <div style={{ 
                       fontSize: '28px', 
                       fontWeight: 'bold', 
@@ -692,10 +734,10 @@ const ComprehensiveAnalysis = () => {
                     }}>
                       {selectedRecipe.priceAvailable && selectedRecipe.workforceCostAvailable && selectedRecipe.comprehensiveProfitPerHour !== null
                         ? formatPrice(selectedRecipe.comprehensiveProfitPerHour)
-                        : '未知'}/h
+                        : t('common.unknown')}/h
                     </div>
                     <div style={{ fontSize: '12px', color: '#999', marginTop: 4 }}>
-                      = 配方收益 - 劳动力成本
+                      {t('comprehensive.details.formula')}
                     </div>
                   </div>
                 </Space>
@@ -711,7 +753,7 @@ const ComprehensiveAnalysis = () => {
                 }}>
                   <Row gutter={16} align="middle">
                     <Col span={12}>
-                      <div style={{ color: '#4082f4', fontWeight: 600, marginBottom: 4 }}>市场规模（按日）</div>
+                      <div style={{ color: '#4082f4', fontWeight: 600, marginBottom: 4 }}>{t('comprehensive.details.marketSize')}</div>
                       {marketLoading ? (
                         <Spin size="small" />
                       ) : marketInfo && marketInfo.marketSize !== null ? (
@@ -719,7 +761,7 @@ const ComprehensiveAnalysis = () => {
                           {formatPrice(marketInfo.marketSize)}
                         </div>
                       ) : (
-                        <Tag color="default">暂无市场数据</Tag>
+                        <Tag color="default">{t('comprehensive.details.noMarketData')}</Tag>
                       )}
                     </Col>
                     <Col span={12}>
@@ -731,9 +773,9 @@ const ComprehensiveAnalysis = () => {
                           padding: '8px 12px',
                           minWidth: 160
                         }}>
-                          <div style={{ color: '#8c8c8c', fontSize: 12 }}>平均日销量</div>
+                          <div style={{ color: '#8c8c8c', fontSize: 12 }}>{t('comprehensive.details.avgDailySales')}</div>
                           <div style={{ fontSize: 16, fontWeight: 700, color: '#1677ff' }}>
-                            {marketInfo?.avgQtySoldDaily != null ? marketInfo.avgQtySoldDaily.toLocaleString() : '-'} 单位/天
+                            {marketInfo?.avgQtySoldDaily != null ? marketInfo.avgQtySoldDaily.toLocaleString() : '-'} {t('comprehensive.details.unitsPerDay')}
                           </div>
                         </div>
                         <div style={{
@@ -743,9 +785,9 @@ const ComprehensiveAnalysis = () => {
                           padding: '8px 12px',
                           minWidth: 160
                         }}>
-                          <div style={{ color: '#8c8c8c', fontSize: 12 }}>平均价格</div>
+                          <div style={{ color: '#8c8c8c', fontSize: 12 }}>{t('comprehensive.details.avgPrice')}</div>
                           <div style={{ fontSize: 16, fontWeight: 700, color: '#52c41a' }}>
-                            {marketInfo?.avgPrice != null ? `${formatPrice(marketInfo.avgPrice)} /单位` : '-'}
+                            {marketInfo?.avgPrice != null ? `${formatPrice(marketInfo.avgPrice)} ${t('comprehensive.details.perUnit')}` : '-'}
                           </div>
                         </div>
                       </div>
@@ -756,7 +798,7 @@ const ComprehensiveAnalysis = () => {
 
               {/* 成本分布饼图 - 按输入原料和劳动力消耗品划分 */}
               {selectedRecipe.priceAvailable && selectedRecipe.workforceCostAvailable && (
-                <Card size="small" title="成本分布（详细）">
+                <Card size="small" title={t('comprehensive.details.costDistribution')}>
                   <ResponsiveContainer width="100%" height={isMobile ? 250 : 350}>
                     <PieChart>
                       <Pie
@@ -767,7 +809,7 @@ const ComprehensiveAnalysis = () => {
                           if (selectedRecipe.inputDetails) {
                             selectedRecipe.inputDetails.forEach(input => {
                               costData.push({
-                                name: `${input.materialName} (输入)`,
+                                name: `${input.materialName} (${t('comprehensive.details.costDistributionInputMaterials')})`,
                                 value: input.totalCost,
                                 category: 'input'
                               })
@@ -830,7 +872,7 @@ const ComprehensiveAnalysis = () => {
                         })()}
                       </Pie>
                       <RechartsTooltip 
-                        formatter={(value: number) => [formatPrice(value), '成本']}
+                        formatter={(value: number) => [formatPrice(value), t('comprehensive.details.cost')]}
                         contentStyle={{ borderRadius: '8px', border: '1px solid #f0f0f0' }}
                       />
                       <Legend 
@@ -845,19 +887,19 @@ const ComprehensiveAnalysis = () => {
                   <div style={{ textAlign: 'center', marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
                     <Row gutter={[16, 16]}>
                       <Col xs={24} sm={8}>
-                        <div style={{ color: '#666', fontSize: '12px' }}>输入材料</div>
+                        <div style={{ color: '#666', fontSize: '12px' }}>{t('comprehensive.details.costDistributionInputMaterials')}</div>
                         <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold', color: '#1890ff' }}>
                           {formatPrice(selectedRecipe.inputCost || 0)}
                         </div>
                       </Col>
                       <Col xs={24} sm={8}>
-                        <div style={{ color: '#666', fontSize: '12px' }}>劳动力</div>
+                        <div style={{ color: '#666', fontSize: '12px' }}>{t('comprehensive.details.costDistributionLabor')}</div>
                         <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold', color: '#fa8c16' }}>
                           {formatPrice(selectedRecipe.workforceCost || 0)}
                         </div>
                       </Col>
                       <Col xs={24} sm={8}>
-                        <div style={{ color: '#666', fontSize: '12px' }}>总成本</div>
+                        <div style={{ color: '#666', fontSize: '12px' }}>{t('comprehensive.details.costDistributionTotalCost')}</div>
                         <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold', color: '#f5222d' }}>
                           {formatPrice((selectedRecipe.inputCost || 0) + (selectedRecipe.workforceCost || 0))}
                         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Card, Table, Space, Spin, message, Row, Col, Statistic, Tag, Tooltip, Alert, Modal } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { 
   PieChart, 
   Pie, 
@@ -16,12 +17,15 @@ import {
   WarningOutlined
 } from '@ant-design/icons'
 import { calculatorApi, gameDataApi } from '../../services/api'
+import { useTranslationData } from '../../hooks/useTranslationData'
 import type { BuildingCost, Material } from '../../types'
 import { formatPrice, formatNumber } from '../../utils/format'
 
 const COLORS = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#fa709a', '#fee140']
 
 const BuildingAnalysis = () => {
+  const { t } = useTranslation()
+  const { getTranslatedName, loading: translationLoading } = useTranslationData()
   const [loading, setLoading] = useState(false)
   const [materials, setMaterials] = useState<Material[]>([])
   const [buildingCosts, setBuildingCosts] = useState<BuildingCost[]>([])
@@ -51,7 +55,7 @@ const BuildingAnalysis = () => {
       setBuildingCosts((costsRes as any).buildingCosts || [])
     } catch (error) {
       console.error('Failed to fetch data:', error)
-      message.error('加载数据失败')
+      message.error(t('buildings.loadingError'))
     } finally {
       setLoading(false)
     }
@@ -61,23 +65,42 @@ const BuildingAnalysis = () => {
     fetchData()
   }, [])
 
-  // 获取材料名称
+  // 获取材料名称（支持中英文切换）
   const getMaterialName = (materialId: number) => {
     const material = materials.find(m => m.id === materialId)
-    return material?.name || `Material ${materialId}`
+    const enName = material?.sName || material?.name || `Material ${materialId}`
+    if (!enName) return `Material ${materialId}`
+    try {
+      return getTranslatedName(enName)
+    } catch (error) {
+      console.warn('Translation error for material:', enName, error)
+      return enName
+    }
+  }
+  
+  // 获取建筑名称（支持中英文切换）
+  const getBuildingName = (buildingName: string) => {
+    if (!buildingName) return 'Unknown Building'
+    try {
+      return getTranslatedName(buildingName)
+    } catch (error) {
+      console.warn('Translation error for building:', buildingName, error)
+      return buildingName
+    }
   }
 
   // 表格列定义（响应式）
   const columns = [
     {
-      title: '建筑名称',
+      title: t('buildings.columns.buildingName'),
       dataIndex: 'buildingName',
       key: 'buildingName',
       fixed: 'left' as const,
       width: isMobile ? 150 : 200,
+      render: (name: string) => getBuildingName(name),
     },
     {
-      title: '总成本',
+      title: t('buildings.columns.totalCost'),
       dataIndex: 'totalCost',
       key: 'totalCost',
       width: isMobile ? 140 : 180,
@@ -91,8 +114,8 @@ const BuildingAnalysis = () => {
       render: (cost: number, record: BuildingCost) => {
         if (!record.priceAvailable) {
           return (
-            <Tooltip title="市场中缺乏相应原料">
-              <Tag icon={<WarningOutlined />} color="warning" style={{ fontSize: isMobile ? '11px' : '12px' }}>未知</Tag>
+            <Tooltip title={t('buildings.tooltips.noMarketData')}>
+              <Tag icon={<WarningOutlined />} color="warning" style={{ fontSize: isMobile ? '11px' : '12px' }}>{t('common.unknown')}</Tag>
             </Tooltip>
           )
         }
@@ -100,7 +123,7 @@ const BuildingAnalysis = () => {
       },
     },
     {
-      title: '材料种类',
+      title: t('buildings.columns.materialCount'),
       key: 'materialCount',
       width: isMobile ? 100 : 120,
       render: (_: any, record: BuildingCost) => (
@@ -108,11 +131,11 @@ const BuildingAnalysis = () => {
       ),
     },
     {
-      title: '操作',
+      title: t('common.viewDetails'),
       key: 'action',
       width: isMobile ? 80 : 100,
       render: (_: any, record: BuildingCost) => (
-        <a onClick={() => setSelectedBuilding(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>查看详情</a>
+        <a onClick={() => setSelectedBuilding(record)} style={{ fontSize: isMobile ? '12px' : '14px' }}>{t('common.viewDetails')}</a>
       ),
     },
   ]
@@ -120,7 +143,7 @@ const BuildingAnalysis = () => {
   // 材料成本表格列
   const materialColumns = [
     {
-      title: '材料名称',
+      title: t('buildings.details.materialName'),
       dataIndex: 'materialId',
       key: 'materialId',
       render: (id: number, record: any) => {
@@ -130,7 +153,7 @@ const BuildingAnalysis = () => {
             <strong>{name}</strong>
             {!record.priceAvailable && (
               <Tag icon={<WarningOutlined />} color="warning" style={{ fontSize: '11px' }}>
-                价格未知
+                {t('buildings.details.priceUnknown')}
               </Tag>
             )}
           </Space>
@@ -138,7 +161,7 @@ const BuildingAnalysis = () => {
       },
     },
     {
-      title: '数量',
+      title: t('buildings.details.quantity'),
       dataIndex: 'amount',
       key: 'amount',
       render: (amount: number) => (
@@ -146,7 +169,7 @@ const BuildingAnalysis = () => {
       ),
     },
     {
-      title: '单价',
+      title: t('buildings.details.unitPrice'),
       dataIndex: 'unitPrice',
       key: 'unitPrice',
       render: (price: number, record: any) => {
@@ -157,7 +180,7 @@ const BuildingAnalysis = () => {
       },
     },
     {
-      title: '总成本',
+      title: t('buildings.details.totalCost'),
       dataIndex: 'totalCost',
       key: 'totalCost',
       render: (cost: number, record: any) => {
@@ -172,7 +195,7 @@ const BuildingAnalysis = () => {
       },
     },
     {
-      title: '占比',
+      title: t('buildings.details.percentage'),
       dataIndex: 'costPercentage',
       key: 'costPercentage',
       render: (percentage: number, record: any) => {
@@ -227,10 +250,10 @@ const BuildingAnalysis = () => {
           WebkitTextFillColor: 'transparent',
           marginBottom: 8,
         }}>
-          建筑分析
+          {t('buildings.title')}
         </h1>
         <p style={{ color: '#8c8c8c', fontSize: isMobile ? '14px' : '16px' }}>
-          建筑建造成本计算 · 材料分解与对比
+          {t('buildings.subtitle')}
         </p>
       </div>
 
@@ -239,9 +262,9 @@ const BuildingAnalysis = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>建筑总数</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('buildings.stats.totalBuildings')}</span>}
               value={stats.totalBuildings}
-              suffix="个"
+              suffix={t('buildings.unitCount')}
               prefix={<BuildOutlined style={{ color: '#1890ff' }} />}
               valueStyle={{ color: '#1890ff', fontWeight: 'bold' }}
             />
@@ -250,7 +273,7 @@ const BuildingAnalysis = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>平均成本</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('buildings.stats.avgCost')}</span>}
               value={stats.avgCost / 100}
               precision={2}
               prefix={<DollarOutlined style={{ color: '#52c41a' }} />}
@@ -261,7 +284,7 @@ const BuildingAnalysis = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>最高成本</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('buildings.stats.maxCost')}</span>}
               value={stats.maxCost / 100}
               precision={2}
               prefix={<HomeOutlined style={{ color: '#f5222d' }} />}
@@ -272,7 +295,7 @@ const BuildingAnalysis = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>最低成本</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('buildings.stats.minCost')}</span>}
               value={stats.minCost / 100}
               precision={2}
               prefix={<ToolOutlined style={{ color: '#faad14' }} />}
@@ -284,7 +307,7 @@ const BuildingAnalysis = () => {
 
       {/* 建筑列表 */}
       <Card 
-        title={<span style={{ fontSize: '18px', fontWeight: 'bold' }}>建筑成本列表</span>}
+        title={<span style={{ fontSize: '18px', fontWeight: 'bold' }}>{t('buildings.buildingList')}</span>}
         style={{ marginBottom: 24 }}
         className="slide-in-right"
       >
@@ -295,7 +318,7 @@ const BuildingAnalysis = () => {
             rowKey="buildingId"
             pagination={{
               pageSize: isMobile ? 10 : 15,
-              showTotal: (total) => `共 ${total} 个建筑`,
+              showTotal: (total) => t('buildings.paginationTotal', { total }),
               showSizeChanger: !isMobile,
               pageSizeOptions: ['10', '15', '20', '50'],
               simple: isMobile,
@@ -308,7 +331,7 @@ const BuildingAnalysis = () => {
 
       {/* 建筑详情弹窗 */}
       <Modal
-        title={selectedBuilding ? `${selectedBuilding.buildingName} - 详细信息` : ''}
+        title={selectedBuilding ? `${getBuildingName(selectedBuilding.buildingName)} - ${t('buildings.details.title')}` : ''}
         open={!!selectedBuilding}
         onCancel={() => setSelectedBuilding(null)}
         footer={null}
@@ -319,14 +342,14 @@ const BuildingAnalysis = () => {
         {selectedBuilding && (
           <Row gutter={[16, 16]}>
             <Col xs={24} md={selectedBuilding.priceAvailable ? 12 : 24}>
-              <Card title="材料成本详情" size="small">
+              <Card title={t('buildings.details.materials')} size="small">
                 {!selectedBuilding.priceAvailable && selectedBuilding.unavailableMaterials && selectedBuilding.unavailableMaterials.length > 0 && (
                   <Alert
-                    message="无法计算建造成本"
+                    message={t('buildings.details.cannotCalculate')}
                     description={
                       <div>
-                        <p style={{ marginBottom: 8 }}>市场中缺乏相应原料，暂时无法提供信息。</p>
-                        <p style={{ marginBottom: 8 }}>缺少价格的材料：</p>
+                        <p style={{ marginBottom: 8 }}>{t('buildings.details.noMarketData')}</p>
+                        <p style={{ marginBottom: 8 }}>{t('buildings.details.missingMaterials')}</p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                           {selectedBuilding.unavailableMaterials.map(mat => (
                             <Tag key={mat.materialId} color="warning">
@@ -358,20 +381,20 @@ const BuildingAnalysis = () => {
                   borderRadius: '8px',
                   textAlign: 'center'
                 }}>
-                  <div style={{ color: '#8c8c8c', marginBottom: 8 }}>总建造成本</div>
+                  <div style={{ color: '#8c8c8c', marginBottom: 8 }}>{t('buildings.details.totalCost')}</div>
                   <div style={{ 
                     fontSize: '28px', 
                     fontWeight: 'bold',
                     color: selectedBuilding.priceAvailable ? '#f5222d' : '#faad14'
                   }}>
-                    {selectedBuilding.priceAvailable ? formatPrice(selectedBuilding.totalCost) : '未知'}
+                    {selectedBuilding.priceAvailable ? formatPrice(selectedBuilding.totalCost) : t('common.unknown')}
                   </div>
                 </div>
               </Card>
             </Col>
             {selectedBuilding.priceAvailable && (
               <Col xs={24} md={12}>
-                <Card title={<span style={{ fontSize: '16px', fontWeight: 'bold' }}>成本占比分布</span>} size="small">
+                <Card title={<span style={{ fontSize: '16px', fontWeight: 'bold' }}>{t('buildings.details.costDistribution')}</span>} size="small">
                   <ResponsiveContainer width="100%" height={isMobile ? 300 : 400}>
                     <PieChart>
                       <Pie
@@ -389,7 +412,7 @@ const BuildingAnalysis = () => {
                         ))}
                       </Pie>
                       <RechartsTooltip 
-                        formatter={(value: number) => [formatPrice(value), '成本']}
+                        formatter={(value: number) => [formatPrice(value), t('buildings.details.cost')]}
                         contentStyle={{ borderRadius: '8px', border: '1px solid #f0f0f0' }}
                       />
                       <Legend 

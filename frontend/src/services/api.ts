@@ -105,6 +105,18 @@ export const analyzerApi = {
     if (params.exchangeY !== undefined) queryParams.exchange_y = params.exchangeY
     return apiClient.get('/analyzer/advanced-search', { params: queryParams })
   },
+  systemGroupSearch: (params: {
+    materialFilters: Array<{materialId: number, minAbundance: number}>
+    exchangeX?: number
+    exchangeY?: number
+  }) => {
+    const queryParams: any = {
+      material_filters: JSON.stringify(params.materialFilters)
+    }
+    if (params.exchangeX !== undefined) queryParams.exchange_x = params.exchangeX
+    if (params.exchangeY !== undefined) queryParams.exchange_y = params.exchangeY
+    return apiClient.get('/analyzer/system-group-search', { params: queryParams })
+  },
 }
 
 // ==================== 综合收益分析API ====================

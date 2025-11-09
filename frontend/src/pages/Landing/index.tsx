@@ -1,9 +1,26 @@
+import { useState, useEffect } from 'react'
 import { Button, Row, Col, Space } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { RocketOutlined, StarOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { RocketOutlined, StarOutlined, GlobalOutlined } from '@ant-design/icons'
 
 const Landing = () => {
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const [language, setLanguage] = useState(i18n.language)
+
+  useEffect(() => {
+    setLanguage(i18n.language)
+  }, [i18n.language])
+
+  const handleLanguageChange = () => {
+    const newLanguage = language === 'zh-CN' ? 'en-US' : 'zh-CN'
+    setLanguage(newLanguage)
+    i18n.changeLanguage(newLanguage)
+    localStorage.setItem('language', newLanguage)
+    // 刷新页面以更新 Antd 的 locale
+    window.location.reload()
+  }
 
   return (
     <div style={{
@@ -13,6 +30,64 @@ const Landing = () => {
       background: 'linear-gradient(180deg, #000 0%, #05070d 100%)',
       padding: '64px 32px'
     }}>
+      {/* 右上角语言切换按钮 */}
+      <div style={{
+        position: 'absolute',
+        top: '24px',
+        right: '32px',
+        zIndex: 1000,
+      }}>
+        <Button
+          type="text"
+          icon={<GlobalOutlined style={{ 
+            color: '#8ec7ff', 
+            fontSize: '18px',
+            transition: 'transform 0.3s ease',
+          }} />}
+          onClick={handleLanguageChange}
+          style={{
+            color: '#8ec7ff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative',
+            overflow: 'hidden',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
+            e.currentTarget.style.transform = 'scale(1.05)'
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(26, 163, 255, 0.3)'
+            const icon = e.currentTarget.querySelector('svg')
+            if (icon) {
+              icon.style.transform = 'rotate(15deg)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+            e.currentTarget.style.transform = 'scale(1)'
+            e.currentTarget.style.boxShadow = 'none'
+            const icon = e.currentTarget.querySelector('svg')
+            if (icon) {
+              icon.style.transform = 'rotate(0deg)'
+            }
+          }}
+        >
+          <span style={{ 
+            marginLeft: '6px',
+            fontSize: '14px',
+            fontWeight: 600,
+            letterSpacing: '0.5px',
+            transition: 'all 0.3s ease',
+          }}>
+            {language === 'zh-CN' ? 'EN' : '中文'}
+          </span>
+        </Button>
+      </div>
       {/* 动态星空背景 */}
       <style>{`
         @keyframes drift {
@@ -87,10 +162,10 @@ const Landing = () => {
             animation: 'horizonGlow 5.5s ease-in-out infinite'
           }} />
           <div style={{ fontSize: 52, fontWeight: 900, letterSpacing: 1, color: '#1aa3ff', animation: 'titleShine 3.8s ease-in-out infinite' }}>
-            商业模拟工具平台
+            {t('landing.title')}
           </div>
           <div style={{ color: '#8ec7ff', marginTop: 8, fontSize: 16 }}>
-            多项目数据与智能分析入口 · 与银河同速增长的商业洞察
+            {t('landing.subtitle')}
           </div>
         </div>
 
@@ -105,8 +180,8 @@ const Landing = () => {
         }}>
           <Row align="middle" gutter={[24, 24]}>
             <Col flex="auto">
-              <div style={{ fontSize: 24, fontWeight: 800, color: '#1aa3ff' }}>GT2See · 市场/生产分析套件</div>
-              <div style={{ color: '#8ec7ff', marginTop: 6 }}>市场概览、建筑/配方/综合收益、星系规划，完整数据洞察。</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: '#1aa3ff' }}>{t('landing.appTitle')}</div>
+              <div style={{ color: '#8ec7ff', marginTop: 6 }}>{t('landing.appDescription')}</div>
             </Col>
             <Col>
               <Space size={12} wrap>
@@ -117,23 +192,23 @@ const Landing = () => {
                     boxShadow: '0 8px 24px rgba(26,163,255,0.35)'
                   }}
                 >
-                  进入 GT2See
+                  {t('landing.enterApp')}
                 </Button>
                 <Button size="large" shape="round" icon={<StarOutlined />} onClick={() => window.open('https://wiki.galactictycoons.com', '_blank')}
                   style={{ color: '#8ec7ff', borderColor: '#fff', background: 'rgba(255,255,255,0.02)' }}
                 >
-                  官方文档
+                  {t('landing.officialDocs')}
                 </Button>
                 <Button size="large" shape="round" onClick={() => window.open('https://g2.galactictycoons.com/', '_blank')}
                   style={{ color: '#8ec7ff', borderColor: '#fff', background: 'rgba(255,255,255,0.02)' }}
                 >
-                  进入游戏
+                  {t('landing.enterGame')}
                 </Button>
               </Space>
             </Col>
           </Row>
         </div>
-        <div style={{ color: '#8ec7ff', textAlign: 'center', marginBottom: 32 }}>未完待续......</div>
+        <div style={{ color: '#8ec7ff', textAlign: 'center', marginBottom: 32 }}>{t('landing.toBeContinued')}</div>
 
         {/* 可扩展区（当前隐藏卡片，仅保留提示） */}
       </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Card, Table, Statistic, Row, Col, Space, Input, message, Spin, Badge, Tag, Tooltip, Pagination } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { 
   ArrowUpOutlined, 
   ArrowDownOutlined, 
@@ -22,6 +23,7 @@ type MaterialPriceWithDiff = MaterialPrice & {
 type SortOrder = 'ascend' | 'descend' | null
 
 const MarketOverview = () => {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [prices, setPrices] = useState<MaterialPriceWithDiff[]>([])
   const [searchText, setSearchText] = useState('')
@@ -73,7 +75,7 @@ const MarketOverview = () => {
       setPrices(pricesWithDiff)
     } catch (error) {
       console.error('Failed to fetch data:', error)
-      message.error('加载数据失败')
+      message.error(t('market.loadingError'))
     } finally {
       setLoading(false)
     }
@@ -207,7 +209,7 @@ const MarketOverview = () => {
   // 表格列定义（响应式）
   const columns: ColumnsType<MaterialPriceWithDiff> = [
     {
-      title: '材料名称',
+      title: t('market.columns.materialName'),
       dataIndex: 'matName',
       key: 'matName',
       fixed: 'left' as const,
@@ -220,7 +222,7 @@ const MarketOverview = () => {
       ),
     },
     {
-      title: '当前价格',
+      title: t('market.columns.currentPrice'),
       dataIndex: 'currentPrice',
       key: 'currentPrice',
       width: isMobile ? 120 : 150,
@@ -228,7 +230,7 @@ const MarketOverview = () => {
       sortDirections: ['descend', 'ascend'],
       sortOrder: sorterInfo.columnKey === 'currentPrice' ? sorterInfo.order : null,
       render: (price: number) => (
-        <Tooltip title={price === -1 ? '无可用订单' : `${price} 分 (cents)`}>
+        <Tooltip title={price === -1 ? t('market.tooltips.noOrders') : `${price} ${t('market.tooltips.cents')}`}>
           <span style={{ 
             color: price > 0 ? '#1890ff' : '#999', 
             fontWeight: 'bold',
@@ -240,7 +242,7 @@ const MarketOverview = () => {
       ),
     },
     {
-      title: '平均价格',
+      title: t('market.columns.avgPrice'),
       dataIndex: 'avgPrice',
       key: 'avgPrice',
       width: isMobile ? 120 : 150,
@@ -248,7 +250,7 @@ const MarketOverview = () => {
       sortDirections: ['descend', 'ascend'],
       sortOrder: sorterInfo.columnKey === 'avgPrice' ? sorterInfo.order : null,
       render: (price: number) => (
-        <Tooltip title={price === -1 ? '无历史数据' : `${price} 分 (cents)`}>
+        <Tooltip title={price === -1 ? t('market.tooltips.noHistory') : `${price} ${t('market.tooltips.cents')}`}>
           <span style={{ color: price > 0 ? '#52c41a' : '#999', fontSize: isMobile ? '13px' : '14px' }}>
             {formatPrice(price)}
           </span>
@@ -256,7 +258,7 @@ const MarketOverview = () => {
       ),
     },
     {
-      title: '价差*',
+      title: t('market.columns.priceChange'),
       key: 'priceDiff',
       width: isMobile ? 110 : 130,
       sorter: () => 0,
@@ -279,24 +281,24 @@ const MarketOverview = () => {
       },
     },
     {
-      title: '状态',
+      title: t('market.columns.status'),
       key: 'status',
       width: isMobile ? 80 : 100,
       render: (_: any, record: MaterialPriceWithDiff) => {
         if (record.currentPrice === -1) {
-          return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>无订单</Tag>
+          return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>{t('market.status.noOrders')}</Tag>
         }
         if (record.avgPrice === -1) {
-          return <Tag color="blue" style={{ fontSize: isMobile ? '11px' : '12px' }}>新上市</Tag>
+          return <Tag color="blue" style={{ fontSize: isMobile ? '11px' : '12px' }}>{t('market.status.newListing')}</Tag>
         }
         const diff = record.currentPrice - record.avgPrice
         if (diff > record.avgPrice * 0.2) {
-          return <Tag color="red" icon={<FireOutlined />} style={{ fontSize: isMobile ? '11px' : '12px' }}>高价</Tag>
+          return <Tag color="red" icon={<FireOutlined />} style={{ fontSize: isMobile ? '11px' : '12px' }}>{t('market.status.highPrice')}</Tag>
         }
         if (diff < -record.avgPrice * 0.2) {
-          return <Tag color="green" icon={<RocketOutlined />} style={{ fontSize: isMobile ? '11px' : '12px' }}>低价</Tag>
+          return <Tag color="green" icon={<RocketOutlined />} style={{ fontSize: isMobile ? '11px' : '12px' }}>{t('market.status.lowPrice')}</Tag>
         }
-        return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>正常</Tag>
+        return <Tag color="default" style={{ fontSize: isMobile ? '11px' : '12px' }}>{t('market.status.normal')}</Tag>
       },
     },
   ]
@@ -312,10 +314,10 @@ const MarketOverview = () => {
           WebkitTextFillColor: 'transparent',
           marginBottom: 8,
         }}>
-          市场概览
+          {t('market.title')}
         </h1>
         <p style={{ color: '#8c8c8c', fontSize: isMobile ? '14px' : '16px' }}>
-          实时材料价格监控 · 数据每5分钟自动更新
+          {t('market.subtitle')}
         </p>
       </div>
 
@@ -324,9 +326,9 @@ const MarketOverview = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>材料总数</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('market.stats.totalMaterials')}</span>}
               value={stats.totalMaterials}
-              suffix="种"
+              suffix={t('market.unitType')}
               prefix={<ShoppingOutlined style={{ color: '#1890ff' }} />}
               valueStyle={{ color: '#1890ff', fontWeight: 'bold' }}
             />
@@ -335,9 +337,9 @@ const MarketOverview = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>可交易材料</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('market.stats.availableMaterials')}</span>}
               value={stats.availableMaterials}
-              suffix="种"
+              suffix={t('market.unitType')}
               prefix={<RocketOutlined style={{ color: '#52c41a' }} />}
               valueStyle={{ color: '#52c41a', fontWeight: 'bold' }}
             />
@@ -346,7 +348,7 @@ const MarketOverview = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>平均价格</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('market.stats.avgPrice')}</span>}
               value={stats.avgPrice / 100}
               precision={2}
               prefix={<DollarOutlined style={{ color: '#faad14' }} />}
@@ -357,7 +359,7 @@ const MarketOverview = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>最高价格</span>}
+              title={<span style={{ fontSize: '16px', color: '#8c8c8c' }}>{t('market.stats.maxPrice')}</span>}
               value={stats.maxPrice / 100}
               precision={2}
               prefix={<FireOutlined style={{ color: '#f5222d' }} />}
@@ -372,7 +374,7 @@ const MarketOverview = () => {
         <Row gutter={[16, 16]} align="middle" justify={isMobile ? 'start' : 'space-between'}>
           <Col xs={24} sm={24} md={12} lg={14}>
             <Input
-              placeholder="搜索材料名称"
+              placeholder={t('market.searchPlaceholder')}
               prefix={<SearchOutlined style={{ color: '#1890ff' }} />}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
@@ -387,7 +389,7 @@ const MarketOverview = () => {
               total={sortedPrices.length}
               showSizeChanger={!isMobile}
               pageSizeOptions={['10', '20', '50', '100']}
-              showTotal={(total) => `共 ${total} 种材料`}
+              showTotal={(total) => t('market.paginationTotal', { total })}
               onChange={handlePaginationChange}
               onShowSizeChange={handlePageSizeChange}
               simple={isMobile}
@@ -413,7 +415,7 @@ const MarketOverview = () => {
           />
         </Spin>
         <div style={{ marginTop: 12, color: '#8c8c8c' }}>
-          价差* 计算方式：((当前价格 - 平均价格) / 平均价格) × 100%，反映当前价格相对平均价格的涨跌幅；若缺少历史平均价格则不显示。
+          {t('market.priceDiffNote')}
         </div>
       </Card>
     </div>

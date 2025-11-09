@@ -1,0 +1,383 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "unknown": "未知",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "viewDetails": "查看详情",
+    "close": "关闭",
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "total": "总计",
+    "average": "平均",
+    "maximum": "最大",
+    "tip": "提示",
+    "minimum": "最小"
+  },
+  "layout": {
+    "marketOverview": "市场概览",
+    "buildingAnalysis": "建筑分析",
+    "recipeAnalysis": "配方分析",
+    "comprehensiveAnalysis": "综合收益分析",
+    "systemPlanning": "星系规划",
+    "menu": "菜单",
+    "title": "Galactic Tycoons 市场分析工具"
+  },
+  "landing": {
+    "title": "商业模拟工具平台",
+    "subtitle": "多项目数据与智能分析入口 · 与银河同速增长的商业洞察",
+    "appTitle": "GT2See · 市场/生产分析套件",
+    "appDescription": "市场概览、建筑/配方/综合收益、星系规划，完整数据洞察。",
+    "enterApp": "进入 GT2See",
+    "officialDocs": "官方文档",
+    "enterGame": "进入游戏",
+    "toBeContinued": "未完待续......"
+  },
+  "market": {
+    "title": "市场概览",
+    "loadingError": "加载数据失败",
+    "searchPlaceholder": "搜索材料名称...",
+    "columns": {
+      "materialName": "材料名称",
+      "currentPrice": "当前价格",
+      "avgPrice": "平均价格",
+      "priceChange": "价格变化",
+      "priceChangePercent": "涨跌幅",
+      "status": "状态",
+      "volume": "交易量",
+      "lastUpdate": "最后更新"
+    },
+    "stats": {
+      "totalMaterials": "材料总数",
+      "availableMaterials": "可交易材料",
+      "avgPrice": "平均价格",
+      "maxPrice": "最高价格",
+      "priceIncrease": "价格上涨",
+      "priceDecrease": "价格下跌",
+      "noChange": "无变化"
+    },
+    "status": {
+      "noOrders": "无订单",
+      "newListing": "新上市",
+      "highPrice": "高价",
+      "lowPrice": "低价",
+      "normal": "正常"
+    },
+    "tooltips": {
+      "noOrders": "无可用订单",
+      "noHistory": "无历史数据",
+      "cents": "分 (cents)"
+    },
+    "subtitle": "实时材料价格监控 · 数据每5分钟自动更新",
+    "priceDiffNote": "价差* 计算方式：((当前价格 - 平均价格) / 平均价格) × 100%，反映当前价格相对平均价格的涨跌幅；若缺少历史平均价格则不显示。",
+    "paginationTotal": "共 {{total}} 种材料",
+    "unitType": "种"
+  },
+  "buildings": {
+    "title": "建筑分析",
+    "subtitle": "建筑建造成本计算 · 材料分解与对比",
+    "loadingError": "加载数据失败",
+    "buildingList": "建筑成本列表",
+    "paginationTotal": "共 {{total}} 个建筑",
+    "unitCount": "个",
+    "columns": {
+      "buildingName": "建筑名称",
+      "totalCost": "总成本",
+      "materialCount": "材料种类",
+      "materialCost": "材料成本",
+      "laborCost": "劳动力成本",
+      "influenceType": "影响类型",
+      "influenceValue": "影响值"
+    },
+    "influenceTypes": {
+      "fertility": "肥力",
+      "abundance": "丰度"
+    },
+    "stats": {
+      "totalBuildings": "建筑总数",
+      "avgCost": "平均成本",
+      "maxCost": "最高成本",
+      "minCost": "最低成本"
+    },
+    "details": {
+      "title": "详细信息",
+      "materials": "材料成本详情",
+      "materialName": "材料名称",
+      "quantity": "数量",
+      "unitPrice": "单价",
+      "totalCost": "总建造成本",
+      "percentage": "占比",
+      "cost": "成本",
+      "costDistribution": "成本占比分布",
+      "priceUnknown": "价格未知",
+      "cannotCalculate": "无法计算建造成本",
+      "noMarketData": "市场中缺乏相应原料，暂时无法提供信息。",
+      "missingMaterials": "缺少价格的材料：",
+      "labor": "劳动力需求",
+      "workforceType": "劳动力类型",
+      "workerCount": "工人数量"
+    },
+    "tooltips": {
+      "noMarketData": "市场中缺乏相应原料"
+    }
+  },
+  "recipes": {
+    "title": "配方分析",
+    "loadingError": "加载数据失败",
+    "profitError": "加载收益数据失败",
+    "recipeList": "配方收益列表",
+    "top10Chart": "收益排行 TOP 10",
+    "unitCount": "个",
+    "units": {
+      "hours": "小时",
+      "perHour": "/小时"
+    },
+    "columns": {
+      "recipeName": "配方名称",
+      "outputTier": "产物级别",
+      "building": "建筑",
+      "productionTime": "生产时间",
+      "inputCost": "输入成本",
+      "outputValue": "输出价值",
+      "totalProfit": "总收益",
+      "profitPerHour": "每小时收益",
+      "roi": "ROI"
+    },
+    "filters": {
+      "searchRecipe": "搜索配方",
+      "searchPlaceholder": "输入配方名称搜索（支持模糊匹配）",
+      "sortBy": "排序方式",
+      "sortOptions": {
+        "profitPerHour": "每小时收益",
+        "totalProfit": "总收益",
+        "outputValue": "输出价值"
+      },
+      "buildingFilter": "建筑筛选",
+      "allBuildings": "全部建筑",
+      "fertilityAbundance": "肥力/丰度值",
+      "fertilityAbundancePlaceholder": "输入肥力或丰度值（默认100）",
+      "value": "值",
+      "fertilityAbundanceTooltip": "标准值为100。{{type}}值影响生产效率，例如150表示1.5倍效率（生产时间缩短到原来的67%）"
+    },
+    "stats": {
+      "totalRecipes": "配方总数",
+      "profitableRecipes": "盈利配方",
+      "avgProfit": "平均收益",
+      "maxProfit": "最高收益",
+      "maxProfitPerHour": "最高时均收益"
+    },
+    "details": {
+      "title": "配方详情",
+      "recipeInfo": "配方信息",
+      "building": "建筑",
+      "productionTime": "生产时间",
+      "output": "产物",
+      "inputMaterials": {
+        "materialName": "材料名称",
+        "quantity": "数量",
+        "unitPrice": "单价",
+        "totalCost": "总成本",
+        "proportion": "占比"
+      },
+      "material": "材料",
+      "quantity": "数量",
+      "unitPrice": "单价",
+      "totalCost": "总成本",
+      "proportion": "占比",
+      "inputTotalCost": "输入总成本",
+      "profitAnalysis": "收益分析",
+      "outputValue": "输出价值",
+      "profitPerHour": "配方收益/小时",
+      "marketSize": "市场规模（按日）",
+      "avgDailySales": "平均日销量",
+      "avgPrice": "平均价格",
+      "unitsPerDay": "单位/天",
+      "perUnit": "/单位",
+      "noMarketData": "暂无市场数据",
+      "costDistribution": "成本分布",
+      "costDistributionInputMaterials": "输入材料",
+      "costDistributionLabor": "劳动力",
+      "costDistributionTotalCost": "总成本"
+    },
+    "tooltips": {
+      "priceUnavailable": "价格数据不可用"
+    }
+  },
+  "comprehensive": {
+    "title": "综合收益分析",
+    "descriptionTitle": "综合收益分析说明",
+    "description": "此分析在配方收益基础上，扣除了劳动力消耗品成本，并考虑了人口扩张惩罚（超过2000人口时，每增加1000人增加0.1%消耗品需求）。只有Essential消耗品（前3项）价格可用时，才能计算综合收益。",
+    "loadingError": "加载数据失败",
+    "profitError": "加载综合收益数据失败",
+    "unitCount": "个",
+    "units": {
+      "perHour": "/小时"
+    },
+    "recipeList": "配方列表",
+    "paginationTotal": "共 {{total}} 个配方",
+    "columns": {
+      "recipeName": "配方名称",
+      "outputTier": "产物级别",
+      "building": "建筑",
+      "recipeProfitPerHour": "配方收益/小时",
+      "laborCostPerHour": "劳动力成本/小时",
+      "comprehensiveProfitPerHour": "综合收益/小时",
+      "actions": "操作"
+    },
+    "filters": {
+      "searchRecipe": "搜索配方",
+      "searchPlaceholder": "输入配方名称搜索（支持模糊匹配）",
+      "sortBy": "排序方式",
+      "sortOptions": {
+        "comprehensiveProfitPerHour": "综合收益/小时",
+        "comprehensiveTotalProfit": "综合总收益",
+        "profitPerHour": "配方收益/小时"
+      },
+      "buildingFilter": "建筑筛选",
+      "allBuildings": "全部建筑",
+      "fertilityAbundance": "肥力/丰度值",
+      "value": "值",
+      "totalPopulation": "总人口",
+      "populationPlaceholder": "输入总人口数（用于计算扩张惩罚）",
+      "expansionPenalty": "扩张惩罚：{{penalty}}%",
+      "expansionPenaltyActive": "扩张惩罚生效"
+    },
+    "stats": {
+      "totalRecipes": "配方总数",
+      "suffix": "个",
+      "profitableRecipes": "综合盈利配方",
+      "avgComprehensiveProfit": "平均综合收益",
+      "maxComprehensiveProfit": "最高综合收益",
+      "perHour": "/小时"
+    },
+    "details": {
+      "title": "综合收益详情",
+      "recipeInfo": "配方信息",
+      "building": "建筑",
+      "productionTime": "生产时间",
+      "output": "产物",
+      "inputMaterials": "输入材料",
+      "material": "材料",
+      "quantity": "数量",
+      "unitPrice": "单价",
+      "totalCost": "总成本",
+      "proportion": "占比",
+      "inputTotalCost": "输入总成本",
+      "workforceConsumption": "劳动力消耗",
+      "workforceType": "劳动力类型",
+      "workers": "人",
+      "people": "人",
+      "consumable": "消耗品",
+      "essential": "必需",
+      "cycleConsumption": "每轮消耗",
+      "perRoundConsumption": "每轮消耗",
+      "cost": "成本",
+      "workforceCost": "成本",
+      "totalWorkforceCost": "劳动力总成本",
+      "totalLaborCost": "劳动力总成本",
+      "expansionPenalty": "扩张惩罚：{{penalty}}%",
+      "expansionPenaltyDesc": "当前总人口 {{totalPopulation}}，超过2000人后每1000人增加0.1%消耗",
+      "profitAnalysis": "收益分析",
+      "outputValue": "输出价值",
+      "recipeProfitPerHour": "配方收益/小时",
+      "comprehensiveProfitPerHour": "综合收益/小时",
+      "formula": "= 配方收益 - 劳动力成本",
+      "marketSize": "市场规模（按日）",
+      "avgDailySales": "平均日销量",
+      "avgPrice": "平均价格",
+      "unitsPerDay": "单位/天",
+      "perUnit": "/单位",
+      "noMarketData": "暂无市场数据",
+      "costDistribution": "成本分布（详细）",
+      "costDistributionInputMaterials": "输入材料",
+      "costDistributionLabor": "劳动力",
+      "costDistributionTotalCost": "总成本"
+    },
+    "tooltips": {
+      "expansionPenalty": "扩张惩罚：{penalty}%"
+    }
+  },
+  "systems": {
+    "title": "星系规划",
+    "loadingError": "加载数据失败",
+    "searchError": "高级搜索失败",
+    "columns": {
+      "systemName": "星系名称",
+      "distance": "距离",
+      "planetCount": "行星数",
+      "maxFertility": "最大肥力",
+      "resources": "资源",
+      "resourceCount": "资源种类",
+      "totalAbundance": "总丰度"
+    },
+    "units": {
+      "lightYears": "光年"
+    },
+    "unitCount": "个",
+    "unitType": "种",
+    "filters": {
+      "searchSystem": "搜索星系",
+      "searchPlaceholder": "输入星系名称搜索...",
+      "exchangeLocation": "交易所位置",
+      "x": "X坐标",
+      "y": "Y坐标",
+      "advancedSearch": "高级搜索",
+      "maxDistance": "最大距离",
+      "minFertility": "最小肥力",
+      "materialFilters": "材料筛选",
+      "addMaterial": "添加材料",
+      "material": "材料",
+      "minAbundance": "最小丰度",
+      "selectMaterial": "选择材料",
+      "search": "搜索",
+      "results": "找到 {count} 个符合条件的星系"
+    },
+    "stats": {
+      "totalSystems": "星系总数",
+      "totalPlanets": "行星总数",
+      "avgPlanetsPerSystem": "平均行星数",
+      "planetsPerSystem": "个/星系",
+      "totalResourceTypes": "资源种类",
+      "avgDistance": "平均距离",
+      "maxPlanets": "最大行星数",
+      "maxFertility": "最大肥力"
+    },
+    "advancedSearch": {
+      "title": "高级星系搜索",
+      "materialFilterRequired": "星系群搜索需要设置材料筛选条件",
+      "success": "找到 {{count}} 个符合条件的星系群",
+      "collapsePanel": "收起探索面板",
+      "openExploration": "开启星际探索",
+      "description": "系统将自动搜索所有符合条件的星系群，每个星系群包含一个中心星系和与其相邻（4光年以内）的所有星系。",
+      "startSearch": "开始搜索",
+      "resultsTitle": "搜索结果（共 {{count}} 个星系群）",
+      "paginationTotal": "共 {{total}} 个星系群",
+      "meetsFilters": "符合筛选条件",
+      "planetInfo": "肥力: {{fert}} | 大小: {{size}} | 等级: {{tier}}",
+      "noResources": "无资源",
+      "centerSystem": "中心星系：{{name}}（{{count}} 个星球）",
+      "noPlanetData": "暂无星球数据",
+      "neighborSystems": "相邻星系（{{systemCount}} 个星系，共 {{planetCount}} 个星球）"
+    },
+    "systemAnalysis": "星系资源分析",
+    "paginationTotal": "共 {{total}} 个星系",
+    "details": {
+      "title": "星系详情",
+      "resources": "资源列表",
+      "resourceDetails": "资源详情：",
+      "material": "材料",
+      "totalAbundance": "总丰度",
+      "planetCount": "行星数",
+      "planets": "{{count}}个行星",
+      "maxAbundance": "最大丰度"
+    }
+  }
+}
+

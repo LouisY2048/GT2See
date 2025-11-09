@@ -340,7 +340,7 @@ def generate_translation_table(backup_file: str, output_file: str):
 if __name__ == '__main__':
     # 文件路径
     backup_file = os.path.join(os.path.dirname(__file__), 'exchange_details_all_backup.json')
-    output_file = os.path.join(os.path.dirname(__file__), 'material_translation.json')
+    output_file = os.path.join(os.path.dirname(__file__), 'word_translation.json')
     
     if not os.path.exists(backup_file):
         print(f"错误: 找不到备份文件 {backup_file}")

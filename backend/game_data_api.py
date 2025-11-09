@@ -15,6 +15,8 @@ class GameDataAPI:
         self._cache_initialized = False
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.backup_game_data = os.path.join(self.data_dir, 'game_data_backup.json')
+        self.system_neighbors_path = os.path.join(self.data_dir, 'system_neighbors.json')
+        self._system_neighbors_cache = None
     
     async def get_game_data(self) -> Dict[str, Any]:
         """获取完整的游戏数据"""
@@ -90,6 +92,30 @@ class GameDataAPI:
         """根据ID获取配方"""
         recipes = await self.get_recipes()
         return next((r for r in recipes if r.get('id') == recipe_id), None)
+    
+    def get_system_neighbors(self) -> Dict[str, Any]:
+        """获取星系相邻关系表"""
+        if self._system_neighbors_cache is not None:
+            return self._system_neighbors_cache
+        
+        try:
+            if os.path.exists(self.system_neighbors_path):
+                with open(self.system_neighbors_path, 'r', encoding='utf-8') as f:
+                    self._system_neighbors_cache = json.load(f)
+                return self._system_neighbors_cache
+        except Exception as e:
+            print(f"警告：无法加载星系相邻关系表: {e}")
+        
+        return {}
+    
+    def get_neighbor_system_ids(self, system_id: int) -> List[int]:
+        """获取指定星系的相邻星系ID列表"""
+        neighbors_map = self.get_system_neighbors()
+        system_key = str(system_id)
+        if system_key in neighbors_map:
+            neighbor_list = neighbors_map[system_key].get('neighbors', [])
+            return [neighbor.get('systemId') for neighbor in neighbor_list if neighbor.get('systemId')]
+        return []
 
 # 全局游戏数据API客户端实例
 game_data_api = GameDataAPI()

@@ -354,11 +354,14 @@ class SystemAnalyzer:
                             'materialName': get_material_name(mat_id, 'en'),
                             'materialNameZh': get_material_name(mat_id, 'zh'),
                             'totalAbundance': 0,
-                            'planetCount': 0
+                            'planetCount': 0,
+                            'maxAbundance': 0
                         }
                     
                     resource_summary[mat_id]['totalAbundance'] += abundance
                     resource_summary[mat_id]['planetCount'] += 1
+                    if abundance > resource_summary[mat_id]['maxAbundance']:
+                        resource_summary[mat_id]['maxAbundance'] = abundance
             
             results.append({
                 'systemId': system.get('id'),

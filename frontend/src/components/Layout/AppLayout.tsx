@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Layout, Menu, Drawer, Button } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   StockOutlined,
   HomeOutlined,
@@ -9,6 +10,7 @@ import {
   GlobalOutlined,
   FundOutlined,
   MenuOutlined,
+  GlobalOutlined as LanguageOutlined,
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
@@ -16,42 +18,16 @@ const { Header, Content, Sider } = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]
 
-const menuItems: MenuItem[] = [
-  {
-    key: '/market',
-    icon: <StockOutlined />,
-    label: '市场概览',
-  },
-  {
-    key: '/buildings',
-    icon: <HomeOutlined />,
-    label: '建筑分析',
-  },
-  {
-    key: '/recipes',
-    icon: <ExperimentOutlined />,
-    label: '配方分析',
-  },
-  {
-    key: '/comprehensive',
-    icon: <FundOutlined />,
-    label: '综合收益分析',
-  },
-  {
-    key: '/systems',
-    icon: <GlobalOutlined />,
-    label: '星系规划',
-  },
-]
-
 interface AppLayoutProps {
   children: React.ReactNode
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+  const { t, i18n } = useTranslation()
   const [collapsed, setCollapsed] = useState(false)
   const [drawerVisible, setDrawerVisible] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [language, setLanguage] = useState(i18n.language)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -74,6 +50,43 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       setDrawerVisible(false)
     }
   }
+
+  const handleLanguageChange = () => {
+    const newLanguage = language === 'zh-CN' ? 'en-US' : 'zh-CN'
+    setLanguage(newLanguage)
+    i18n.changeLanguage(newLanguage)
+    localStorage.setItem('language', newLanguage)
+    // 刷新页面以更新 Antd 的 locale
+    window.location.reload()
+  }
+
+  const menuItems: MenuItem[] = [
+    {
+      key: '/market',
+      icon: <StockOutlined />,
+      label: t('layout.marketOverview'),
+    },
+    {
+      key: '/buildings',
+      icon: <HomeOutlined />,
+      label: t('layout.buildingAnalysis'),
+    },
+    {
+      key: '/recipes',
+      icon: <ExperimentOutlined />,
+      label: t('layout.recipeAnalysis'),
+    },
+    {
+      key: '/comprehensive',
+      icon: <FundOutlined />,
+      label: t('layout.comprehensiveAnalysis'),
+    },
+    {
+      key: '/systems',
+      icon: <GlobalOutlined />,
+      label: t('layout.systemPlanning'),
+    },
+  ]
 
   return (
     <Layout className="app-layout" style={{ minHeight: '100vh', background: 'transparent' }}>
@@ -101,15 +114,30 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               style={{ marginRight: 8 }}
             />
           )}
-          <div style={{ 
-            color: 'white', 
-            fontSize: isMobile ? '20px' : '28px', 
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            gap: isMobile ? '8px' : '16px',
-            textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-          }}>
+          <div 
+            onClick={() => navigate('/portal')}
+            style={{ 
+              color: 'white', 
+              fontSize: isMobile ? '20px' : '28px', 
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center',
+              gap: isMobile ? '8px' : '16px',
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              padding: '4px 8px',
+              borderRadius: '8px',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
+              e.currentTarget.style.transform = 'scale(1.05)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.transform = 'scale(1)'
+            }}
+          >
             <CalculatorOutlined style={{ 
               fontSize: isMobile ? '24px' : '32px', 
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -130,9 +158,62 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               marginLeft: '24px',
               letterSpacing: '0.5px',
             }}>
-              Galactic Tycoons 市场分析工具
+              {t('layout.title')}
             </div>
           )}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Button
+            type="text"
+            icon={<LanguageOutlined style={{ 
+              color: 'white', 
+              fontSize: '18px',
+              transition: 'transform 0.3s ease',
+            }} />}
+            onClick={handleLanguageChange}
+            className="language-switch-btn"
+            style={{
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
+              e.currentTarget.style.transform = 'scale(1.05)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)'
+              const icon = e.currentTarget.querySelector('svg')
+              if (icon) {
+                icon.style.transform = 'rotate(15deg)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+              e.currentTarget.style.transform = 'scale(1)'
+              e.currentTarget.style.boxShadow = 'none'
+              const icon = e.currentTarget.querySelector('svg')
+              if (icon) {
+                icon.style.transform = 'rotate(0deg)'
+              }
+            }}
+          >
+            <span style={{ 
+              marginLeft: '6px',
+              fontSize: isMobile ? '12px' : '14px',
+              fontWeight: 600,
+              letterSpacing: '0.5px',
+              transition: 'all 0.3s ease',
+            }}>
+              {language === 'zh-CN' ? 'EN' : '中文'}
+            </span>
+          </Button>
         </div>
       </Header>
       <Layout style={{ background: 'transparent' }}>
@@ -172,7 +253,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         {/* 移动端抽屉 */}
         {isMobile && (
           <Drawer
-            title="菜单"
+            title={t('layout.menu')}
             placement="left"
             onClose={() => setDrawerVisible(false)}
             open={drawerVisible}

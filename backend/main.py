@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional, List
+from fastapi.responses import FileResponse
+from typing import Optional, List, Dict, Any
 import uvicorn
 import json
+import os
 
 from config import settings
 from exchange_api import exchange_api
@@ -582,6 +584,174 @@ async def advanced_system_search(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/analyzer/system-group-search")
+async def system_group_search(
+    material_filters: str = Query(..., description="材料筛选条件，JSON格式：[{\"materialId\": 1, \"minAbundance\": 100}]"),
+    exchange_x: float = Query(3334.0, description="交易所X坐标"),
+    exchange_y: float = Query(1425.0, description="交易所Y坐标")
+):
+    """
+    星系群搜索（使用预计算的相邻关系表，4光年）
+    
+    material_filters: 材料筛选条件，JSON字符串格式（必需）
+    exchange_x, exchange_y: 交易所坐标
+    """
+    try:
+        systems = await game_data_api.get_systems()
+        systems_by_id = {system.get('id'): system for system in systems}
+        
+        # 解析材料筛选条件
+        try:
+            parsed_material_filters = json.loads(material_filters)
+            if not isinstance(parsed_material_filters, list) or len(parsed_material_filters) == 0:
+                raise ValueError("material_filters must be a non-empty list")
+        except json.JSONDecodeError:
+            raise HTTPException(status_code=400, detail="Invalid JSON format for material_filters")
+        
+        # 获取相邻关系表
+        neighbors_map = game_data_api.get_system_neighbors()
+        if not neighbors_map:
+            raise HTTPException(status_code=500, detail="无法加载星系相邻关系表")
+        
+        # 检查单个星系是否满足材料筛选条件（基于单个星球的丰度）
+        def check_system_meets_filters(system: Dict[str, Any]) -> bool:
+            planets = system.get('planets', []) or []
+            if not isinstance(planets, list) or len(planets) == 0:
+                return False
+            
+            # 检查每个材料筛选条件
+            for filter_item in parsed_material_filters:
+                material_id = filter_item.get('materialId')
+                min_abundance = filter_item.get('minAbundance', 0)
+                
+                # 检查是否有至少一个行星满足该材料的丰度要求
+                found = False
+                for planet in planets:
+                    resources = planet.get('mats', [])
+                    if not isinstance(resources, list):
+                        resources = []
+                    for resource in resources:
+                        if resource.get('id') == material_id:
+                            abundance = resource.get('ab', 0)
+                            if abundance >= min_abundance:
+                                found = True
+                                break
+                    if found:
+                        break
+                
+                if not found:
+                    return False
+            
+            return True
+        
+        results = []
+        
+        # 遍历所有星系作为潜在的中心星系
+        for center_system in systems:
+            center_id = center_system.get('id')
+            if center_id is None:
+                continue
+            
+            # 检查中心星系是否满足材料筛选条件
+            if not check_system_meets_filters(center_system):
+                continue
+            
+            # 从相邻关系表获取相邻星系ID
+            system_key = str(center_id)
+            if system_key not in neighbors_map:
+                continue
+            
+            neighbor_data = neighbors_map[system_key]
+            neighbor_list = neighbor_data.get('neighbors', [])
+            
+            if len(neighbor_list) == 0:
+                continue
+            
+            # 获取相邻星系的完整数据
+            neighbor_systems = []
+            for neighbor_info in neighbor_list:
+                neighbor_id = neighbor_info.get('systemId')
+                if neighbor_id and neighbor_id in systems_by_id:
+                    neighbor_systems.append(systems_by_id[neighbor_id])
+            
+            if len(neighbor_systems) == 0:
+                continue
+            
+            # 计算中心星系到交易所的距离
+            center_x = center_system.get('x', 0.0)
+            center_y = center_system.get('y', 0.0)
+            distance_to_exchange = SystemAnalyzer.calculate_distance(
+                exchange_x, exchange_y, center_x, center_y
+            )
+            
+            # 聚合资源（中心星系 + 相邻星系）
+            all_systems = [center_system] + neighbor_systems
+            resource_summary = {}
+            total_planets = 0
+            max_fertility = 0
+            
+            for system in all_systems:
+                planets = system.get('planets', []) or []
+                if not isinstance(planets, list):
+                    planets = []
+                total_planets += len(planets)
+                
+                for planet in planets:
+                    resources = planet.get('mats', [])
+                    if not isinstance(resources, list):
+                        resources = []
+                    
+                    fertility = planet.get('fert', 0)
+                    if fertility > max_fertility:
+                        max_fertility = fertility
+                    
+                    for resource in resources:
+                        mat_id = resource.get('id')
+                        abundance = resource.get('ab', 0)
+                        
+                        if mat_id not in resource_summary:
+                            resource_summary[mat_id] = {
+                                'materialId': mat_id,
+                                'totalAbundance': 0,
+                                'planetCount': 0,
+                                'maxAbundance': 0
+                            }
+                        
+                        resource_summary[mat_id]['totalAbundance'] += abundance
+                        resource_summary[mat_id]['planetCount'] += 1
+                        if abundance > resource_summary[mat_id]['maxAbundance']:
+                            resource_summary[mat_id]['maxAbundance'] = abundance
+            
+            results.append({
+                'systemId': center_id,
+                'systemName': center_system.get('name', f'System {center_id}'),
+                'x': center_x,
+                'y': center_y,
+                'distanceToExchange': distance_to_exchange,
+                'planetCount': total_planets,
+                'maxFertility': max_fertility,
+                'resources': list(resource_summary.values()),
+                'neighborSystemIds': [s.get('id') for s in neighbor_systems],
+                'neighborCount': len(neighbor_systems)
+            })
+        
+        # 按距离排序
+        results.sort(key=lambda x: x['distanceToExchange'])
+        
+        return {
+            "results": results,
+            "total": len(results),
+            "filters": {
+                "materialFilters": parsed_material_filters,
+                "exchangeLocation": {"x": exchange_x, "y": exchange_y},
+                "neighborDistance": 4.0
+            }
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== 缓存管理API ====================
 
 @app.post("/api/cache/clear")
@@ -654,6 +824,23 @@ async def get_recipe_names():
         "recipeNames": get_all_recipe_names(),
         "description": "配方ID到名称的映射（中英文）"
     }
+
+@app.get("/api/word-translation")
+async def get_word_translation():
+    """获取材料和建筑的中英文对照表"""
+    try:
+        data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        translation_file = os.path.join(data_dir, 'word_translation.json')
+        
+        if not os.path.exists(translation_file):
+            raise HTTPException(status_code=404, detail="Translation file not found")
+        
+        with open(translation_file, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ==================== 综合收益分析API ====================
 

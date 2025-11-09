@@ -1,11 +1,16 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  readonly VITE_API_BASE_URL?: string
-  readonly VITE_API_TARGET?: string
+declare module '*.json' {
+  const value: Record<string, any>
+  export default value
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv
+declare module './locales/zh-CN.json' {
+  const value: Record<string, any>
+  export default value
 }
 
+declare module './locales/en-US.json' {
+  const value: Record<string, any>
+  export default value
+}

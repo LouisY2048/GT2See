@@ -167,6 +167,7 @@ export interface SystemAnalysis {
     materialId: number
     totalAbundance: number
     planetCount: number
+    maxAbundance?: number  // 单个星球的最大丰度
   }>
 }
 

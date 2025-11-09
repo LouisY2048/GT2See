@@ -1,0 +1,378 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "unknown": "Unknown",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "viewDetails": "View Details",
+    "close": "Close",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "total": "Total",
+    "average": "Average",
+    "maximum": "Maximum",
+    "minimum": "Minimum"
+  },
+  "layout": {
+    "marketOverview": "Market Overview",
+    "buildingAnalysis": "Building Analysis",
+    "recipeAnalysis": "Recipe Analysis",
+    "comprehensiveAnalysis": "Comprehensive Profit Analysis",
+    "systemPlanning": "System Planning",
+    "menu": "Menu",
+    "title": "Galactic Tycoons Market Analysis Tool"
+  },
+  "landing": {
+    "title": "Business Simulation Platform",
+    "subtitle": "Multi-project data and intelligent analysis portal · Business insights growing at galactic speed",
+    "appTitle": "GT2See · Market/Production Analysis Suite",
+    "appDescription": "Market overview, building/recipe/comprehensive profit, system planning, complete data insights.",
+    "enterApp": "Enter GT2See",
+    "officialDocs": "Official Documentation",
+    "enterGame": "Enter Game",
+    "toBeContinued": "To be continued......"
+  },
+  "market": {
+    "title": "Market Overview",
+    "loadingError": "Failed to load data",
+    "searchPlaceholder": "Search material name...",
+    "columns": {
+      "materialName": "Material Name",
+      "currentPrice": "Current Price",
+      "avgPrice": "Average Price",
+      "priceChange": "Price Change",
+      "priceChangePercent": "Change %",
+      "status": "Status",
+      "volume": "Volume",
+      "lastUpdate": "Last Update"
+    },
+    "stats": {
+      "totalMaterials": "Total Materials",
+      "availableMaterials": "Available Materials",
+      "avgPrice": "Average Price",
+      "maxPrice": "Maximum Price",
+      "priceIncrease": "Price Increase",
+      "priceDecrease": "Price Decrease",
+      "noChange": "No Change"
+    },
+    "status": {
+      "noOrders": "No Orders",
+      "newListing": "New Listing",
+      "highPrice": "High Price",
+      "lowPrice": "Low Price",
+      "normal": "Normal"
+    },
+    "tooltips": {
+      "noOrders": "No available orders",
+      "noHistory": "No historical data",
+      "cents": "cents"
+    },
+    "subtitle": "Real-time material price monitoring · Data updates automatically every 5 minutes",
+    "priceDiffNote": "Price Difference* calculation: ((Current Price - Average Price) / Average Price) × 100%, reflects the price change percentage relative to the average price; not displayed if historical average price is missing.",
+    "paginationTotal": "Total {{total}} materials",
+    "unitType": "types"
+  },
+  "buildings": {
+    "title": "Building Analysis",
+    "subtitle": "Building construction cost calculation · Material breakdown and comparison",
+    "loadingError": "Failed to load data",
+    "buildingList": "Building Cost List",
+    "paginationTotal": "Total {{total}} buildings",
+    "unitCount": "buildings",
+    "columns": {
+      "buildingName": "Building Name",
+      "totalCost": "Total Cost",
+      "materialCount": "Material Types",
+      "materialCost": "Material Cost",
+      "laborCost": "Labor Cost",
+      "influenceType": "Influence Type",
+      "influenceValue": "Influence Value"
+    },
+    "influenceTypes": {
+      "fertility": "Fertility",
+      "abundance": "Abundance"
+    },
+    "stats": {
+      "totalBuildings": "Total Buildings",
+      "avgCost": "Average Cost",
+      "maxCost": "Maximum Cost",
+      "minCost": "Minimum Cost"
+    },
+    "details": {
+      "title": "Details",
+      "materials": "Material Cost Details",
+      "materialName": "Material Name",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "totalCost": "Total Construction Cost",
+      "percentage": "Percentage",
+      "cost": "Cost",
+      "costDistribution": "Cost Distribution",
+      "priceUnknown": "Price Unknown",
+      "cannotCalculate": "Cannot calculate construction cost",
+      "noMarketData": "Insufficient raw materials in the market, information temporarily unavailable.",
+      "missingMaterials": "Materials with missing prices:",
+      "labor": "Labor Requirements",
+      "workforceType": "Workforce Type",
+      "workerCount": "Worker Count"
+    },
+    "tooltips": {
+      "noMarketData": "Insufficient raw materials in the market"
+    }
+  },
+  "recipes": {
+    "title": "Recipe Analysis",
+    "loadingError": "Failed to load data",
+    "profitError": "Failed to load profit data",
+    "recipeList": "Recipe Profit List",
+    "top10Chart": "Top 10 Profit Ranking",
+    "unitCount": "recipes",
+    "units": {
+      "hours": " hours",
+      "perHour": "/hour"
+    },
+    "columns": {
+      "recipeName": "Recipe Name",
+      "outputTier": "Output Tier",
+      "building": "Building",
+      "productionTime": "Production Time",
+      "inputCost": "Input Cost",
+      "outputValue": "Output Value",
+      "totalProfit": "Total Profit",
+      "profitPerHour": "Profit Per Hour",
+      "roi": "ROI"
+    },
+    "filters": {
+      "searchRecipe": "Search Recipe",
+      "searchPlaceholder": "Enter recipe name to search (supports fuzzy matching)",
+      "sortBy": "Sort By",
+      "sortOptions": {
+        "profitPerHour": "Profit Per Hour",
+        "totalProfit": "Total Profit",
+        "outputValue": "Output Value"
+      },
+      "buildingFilter": "Building Filter",
+      "allBuildings": "All Buildings",
+      "fertilityAbundance": "Fertility/Abundance Value",
+      "fertilityAbundancePlaceholder": "Enter fertility or abundance value (default 100)",
+      "value": " Value",
+      "fertilityAbundanceTooltip": "Standard value is 100. {{type}} value affects production efficiency, e.g., 150 means 1.5x efficiency (production time reduced to 67% of original)"
+    },
+    "stats": {
+      "totalRecipes": "Total Recipes",
+      "profitableRecipes": "Profitable Recipes",
+      "avgProfit": "Average Profit",
+      "maxProfit": "Maximum Profit",
+      "maxProfitPerHour": "Maximum Hourly Profit"
+    },
+    "details": {
+      "title": "Recipe Details",
+      "recipeInfo": "Recipe Information",
+      "building": "Building",
+      "productionTime": "Production Time",
+      "output": "Output",
+      "inputMaterials": {
+        "materialName": "Material Name",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price",
+        "totalCost": "Total Cost",
+        "proportion": "Proportion"
+      },
+      "material": "Material",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "totalCost": "Total Cost",
+      "proportion": "Proportion",
+      "inputTotalCost": "Input Total Cost",
+      "profitAnalysis": "Profit Analysis",
+      "outputValue": "Output Value",
+      "profitPerHour": "Recipe Profit/Hour",
+      "marketSize": "Market Size (Daily)",
+      "avgDailySales": "Average Daily Sales",
+      "avgPrice": "Average Price",
+      "unitsPerDay": "units/day",
+      "perUnit": "/unit",
+      "noMarketData": "No market data available",
+      "costDistribution": "Cost Distribution",
+      "costDistributionInputMaterials": "Input Materials",
+      "costDistributionLabor": "Labor",
+      "costDistributionTotalCost": "Total Cost"
+    },
+    "tooltips": {
+      "priceUnavailable": "Price data unavailable"
+    }
+  },
+  "comprehensive": {
+    "title": "Comprehensive Profit Analysis",
+    "descriptionTitle": "Comprehensive Profit Analysis Description",
+    "description": "This analysis deducts labor consumable costs from recipe profits and considers population expansion penalties (when population exceeds 2000, each additional 1000 people increases consumable demand by 0.1%). Comprehensive profit can only be calculated when Essential consumable prices (top 3 items) are available.",
+    "loadingError": "Failed to load data",
+    "profitError": "Failed to load comprehensive profit data",
+    "recipeList": "Comprehensive Profit List",
+    "paginationTotal": "Total {{total}} recipes",
+    "unitCount": "recipes",
+    "units": {
+      "perHour": "/hour"
+    },
+    "columns": {
+      "recipeName": "Recipe Name",
+      "outputTier": "Output Tier",
+      "building": "Building",
+      "recipeProfitPerHour": "Recipe Profit/Hour",
+      "laborCostPerHour": "Labor Cost/Hour",
+      "comprehensiveProfitPerHour": "Comprehensive Profit/Hour",
+      "actions": "Actions"
+    },
+    "filters": {
+      "searchRecipe": "Search Recipe",
+      "searchPlaceholder": "Enter recipe name to search (supports fuzzy matching)",
+      "sortBy": "Sort By",
+      "sortOptions": {
+        "comprehensiveProfitPerHour": "Comprehensive Profit/Hour",
+        "comprehensiveTotalProfit": "Comprehensive Total Profit",
+        "profitPerHour": "Recipe Profit/Hour"
+      },
+      "buildingFilter": "Building Filter",
+      "allBuildings": "All Buildings",
+      "fertilityAbundance": "Fertility/Abundance Value",
+      "value": " Value",
+      "totalPopulation": "Total Population",
+      "populationPlaceholder": "Enter total population (for calculating expansion penalty)",
+      "expansionPenalty": "Expansion Penalty: {{penalty}}%",
+      "expansionPenaltyActive": "Expansion Penalty Active"
+    },
+    "stats": {
+      "totalRecipes": "Total Recipes",
+      "suffix": "",
+      "profitableRecipes": "Comprehensive Profitable Recipes",
+      "avgComprehensiveProfit": "Average Comprehensive Profit",
+      "maxComprehensiveProfit": "Maximum Comprehensive Profit",
+      "perHour": "/hour"
+    },
+    "details": {
+      "title": "Comprehensive Profit Details",
+      "recipeInfo": "Recipe Information",
+      "building": "Building",
+      "productionTime": "Production Time",
+      "output": "Output",
+      "inputMaterials": "Input Materials",
+      "material": "Material",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "totalCost": "Total Cost",
+      "proportion": "Proportion",
+      "inputTotalCost": "Input Total Cost",
+      "laborConsumption": "Labor Consumption",
+      "workforceType": "Workforce Type",
+      "workers": "workers",
+      "consumable": "Consumable",
+      "essential": "Essential",
+      "perRoundConsumption": "Per Round Consumption",
+      "workforceCost": "Cost",
+      "totalLaborCost": "Total Labor Cost",
+      "expansionPenalty": "Expansion Penalty",
+      "expansionPenaltyDesc": "Current total population {totalPopulation}, increases consumable demand by 0.1% per 1000 people after exceeding 2000",
+      "profitAnalysis": "Profit Analysis",
+      "outputValue": "Output Value",
+      "recipeProfitPerHour": "Recipe Profit/Hour",
+      "comprehensiveProfitPerHour": "Comprehensive Profit/Hour",
+      "formula": "= Recipe Profit - Labor Cost",
+      "marketSize": "Market Size (Daily)",
+      "avgDailySales": "Average Daily Sales",
+      "avgPrice": "Average Price",
+      "unitsPerDay": "units/day",
+      "perUnit": "/unit",
+      "noMarketData": "No market data available",
+      "costDistribution": "Cost Distribution (Detailed)",
+      "costDistributionInputMaterials": "Input Materials",
+      "costDistributionLabor": "Labor",
+      "costDistributionTotalCost": "Total Cost"
+    },
+    "tooltips": {
+      "expansionPenalty": "Expansion Penalty: {penalty}%"
+    }
+  },
+  "systems": {
+    "title": "System Planning",
+    "loadingError": "Failed to load data",
+    "searchError": "Advanced search failed",
+    "unitCount": "systems",
+    "unitType": "types",
+    "units": {
+      "lightYears": "light-years"
+    },
+    "columns": {
+      "systemName": "System Name",
+      "distance": "Distance to Exchange (Estimated, Reference Only)",
+      "planetCount": "Planet Count",
+      "resourceCount": "Resource Types",
+      "totalAbundance": "Total Resource Abundance",
+      "maxFertility": "Max Fertility",
+      "resources": "Resources"
+    },
+    "filters": {
+      "searchSystem": "Search System",
+      "searchPlaceholder": "Enter system name to search...",
+      "exchangeLocation": "Exchange Location",
+      "x": "X Coordinate",
+      "y": "Y Coordinate",
+      "advancedSearch": "Advanced Search",
+      "maxDistance": "Max Distance",
+      "minFertility": "Min Fertility",
+      "materialFilters": "Material Filters",
+      "addMaterial": "Add Material",
+      "material": "Material",
+      "minAbundance": "Min Abundance",
+      "selectMaterial": "Select Material",
+      "search": "Search",
+      "results": "Found {count} matching systems"
+    },
+    "stats": {
+      "totalSystems": "Total Systems",
+      "totalPlanets": "Total Planets",
+      "avgPlanetsPerSystem": "Average Planets per System",
+      "planetsPerSystem": "planets/system",
+      "totalResourceTypes": "Resource Types",
+      "avgDistance": "Average Distance",
+      "maxPlanets": "Max Planets",
+      "maxFertility": "Max Fertility"
+    },
+    "advancedSearch": {
+      "title": "Advanced System Search",
+      "materialFilterRequired": "System group search requires material filter conditions",
+      "success": "Found {{count}} matching system groups",
+      "collapsePanel": "Collapse Exploration Panel",
+      "openExploration": "Open Space Exploration",
+      "description": "The system will automatically search for all matching system groups. Each system group contains a central system and all systems adjacent to it (within 4 light-years).",
+      "startSearch": "Start Search",
+      "resultsTitle": "Search Results ({{count}} system groups)",
+      "paginationTotal": "Total {{total}} system groups",
+      "meetsFilters": "Meets Filter Criteria",
+      "planetInfo": "Fertility: {{fert}} | Size: {{size}} | Tier: {{tier}}",
+      "noResources": "No Resources",
+      "centerSystem": "Center System: {{name}} ({{count}} planets)",
+      "noPlanetData": "No planet data available",
+      "neighborSystems": "Neighbor Systems ({{systemCount}} systems, {{planetCount}} planets total)"
+    },
+    "systemAnalysis": "System Resource Analysis",
+    "paginationTotal": "Total {{total}} systems",
+    "details": {
+      "title": "System Details",
+      "resources": "Resource List",
+      "resourceDetails": "Resource Details:",
+      "material": "Material",
+      "totalAbundance": "Total Abundance",
+      "planetCount": "Planet Count",
+      "planets": "{{count}} planets",
+      "maxAbundance": "Max Abundance"
+    }
+  }
+}
+
