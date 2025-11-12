@@ -112,7 +112,6 @@ const MarketOverview = () => {
 
   // 获取材料价格数据
   const fetchPrices = async () => {
-    setLoading(true)
     try {
       const pricesRes = await exchangeApi.getMaterialPrices()
 
@@ -142,8 +141,6 @@ const MarketOverview = () => {
     } catch (error) {
       console.error('Failed to fetch prices:', error)
       message.error(t('market.loadingError'))
-    } finally {
-      setLoading(false)
     }
   }
 
