@@ -626,10 +626,10 @@ const RecipeAnalysis = () => {
           <>
             {!selectedRecipe.priceAvailable && selectedRecipe.unavailableMaterials && selectedRecipe.unavailableMaterials.length > 0 && (
               <Alert
-                message="价格数据不完整"
+                message={t('recipes.details.priceIncomplete')}
                 description={
                   <div>
-                    <p style={{ marginBottom: 8 }}>以下材料缺少市场价格数据，收益计算可能不准确：</p>
+                    <p style={{ marginBottom: 8 }}>{t('recipes.details.priceIncompleteDesc')}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {selectedRecipe.unavailableMaterials.map(mat => (
                         <Tag key={mat.materialId} color="warning" style={{ fontSize: isMobile ? '11px' : '12px' }}>
@@ -647,7 +647,7 @@ const RecipeAnalysis = () => {
             )}
             <Row gutter={[16, 16]}>
               <Col xs={24} md={12}>
-                <h3>输入材料</h3>
+                <h3>{t('recipes.details.inputMaterialsTitle')}</h3>
                 <Table
                   columns={inputColumns}
                   dataSource={selectedRecipe.inputDetails}
@@ -656,15 +656,15 @@ const RecipeAnalysis = () => {
                   size="small"
                 />
                 <div style={{ marginTop: 16 }}>
-                  <strong>总输入成本：</strong>
+                  <strong>{t('recipes.details.inputTotalCost')}：</strong>
                   {selectedRecipe.priceAvailable && selectedRecipe.inputCost !== null 
                     ? formatPrice(selectedRecipe.inputCost) 
-                    : '未知'}
+                    : t('common.unknown')}
                 </div>
 
                 {/* 输入材料成本饼图 */}
                 {selectedRecipe.priceAvailable && selectedRecipe.inputDetails && selectedRecipe.inputDetails.length > 0 && (
-                  <Card size="small" style={{ marginTop: 16 }} title="输入材料成本分布">
+                  <Card size="small" style={{ marginTop: 16 }} title={t('recipes.details.inputCostDistribution')}>
                     <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
                       <PieChart>
                         <Pie
@@ -685,7 +685,7 @@ const RecipeAnalysis = () => {
                           ))}
                         </Pie>
                         <RechartsTooltip 
-                          formatter={(value: number) => [formatPrice(value), '成本']}
+                          formatter={(value: number) => [formatPrice(value), t('recipes.details.cost')]}
                           contentStyle={{ borderRadius: '8px', border: '1px solid #f0f0f0' }}
                         />
                         <Legend 
@@ -700,37 +700,37 @@ const RecipeAnalysis = () => {
                 )}
               </Col>
               <Col xs={24} md={12}>
-                <h3>输出产品</h3>
+                <h3>{t('recipes.details.outputProduct')}</h3>
                 <Card size="small">
-                  <p><strong>材料：</strong>{getMaterialName(selectedRecipe.outputDetails.materialId)}</p>
-                  <p><strong>数量：</strong>{selectedRecipe.outputDetails.amount}</p>
-                  <p><strong>单价：</strong>
+                  <p><strong>{t('recipes.details.material')}：</strong>{getMaterialName(selectedRecipe.outputDetails.materialId)}</p>
+                  <p><strong>{t('recipes.details.quantity')}：</strong>{selectedRecipe.outputDetails.amount}</p>
+                  <p><strong>{t('recipes.details.unitPrice')}：</strong>
                     {selectedRecipe.outputDetails.priceAvailable 
                       ? formatPrice(selectedRecipe.outputDetails.unitPrice) 
-                      : '未知'}
+                      : t('common.unknown')}
                   </p>
-                  <p><strong>总价值：</strong>
+                  <p><strong>{t('recipes.details.totalValue')}：</strong>
                     {selectedRecipe.priceAvailable && selectedRecipe.outputDetails.totalValue !== null 
                       ? formatPrice(selectedRecipe.outputDetails.totalValue) 
-                      : '未知'}
+                      : t('common.unknown')}
                   </p>
                 </Card>
                 <Card size="small" style={{ marginTop: 16 }}>
-                  <h4>收益分析</h4>
-                  <p><strong>生产时间：</strong>{selectedRecipe.timeHours.toFixed(2)} 小时</p>
-                  <p><strong>总收益：</strong>
+                  <h4>{t('recipes.details.profitAnalysis')}</h4>
+                  <p><strong>{t('recipes.details.productionTime')}：</strong>{selectedRecipe.timeHours.toFixed(2)} {t('recipes.units.hours')}</p>
+                  <p><strong>{t('recipes.details.totalProfit')}：</strong>
                     {selectedRecipe.priceAvailable && selectedRecipe.totalProfit !== null ? (
                       <span style={{ color: selectedRecipe.totalProfit > 0 ? '#3f8600' : '#cf1322', fontWeight: 'bold' }}>
                         {formatPrice(selectedRecipe.totalProfit)}
                       </span>
-                    ) : '未知'}
+                    ) : t('common.unknown')}
                   </p>
-                  <p><strong>每小时收益：</strong>
+                  <p><strong>{t('recipes.details.profitPerHour')}：</strong>
                     {selectedRecipe.priceAvailable && selectedRecipe.profitPerHour !== null ? (
                       <span style={{ color: selectedRecipe.profitPerHour > 0 ? '#3f8600' : '#cf1322' }}>
                         {formatPrice(selectedRecipe.profitPerHour)}
                       </span>
-                    ) : '未知'}
+                    ) : t('common.unknown')}
                   </p>
                   <p><strong>ROI：</strong>
                     {selectedRecipe.roi === null || selectedRecipe.roi === Infinity 
@@ -738,19 +738,19 @@ const RecipeAnalysis = () => {
                       : `${selectedRecipe.roi.toFixed(2)}%`}
                   </p>
                   <div style={{ height: 1, background: '#f0f0f0', margin: '8px 0 12px' }} />
-                  <h4 style={{ marginBottom: 8 }}>市场规模</h4>
+                  <h4 style={{ marginBottom: 8 }}>{t('recipes.details.marketSize')}</h4>
                   {marketLoading ? (
                     <Spin size="small" />
                   ) : marketInfo && marketInfo.marketSize !== null ? (
                     <>
-                      <p style={{ marginBottom: 4 }}><strong>平均日销量：</strong>{marketInfo.avgQtySoldDaily?.toLocaleString()} 单位/天</p>
-                      <p style={{ marginBottom: 4 }}><strong>平均价格：</strong>{formatPrice(marketInfo.avgPrice!)} /单位</p>
-                      <p style={{ marginBottom: 0 }}><strong>市场规模（按日）：</strong>
+                      <p style={{ marginBottom: 4 }}><strong>{t('recipes.details.avgDailySales')}：</strong>{marketInfo.avgQtySoldDaily?.toLocaleString()} {t('recipes.details.unitsPerDay')}</p>
+                      <p style={{ marginBottom: 4 }}><strong>{t('recipes.details.avgPrice')}：</strong>{formatPrice(marketInfo.avgPrice!)} {t('recipes.details.perUnit')}</p>
+                      <p style={{ marginBottom: 0 }}><strong>{t('recipes.details.marketSize')}：</strong>
                         <span style={{ fontWeight: 'bold' }}>{formatPrice(marketInfo.marketSize)}</span>
                       </p>
                     </>
                   ) : (
-                    <Tag color="default">暂无市场数据</Tag>
+                    <Tag color="default">{t('recipes.details.noMarketData')}</Tag>
                   )}
                 </Card>
               </Col>

@@ -587,6 +587,7 @@ async def advanced_system_search(
 @app.get("/api/analyzer/system-group-search")
 async def system_group_search(
     material_filters: str = Query(..., description="材料筛选条件，JSON格式：[{\"materialId\": 1, \"minAbundance\": 100}]"),
+    excluded_planet_tiers: Optional[str] = Query(None, description="排除的行星等级，JSON格式：[3, 4]"),
     exchange_x: float = Query(3334.0, description="交易所X坐标"),
     exchange_y: float = Query(1425.0, description="交易所Y坐标")
 ):
@@ -608,6 +609,16 @@ async def system_group_search(
         except json.JSONDecodeError:
             raise HTTPException(status_code=400, detail="Invalid JSON format for material_filters")
         
+        # 解析排除的行星等级
+        excluded_tiers_set = set()
+        if excluded_planet_tiers:
+            try:
+                parsed_excluded_tiers = json.loads(excluded_planet_tiers)
+                if isinstance(parsed_excluded_tiers, list):
+                    excluded_tiers_set = set(parsed_excluded_tiers)
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=400, detail="Invalid JSON format for excluded_planet_tiers")
+        
         # 获取相邻关系表
         neighbors_map = game_data_api.get_system_neighbors()
         if not neighbors_map:
@@ -619,14 +630,25 @@ async def system_group_search(
             if not isinstance(planets, list) or len(planets) == 0:
                 return False
             
+            # 过滤掉被排除的行星等级
+            filtered_planets = []
+            for planet in planets:
+                planet_tier = planet.get('tier')
+                if planet_tier is None or planet_tier not in excluded_tiers_set:
+                    filtered_planets.append(planet)
+            
+            # 如果没有符合条件的行星，返回False
+            if len(filtered_planets) == 0:
+                return False
+            
             # 检查每个材料筛选条件
             for filter_item in parsed_material_filters:
                 material_id = filter_item.get('materialId')
                 min_abundance = filter_item.get('minAbundance', 0)
                 
-                # 检查是否有至少一个行星满足该材料的丰度要求
+                # 检查是否有至少一个符合条件的行星满足该材料的丰度要求
                 found = False
-                for planet in planets:
+                for planet in filtered_planets:
                     resources = planet.get('mats', [])
                     if not isinstance(resources, list):
                         resources = []

@@ -26,9 +26,13 @@
     "buildingAnalysis": "建筑分析",
     "recipeAnalysis": "配方分析",
     "comprehensiveAnalysis": "综合收益分析",
+    "customPanel": "自定义面板（开发中）",
     "systemPlanning": "星系规划",
     "menu": "菜单",
-    "title": "Galactic Tycoons 市场分析工具"
+    "title": "Galactic Tycoons 市场分析工具",
+    "changelog": "更新日志",
+    "changelogTitle": "更新日志",
+    "changelogContent": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📦 v0.1_20251111\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n✨ 新增：\n\n1. 🆕 在工具页面右上角新增\"更新日志\"按钮，现在可以随时监督作者的进展啦；\n\n2. 💰 在\"市场概览板块\"新增\"最赚钱配方\"以及\"市场规模最大的材料\"，萌新们可别再无脑冲时利最高的产品啦；\n\n3. 🌌 重制\"星系规划\"中的\"高级星系搜索\"功能，引入\"星系群\"概念，现在可以搜索满足筛选条件的星系群啦；\n\n4. ⚙️ 新增\"自定义面板\"功能板块，具体功能仍在开发中。\n\n🔧 优化：\n\n1. 🏷️ \"分析工具\"标题后现在可以显示版本号了\n\n2. 🌐 优化翻译系统，现在材料、建筑的中文翻译应比较贴切（还有一些没有翻译到的，后续会查全补充）。"
   },
   "landing": {
     "title": "商业模拟工具平台",
@@ -57,8 +61,8 @@
     "stats": {
       "totalMaterials": "材料总数",
       "availableMaterials": "可交易材料",
-      "avgPrice": "平均价格",
-      "maxPrice": "最高价格",
+      "availableRecipes": "可用配方",
+      "maxPrice": "市场现有材料最高价格",
       "priceIncrease": "价格上涨",
       "priceDecrease": "价格下跌",
       "noChange": "无变化"
@@ -78,7 +82,61 @@
     "subtitle": "实时材料价格监控 · 数据每5分钟自动更新",
     "priceDiffNote": "价差* 计算方式：((当前价格 - 平均价格) / 平均价格) × 100%，反映当前价格相对平均价格的涨跌幅；若缺少历史平均价格则不显示。",
     "paginationTotal": "共 {{total}} 种材料",
-    "unitType": "种"
+    "unitType": "种",
+    "unitCount": "个",
+    "topProfitableRecipes": "最赚钱的配方",
+    "topRecipesError": "加载最赚钱配方失败",
+    "noTopRecipes": "暂无最赚钱的配方数据",
+    "comprehensiveProfitPerHour": "综合每小时收益",
+    "building": "建筑",
+    "output": "产出",
+    "recipeProfitPerHour": "配方每小时收益",
+    "topMarketSizeRecipes": "市场规模最大的配方",
+    "topMarketSizeRecipesError": "加载市场规模最大配方失败",
+    "noTopMarketSizeRecipes": "暂无市场规模最大的配方数据",
+    "marketSize": "市场规模",
+    "avgDailySales": "平均日销量",
+    "unitsPerDay": "单位/天",
+    "avgPrice": "平均价格",
+    "perUnit": "/单位",
+    "details": {
+      "title": "配方详情",
+      "recipeInfo": "配方信息",
+      "building": "建筑",
+      "productionTime": "生产时间",
+      "output": "产物",
+      "hours": "小时",
+      "inputMaterials": "输入材料",
+      "material": "材料",
+      "quantity": "数量",
+      "unitPrice": "单价",
+      "totalCost": "总成本",
+      "proportion": "占比",
+      "inputTotalCost": "输入总成本",
+      "workforceConsumption": "劳动力消耗",
+      "people": "人",
+      "consumable": "消耗品",
+      "essential": "必需",
+      "cycleConsumption": "每轮消耗",
+      "cost": "成本",
+      "totalWorkforceCost": "劳动力总成本",
+      "expansionPenalty": "扩张惩罚：{{penalty}}%",
+      "profitAnalysis": "收益分析",
+      "outputValue": "输出价值",
+      "recipeProfitPerHour": "配方收益/小时",
+      "comprehensiveProfitPerHour": "综合收益/小时",
+      "marketSize": "市场规模（按日）",
+      "avgDailySales": "平均日销量",
+      "avgPrice": "平均价格",
+      "unitsPerDay": "单位/天",
+      "perUnit": "/单位",
+      "noMarketData": "暂无市场数据",
+      "costDistribution": "成本分布（详细）",
+      "costDistributionInputMaterials": "输入材料",
+      "costDistributionLabor": "劳动力",
+      "costDistributionTotalCost": "总成本",
+      "unknown": "未知"
+    }
   },
   "buildings": {
     "title": "建筑分析",
@@ -186,13 +244,18 @@
         "totalCost": "总成本",
         "proportion": "占比"
       },
+      "inputMaterialsTitle": "输入材料",
       "material": "材料",
       "quantity": "数量",
       "unitPrice": "单价",
       "totalCost": "总成本",
       "proportion": "占比",
       "inputTotalCost": "输入总成本",
+      "inputCostDistribution": "输入材料成本分布",
+      "outputProduct": "输出产品",
+      "totalValue": "总价值",
       "profitAnalysis": "收益分析",
+      "totalProfit": "总收益",
       "outputValue": "输出价值",
       "profitPerHour": "配方收益/小时",
       "marketSize": "市场规模（按日）",
@@ -204,7 +267,10 @@
       "costDistribution": "成本分布",
       "costDistributionInputMaterials": "输入材料",
       "costDistributionLabor": "劳动力",
-      "costDistributionTotalCost": "总成本"
+      "costDistributionTotalCost": "总成本",
+      "cost": "成本",
+      "priceIncomplete": "价格数据不完整",
+      "priceIncompleteDesc": "以下材料缺少市场价格数据，收益计算可能不准确："
     },
     "tooltips": {
       "priceUnavailable": "价格数据不可用"
@@ -304,6 +370,48 @@
       "expansionPenalty": "扩张惩罚：{penalty}%"
     }
   },
+  "customPanel": {
+    "title": "自定义面板（开发中）",
+    "subtitle": "自定义丰度、材料成本与加速参数，评估配方每日投入与产出。",
+    "controls": {
+      "building": "建筑筛选",
+      "buildingPlaceholder": "可选，按建筑筛选配方",
+      "recipe": "选择配方",
+      "recipePlaceholder": "请选择或搜索配方",
+      "abundance": "自定义丰度加成",
+      "acceleration": "自定义加速",
+      "techAcceleration": "科技加速",
+      "outputPrice": "自定义产出单价",
+      "abundanceTip": "该数值为额外丰度百分比，0 表示保持基础速率。",
+      "speedTip": "加速与科技加成按百分比叠加，0 表示无加速。",
+      "pricePlaceholder": "默认使用市场单价"
+    },
+    "actions": {
+      "fetchPrices": "一键获取材料价格",
+      "fetching": "获取中...",
+      "reset": "重置价格"
+    },
+    "table": {
+      "title": "自定义输入材料",
+      "material": "材料",
+      "amount": "每轮用量",
+      "basePrice": "基础单价",
+      "customPrice": "自定义单价"
+    },
+    "results": {
+      "title": "每日投入与产出",
+      "cyclesPerDay": "每日生产轮次",
+      "inputCostPerDay": "每日输入成本",
+      "outputValuePerDay": "每日产出价值",
+      "adjustedTime": "调整后每轮耗时"
+    },
+    "messages": {
+      "selectRecipe": "请选择配方以查看详情",
+      "loadError": "加载自定义面板数据失败，请稍后重试。",
+      "priceFetchSuccess": "已更新材料与产出价格。",
+      "priceFetchError": "获取材料价格失败，请稍后重试。"
+    }
+  },
   "systems": {
     "title": "星系规划",
     "loadingError": "加载数据失败",
@@ -337,7 +445,11 @@
       "minAbundance": "最小丰度",
       "selectMaterial": "选择材料",
       "search": "搜索",
-      "results": "找到 {count} 个符合条件的星系"
+      "results": "找到 {count} 个符合条件的星系",
+      "planetTierFilter": "行星等级筛选",
+      "excludePlanetTiers": "排除的行星等级",
+      "selectPlanetTiers": "选择要排除的行星等级（可多选）",
+      "planetTierFilterDesc": "选择的行星等级将在筛选时被排除，不会计入符合条件的行星"
     },
     "stats": {
       "totalSystems": "星系总数",

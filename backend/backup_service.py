@@ -48,9 +48,10 @@ class BackupService:
             # 1) Game Data backup
             try:
                 game_data = await self._fetch_json(client, GAME_DATA_URL)
+                
                 self._atomic_write(
                     os.path.join(DATA_DIR, 'game_data_backup.json'),
-                    json.dumps(game_data, ensure_ascii=False, separators=(',', ':'))
+                    json.dumps(game_data, ensure_ascii=False, indent=2)
                 )
                 result['game_data'] = 'ok'
             except Exception as e:  # noqa: BLE001

@@ -25,9 +25,13 @@
     "buildingAnalysis": "Building Analysis",
     "recipeAnalysis": "Recipe Analysis",
     "comprehensiveAnalysis": "Comprehensive Profit Analysis",
+    "customPanel": "Custom Panel(under development)",
     "systemPlanning": "System Planning",
     "menu": "Menu",
-    "title": "Galactic Tycoons Market Analysis Tool"
+    "title": "Galactic Tycoons Market Analysis Tool",
+    "changelog": "Changelog",
+    "changelogTitle": "Changelog",
+    "changelogContent": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📦 v0.1_20251111\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n✨ New Features:\n\n1. 🆕 Added \"Changelog\" button in the top right corner of the tool page, now you can track the author's progress anytime;\n\n2. 💰 Added \"Most Profitable Recipes\" and \"Largest Market Size Materials\" in the \"Market Overview\" section, newcomers should no longer blindly rush for the highest hourly profit products;\n\n3. 🌌 Redesigned the \"Advanced System Search\" feature in \"System Planning\", introduced the \"System Group\" concept, now you can search for system groups that meet filter conditions;\n\n4. ⚙️ Added \"Custom Panel\" feature section, specific features are still under development.\n\n🔧 Optimizations:\n\n1. 🏷️ Version number can now be displayed after the \"Analysis Tool\" title\n\n2. 🌐 Optimized translation system, Chinese translations for materials and buildings should now be more accurate (some are still untranslated, will be completed in future updates)."
   },
   "landing": {
     "title": "Business Simulation Platform",
@@ -56,8 +60,8 @@
     "stats": {
       "totalMaterials": "Total Materials",
       "availableMaterials": "Available Materials",
-      "avgPrice": "Average Price",
-      "maxPrice": "Maximum Price",
+      "availableRecipes": "Available Recipes",
+      "maxPrice": "Highest price of materials in the market",
       "priceIncrease": "Price Increase",
       "priceDecrease": "Price Decrease",
       "noChange": "No Change"
@@ -77,7 +81,61 @@
     "subtitle": "Real-time material price monitoring · Data updates automatically every 5 minutes",
     "priceDiffNote": "Price Difference* calculation: ((Current Price - Average Price) / Average Price) × 100%, reflects the price change percentage relative to the average price; not displayed if historical average price is missing.",
     "paginationTotal": "Total {{total}} materials",
-    "unitType": "types"
+    "unitType": "types",
+    "unitCount": "recipes",
+    "topProfitableRecipes": "Top Profitable Recipes",
+    "topRecipesError": "Failed to load top profitable recipes",
+    "noTopRecipes": "No top profitable recipes data available",
+    "comprehensiveProfitPerHour": "Comprehensive Profit/Hour",
+    "building": "Building",
+    "output": "Output",
+    "recipeProfitPerHour": "Recipe Profit/Hour",
+    "topMarketSizeRecipes": "Top Market Size Recipes",
+    "topMarketSizeRecipesError": "Failed to load top market size recipes",
+    "noTopMarketSizeRecipes": "No top market size recipes data available",
+    "marketSize": "Market Size",
+    "avgDailySales": "Average Daily Sales",
+    "unitsPerDay": "units/day",
+    "avgPrice": "Average Price",
+    "perUnit": "/unit",
+    "details": {
+      "title": "Recipe Details",
+      "recipeInfo": "Recipe Information",
+      "building": "Building",
+      "productionTime": "Production Time",
+      "output": "Output",
+      "hours": "hours",
+      "inputMaterials": "Input Materials",
+      "material": "Material",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "totalCost": "Total Cost",
+      "proportion": "Proportion",
+      "inputTotalCost": "Input Total Cost",
+      "workforceConsumption": "Workforce Consumption",
+      "people": "people",
+      "consumable": "Consumable",
+      "essential": "Essential",
+      "cycleConsumption": "Cycle Consumption",
+      "cost": "Cost",
+      "totalWorkforceCost": "Total Workforce Cost",
+      "expansionPenalty": "Expansion Penalty: {{penalty}}%",
+      "profitAnalysis": "Profit Analysis",
+      "outputValue": "Output Value",
+      "recipeProfitPerHour": "Recipe Profit/Hour",
+      "comprehensiveProfitPerHour": "Comprehensive Profit/Hour",
+      "marketSize": "Market Size (Daily)",
+      "avgDailySales": "Average Daily Sales",
+      "avgPrice": "Average Price",
+      "unitsPerDay": "units/day",
+      "perUnit": "/unit",
+      "noMarketData": "No market data available",
+      "costDistribution": "Cost Distribution (Detailed)",
+      "costDistributionInputMaterials": "Input Materials",
+      "costDistributionLabor": "Labor",
+      "costDistributionTotalCost": "Total Cost",
+      "unknown": "Unknown"
+    }
   },
   "buildings": {
     "title": "Building Analysis",
@@ -185,13 +243,18 @@
         "totalCost": "Total Cost",
         "proportion": "Proportion"
       },
+      "inputMaterialsTitle": "Input Materials",
       "material": "Material",
       "quantity": "Quantity",
       "unitPrice": "Unit Price",
       "totalCost": "Total Cost",
       "proportion": "Proportion",
       "inputTotalCost": "Input Total Cost",
+      "inputCostDistribution": "Input Material Cost Distribution",
+      "outputProduct": "Output Product",
+      "totalValue": "Total Value",
       "profitAnalysis": "Profit Analysis",
+      "totalProfit": "Total Profit",
       "outputValue": "Output Value",
       "profitPerHour": "Recipe Profit/Hour",
       "marketSize": "Market Size (Daily)",
@@ -203,7 +266,10 @@
       "costDistribution": "Cost Distribution",
       "costDistributionInputMaterials": "Input Materials",
       "costDistributionLabor": "Labor",
-      "costDistributionTotalCost": "Total Cost"
+      "costDistributionTotalCost": "Total Cost",
+      "cost": "Cost",
+      "priceIncomplete": "Price Data Incomplete",
+      "priceIncompleteDesc": "The following materials are missing market price data, profit calculations may be inaccurate:"
     },
     "tooltips": {
       "priceUnavailable": "Price data unavailable"
@@ -299,6 +365,48 @@
       "expansionPenalty": "Expansion Penalty: {penalty}%"
     }
   },
+  "customPanel": {
+    "title": "Custom Panel(under development)",
+    "subtitle": "Adjust abundance, material costs, and acceleration parameters to evaluate daily inputs and outputs.",
+    "controls": {
+      "building": "Building Filter",
+      "buildingPlaceholder": "Optional, filter recipes by building",
+      "recipe": "Select Recipe",
+      "recipePlaceholder": "Choose or search a recipe",
+      "abundance": "Custom Abundance Bonus",
+      "acceleration": "Custom Acceleration",
+      "techAcceleration": "Tech Acceleration",
+      "outputPrice": "Custom Output Unit Price",
+      "abundanceTip": "Value represents extra abundance percentage; 0 keeps the base rate.",
+      "speedTip": "Acceleration and tech bonuses stack as percentages; 0 means no boost.",
+      "pricePlaceholder": "Use market price by default"
+    },
+    "actions": {
+      "fetchPrices": "Fetch Material Prices",
+      "fetching": "Fetching...",
+      "reset": "Reset Prices"
+    },
+    "table": {
+      "title": "Custom Input Materials",
+      "material": "Material",
+      "amount": "Amount per cycle",
+      "basePrice": "Base Unit Price",
+      "customPrice": "Custom Unit Price"
+    },
+    "results": {
+      "title": "Daily Input & Output",
+      "cyclesPerDay": "Cycles per Day",
+      "inputCostPerDay": "Daily Input Cost",
+      "outputValuePerDay": "Daily Output Value",
+      "adjustedTime": "Adjusted Cycle Time"
+    },
+    "messages": {
+      "selectRecipe": "Select a recipe to view details.",
+      "loadError": "Failed to load data for the custom panel. Please try again later.",
+      "priceFetchSuccess": "Material and output prices updated.",
+      "priceFetchError": "Failed to fetch material prices. Please try again."
+    }
+  },
   "systems": {
     "title": "System Planning",
     "loadingError": "Failed to load data",
@@ -332,7 +440,11 @@
       "minAbundance": "Min Abundance",
       "selectMaterial": "Select Material",
       "search": "Search",
-      "results": "Found {count} matching systems"
+      "results": "Found {count} matching systems",
+      "planetTierFilter": "Planet Tier Filter",
+      "excludePlanetTiers": "Excluded Planet Tiers",
+      "selectPlanetTiers": "Select planet tiers to exclude (multiple selection)",
+      "planetTierFilterDesc": "Selected planet tiers will be excluded from filtering and will not be counted as matching planets"
     },
     "stats": {
       "totalSystems": "Total Systems",

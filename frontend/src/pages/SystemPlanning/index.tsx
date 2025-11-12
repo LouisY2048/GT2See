@@ -45,6 +45,7 @@ const SystemPlanning = () => {
   const [advancedSearchResults, setAdvancedSearchResults] = useState<AdvancedSearchResult[]>([])
   const [advancedSearchLoading, setAdvancedSearchLoading] = useState(false)
   const [materialFilters, setMaterialFilters] = useState<MaterialFilter[]>([])
+  const [excludedPlanetTiers, setExcludedPlanetTiers] = useState<number[]>([]) // 排除的行星等级列表
   const [exchangeX] = useState<number>(3334.0)
   const [exchangeY] = useState<number>(1425.0)
   
@@ -151,6 +152,7 @@ const SystemPlanning = () => {
       // 调用后端API进行星系群搜索
       const response = await analyzerApi.systemGroupSearch({
         materialFilters: materialFilters,
+        excludedPlanetTiers: excludedPlanetTiers, // 传递排除的行星等级
         exchangeX: exchangeX,
         exchangeY: exchangeY
       })
@@ -484,6 +486,29 @@ const SystemPlanning = () => {
             >
               {t('systems.filters.addMaterial')}
             </Button>
+
+            <Divider orientation="left">{t('systems.filters.planetTierFilter')}</Divider>
+            
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 8, color: '#666' }}>
+                {t('systems.filters.excludePlanetTiers')}
+              </div>
+              <Select
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder={t('systems.filters.selectPlanetTiers')}
+                value={excludedPlanetTiers}
+                onChange={setExcludedPlanetTiers}
+              >
+                <Option value={1}>T1</Option>
+                <Option value={2}>T2</Option>
+                <Option value={3}>T3</Option>
+                <Option value={4}>T4</Option>
+              </Select>
+              <div style={{ marginTop: 8, fontSize: '12px', color: '#999' }}>
+                {t('systems.filters.planetTierFilterDesc')}
+              </div>
+            </div>
 
             <Button
               type="primary"

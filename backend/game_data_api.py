@@ -15,7 +15,7 @@ class GameDataAPI:
         self._cache_initialized = False
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.backup_game_data = os.path.join(self.data_dir, 'game_data_backup.json')
-        self.system_neighbors_path = os.path.join(self.data_dir, 'system_neighbors.json')
+        self.system_neighbors_path = os.path.join(self.data_dir, 'systems', 'system_neighbors.json')
         self._system_neighbors_cache = None
     
     async def get_game_data(self) -> Dict[str, Any]:

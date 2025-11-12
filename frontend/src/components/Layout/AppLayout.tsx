@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Layout, Menu, Drawer, Button } from 'antd'
+import { Layout, Menu, Drawer, Button, Modal } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -9,8 +9,10 @@ import {
   ExperimentOutlined,
   GlobalOutlined,
   FundOutlined,
+  ControlOutlined,
   MenuOutlined,
   GlobalOutlined as LanguageOutlined,
+  FileTextOutlined,
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
@@ -22,12 +24,15 @@ interface AppLayoutProps {
   children: React.ReactNode
 }
 
+const VERSION = 'v0.1_20251111'
+
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const { t, i18n } = useTranslation()
   const [collapsed, setCollapsed] = useState(false)
   const [drawerVisible, setDrawerVisible] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [language, setLanguage] = useState(i18n.language)
+  const [changelogVisible, setChangelogVisible] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   
@@ -85,6 +90,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       key: '/comprehensive',
       icon: <FundOutlined />,
       label: t('layout.comprehensiveAnalysis'),
+    },
+    {
+      key: '/custom',
+      icon: <ControlOutlined />,
+      label: t('layout.customPanel'),
     },
     {
       key: '/systems',
@@ -162,12 +172,83 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               fontSize: '14px', 
               marginLeft: '24px',
               letterSpacing: '0.5px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
             }}>
-              {t('layout.title')}
+              <span>{t('layout.title')}</span>
+              <span style={{ 
+                color: 'rgba(255, 255, 255, 0.5)', 
+                fontSize: '12px',
+                fontWeight: 'normal',
+                letterSpacing: '0.3px',
+              }}>
+                {VERSION}
+              </span>
             </div>
+          )}
+          {isMobile && (
+            <span style={{ 
+              color: 'rgba(255, 255, 255, 0.5)', 
+              fontSize: '10px',
+              fontWeight: 'normal',
+              marginLeft: '4px',
+            }}>
+              {VERSION}
+            </span>
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Button
+            type="text"
+            icon={<FileTextOutlined style={{ 
+              color: 'white', 
+              fontSize: '18px',
+              transition: 'transform 0.3s ease',
+            }} />}
+            onClick={() => setChangelogVisible(true)}
+            style={{
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
+              e.currentTarget.style.transform = 'scale(1.05)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)'
+              const icon = e.currentTarget.querySelector('svg')
+              if (icon) {
+                icon.style.transform = 'rotate(5deg)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+              e.currentTarget.style.transform = 'scale(1)'
+              e.currentTarget.style.boxShadow = 'none'
+              const icon = e.currentTarget.querySelector('svg')
+              if (icon) {
+                icon.style.transform = 'rotate(0deg)'
+              }
+            }}
+          >
+            <span style={{ 
+              marginLeft: '6px',
+              fontSize: isMobile ? '12px' : '14px',
+              fontWeight: 600,
+              letterSpacing: '0.5px',
+              transition: 'all 0.3s ease',
+            }}>
+              {t('layout.changelog')}
+            </span>
+          </Button>
           <Button
             type="text"
             icon={<LanguageOutlined style={{ 
@@ -296,6 +377,110 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           </Content>
         </Layout>
       </Layout>
+      <Modal
+        title={t('layout.changelogTitle')}
+        open={changelogVisible}
+        onCancel={() => setChangelogVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setChangelogVisible(false)}>
+            {t('common.close')}
+          </Button>
+        ]}
+        width={isMobile ? '90%' : 700}
+        style={{ top: 20 }}
+      >
+        <div style={{ 
+          maxHeight: '60vh', 
+          overflowY: 'auto',
+          padding: '20px',
+          lineHeight: '1.8',
+          color: 'rgba(0, 0, 0, 0.85)',
+          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+          borderRadius: '8px',
+          border: '2px solid rgba(102, 126, 234, 0.2)',
+        }}>
+          <div style={{ 
+            whiteSpace: 'pre-wrap',
+            fontFamily: 'KaiTi, "楷体", "STKaiti", "华文楷体", serif',
+            fontSize: '18px',
+          }}>
+            {(() => {
+              const content = t('layout.changelogContent') || ''
+              const lines = content.split('\n')
+              let inNewFeaturesSection = false
+              
+              return lines.map((line: string, idx: number) => {
+                // 检测是否进入新增部分
+                if (line.includes('✨ 新增') || line.includes('✨ New Features')) {
+                  inNewFeaturesSection = true
+                }
+                // 检测是否离开新增部分（进入优化部分）
+                if (line.includes('🔧 优化') || line.includes('🔧 Optimizations')) {
+                  inNewFeaturesSection = false
+                }
+                
+                // 检测新增部分的列表项并加粗
+                if (inNewFeaturesSection && line.match(/^\d+\./)) {
+                  return (
+                    <div key={idx} style={{ marginBottom: '8px' }}>
+                      <strong style={{ fontWeight: 'bold', color: '#1890ff' }}>{line}</strong>
+                    </div>
+                  )
+                }
+                
+                // 检测分隔线
+                if (line.includes('━━')) {
+                  return (
+                    <div key={idx} style={{ 
+                      color: 'rgba(102, 126, 234, 0.6)',
+                      margin: '12px 0',
+                      fontSize: '12px',
+                    }}>
+                      {line}
+                    </div>
+                  )
+                }
+                
+                // 检测版本号
+                if (line.includes('v0.1_20251111')) {
+                  return (
+                    <div key={idx} style={{ 
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                      color: '#667eea',
+                      marginBottom: '16px',
+                      textAlign: 'center',
+                    }}>
+                      {line}
+                    </div>
+                  )
+                }
+                
+                // 检测标题（新增、优化）
+                if (line.includes('✨') || line.includes('🔧')) {
+                  return (
+                    <div key={idx} style={{ 
+                      fontSize: '16px',
+                      fontWeight: 'bold',
+                      color: '#667eea',
+                      marginTop: '16px',
+                      marginBottom: '12px',
+                    }}>
+                      {line}
+                    </div>
+                  )
+                }
+                
+                return (
+                  <div key={idx} style={{ marginBottom: '4px' }}>
+                    {line}
+                  </div>
+                )
+              })
+            })()}
+          </div>
+        </div>
+      </Modal>
     </Layout>
   )
 }

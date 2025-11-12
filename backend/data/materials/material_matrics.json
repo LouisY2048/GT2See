@@ -1,0 +1,1453 @@
+{
+  "total": 181,
+  "materials": [
+    {
+      "id": 1,
+      "name": "Iron Ore",
+      "sName": "Iron Ore",
+      "type": 4,
+      "tier": 1,
+      "nameCN": "铁矿石"
+    },
+    {
+      "id": 2,
+      "name": "Iron",
+      "sName": "Iron",
+      "type": 1,
+      "tier": 1,
+      "nameCN": "铁"
+    },
+    {
+      "id": 3,
+      "name": "Concrete",
+      "sName": "Concrete",
+      "type": 6,
+      "tier": 1,
+      "nameCN": "混凝土"
+    },
+    {
+      "id": 4,
+      "name": "Grain",
+      "sName": "Grain",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "谷物"
+    },
+    {
+      "id": 5,
+      "name": "Copper Ore",
+      "sName": "Copper Ore",
+      "type": 4,
+      "tier": 2,
+      "nameCN": "铜矿石"
+    },
+    {
+      "id": 6,
+      "name": "Copper",
+      "sName": "Copper",
+      "type": 1,
+      "tier": 2,
+      "nameCN": "铜"
+    },
+    {
+      "id": 7,
+      "name": "Oxygen",
+      "sName": "Oxygen",
+      "type": 5,
+      "tier": 1,
+      "nameCN": "氧"
+    },
+    {
+      "id": 8,
+      "name": "Silica",
+      "sName": "Silica",
+      "type": 4,
+      "tier": 1,
+      "nameCN": "硅石"
+    },
+    {
+      "id": 9,
+      "name": "Milk",
+      "sName": "Milk",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "牛奶"
+    },
+    {
+      "id": 10,
+      "name": "Ale",
+      "sName": "Ale",
+      "type": 7,
+      "tier": 1,
+      "nameCN": "麦酒"
+    },
+    {
+      "id": 11,
+      "name": "Water",
+      "sName": "Water",
+      "type": 5,
+      "tier": 1,
+      "nameCN": "水"
+    },
+    {
+      "id": 12,
+      "name": "Rations",
+      "sName": "Rations",
+      "type": 7,
+      "tier": 1,
+      "nameCN": "口粮"
+    },
+    {
+      "id": 13,
+      "name": "Fine Rations",
+      "sName": "Fine Rations",
+      "type": 7,
+      "tier": 2,
+      "nameCN": "精制口粮"
+    },
+    {
+      "id": 14,
+      "name": "Laboratory Suit",
+      "sName": "Lab. Suit",
+      "type": 7,
+      "tier": 4,
+      "nameCN": "实验室服"
+    },
+    {
+      "id": 15,
+      "name": "Exosuit",
+      "sName": "Exosuit",
+      "type": 7,
+      "tier": 2,
+      "nameCN": "外骨骼"
+    },
+    {
+      "id": 16,
+      "name": "Drinking Water",
+      "sName": "Drinking Water",
+      "type": 7,
+      "tier": 1,
+      "nameCN": "饮用水"
+    },
+    {
+      "id": 17,
+      "name": "Tools",
+      "sName": "Tools",
+      "type": 7,
+      "tier": 1,
+      "nameCN": "工具"
+    },
+    {
+      "id": 18,
+      "name": "Advanced Tools",
+      "sName": "Adv. Tools",
+      "type": 7,
+      "tier": 2,
+      "nameCN": "高级工具"
+    },
+    {
+      "id": 19,
+      "name": "Molecular Fusion Kit",
+      "sName": "Fusion Kit",
+      "type": 10,
+      "tier": 3,
+      "nameCN": "分子融合套件"
+    },
+    {
+      "id": 20,
+      "name": "Robot",
+      "sName": "Robot",
+      "type": 7,
+      "tier": 3,
+      "nameCN": "机器人"
+    },
+    {
+      "id": 21,
+      "name": "Coffee",
+      "sName": "Coffee",
+      "type": 7,
+      "tier": 2,
+      "nameCN": "咖啡"
+    },
+    {
+      "id": 22,
+      "name": "Bioxene",
+      "sName": "Bioxene",
+      "type": 5,
+      "tier": 3,
+      "nameCN": "生物烯"
+    },
+    {
+      "id": 23,
+      "name": "Tesserite",
+      "sName": "Tesserite",
+      "type": 4,
+      "tier": 4,
+      "nameCN": "特塞石"
+    },
+    {
+      "id": 24,
+      "name": "Hydrogen",
+      "sName": "Hydrogen",
+      "type": 5,
+      "tier": 1,
+      "nameCN": "氢"
+    },
+    {
+      "id": 25,
+      "name": "Polyethylene",
+      "sName": "Polyethylene",
+      "type": 8,
+      "tier": 1,
+      "nameCN": "聚乙烯"
+    },
+    {
+      "id": 26,
+      "name": "Construction Kit",
+      "sName": "Construction Kit",
+      "type": 2,
+      "tier": 1,
+      "nameCN": "建筑套件"
+    },
+    {
+      "id": 27,
+      "name": "Construction Tools",
+      "sName": "Construction Tools",
+      "type": 10,
+      "tier": 1,
+      "nameCN": "建筑工具"
+    },
+    {
+      "id": 28,
+      "name": "Fruits",
+      "sName": "Fruits",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "水果"
+    },
+    {
+      "id": 29,
+      "name": "Vegetables",
+      "sName": "Vegetables",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "蔬菜"
+    },
+    {
+      "id": 30,
+      "name": "Neoplast",
+      "sName": "Neoplast",
+      "type": 8,
+      "tier": 2,
+      "nameCN": "新塑料"
+    },
+    {
+      "id": 31,
+      "name": "Carbon",
+      "sName": "Carbon",
+      "type": 4,
+      "tier": 1,
+      "nameCN": "碳"
+    },
+    {
+      "id": 32,
+      "name": "Nitrogen",
+      "sName": "Nitrogen",
+      "type": 5,
+      "tier": 1,
+      "nameCN": "氮"
+    },
+    {
+      "id": 33,
+      "name": "Glass",
+      "sName": "Glass",
+      "type": 6,
+      "tier": 1,
+      "nameCN": "玻璃"
+    },
+    {
+      "id": 34,
+      "name": "Limestone",
+      "sName": "Limestone",
+      "type": 4,
+      "tier": 1,
+      "nameCN": "石灰石"
+    },
+    {
+      "id": 35,
+      "name": "Steel",
+      "sName": "Steel",
+      "type": 1,
+      "tier": 1,
+      "nameCN": "钢"
+    },
+    {
+      "id": 36,
+      "name": "Fertilizer",
+      "sName": "Fertilizer",
+      "type": 9,
+      "tier": 2,
+      "nameCN": "肥料"
+    },
+    {
+      "id": 37,
+      "name": "Cows",
+      "sName": "Cows",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "奶牛"
+    },
+    {
+      "id": 38,
+      "name": "Meat",
+      "sName": "Meat",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "肉类"
+    },
+    {
+      "id": 39,
+      "name": "Cotton",
+      "sName": "Cotton",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "棉花"
+    },
+    {
+      "id": 40,
+      "name": "Uranium Ore",
+      "sName": "Uranium Ore",
+      "type": 4,
+      "tier": 3,
+      "nameCN": "铀矿石"
+    },
+    {
+      "id": 41,
+      "name": "Flux",
+      "sName": "Flux",
+      "type": 9,
+      "tier": 1,
+      "nameCN": "助焊剂"
+    },
+    {
+      "id": 42,
+      "name": "Aluminium Ore",
+      "sName": "Aluminium Ore",
+      "type": 4,
+      "tier": 1,
+      "nameCN": "铝矿石"
+    },
+    {
+      "id": 43,
+      "name": "Aluminium",
+      "sName": "Aluminium",
+      "type": 1,
+      "tier": 1,
+      "nameCN": "铝"
+    },
+    {
+      "id": 44,
+      "name": "Workwear",
+      "sName": "Workwear",
+      "type": 7,
+      "tier": 1,
+      "nameCN": "工作服"
+    },
+    {
+      "id": 45,
+      "name": "Titanium Ore",
+      "sName": "Titanium Ore",
+      "type": 4,
+      "tier": 2,
+      "nameCN": "钛矿石"
+    },
+    {
+      "id": 46,
+      "name": "Titanium",
+      "sName": "Titanium",
+      "type": 1,
+      "tier": 2,
+      "nameCN": "钛"
+    },
+    {
+      "id": 47,
+      "name": "Furniture",
+      "sName": "Furniture",
+      "type": 6,
+      "tier": 1,
+      "nameCN": "家具"
+    },
+    {
+      "id": 48,
+      "name": "Wood",
+      "sName": "Wood",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "木材"
+    },
+    {
+      "id": 49,
+      "name": "Leather",
+      "sName": "Leather",
+      "type": 3,
+      "tier": 1,
+      "nameCN": "皮革"
+    },
+    {
+      "id": 50,
+      "name": "Fabric",
+      "sName": "Fabric",
+      "type": 8,
+      "tier": 1,
+      "nameCN": "织物"
+    },
+    {
+      "id": 51,
+      "name": "Coffee Beans",
+      "sName": "Coffee Beans",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "咖啡豆"
+    },
+    {
+      "id": 52,
+      "name": "Construction Vehicle",
+      "sName": "Construction Vehicle",
+      "type": 10,
+      "tier": 1,
+      "nameCN": "建筑车辆"
+    },
+    {
+      "id": 53,
+      "name": "Rubber",
+      "sName": "Rubber",
+      "type": 8,
+      "tier": 1,
+      "nameCN": "橡胶"
+    },
+    {
+      "id": 54,
+      "name": "Combustion Engine",
+      "sName": "Engine",
+      "type": 10,
+      "tier": 1,
+      "nameCN": "内燃机"
+    },
+    {
+      "id": 55,
+      "name": "Electric Motor",
+      "sName": "Motor",
+      "type": 10,
+      "tier": 2,
+      "nameCN": "电动机"
+    },
+    {
+      "id": 56,
+      "name": "Battery",
+      "sName": "Battery",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "电池"
+    },
+    {
+      "id": 57,
+      "name": "Ethanol",
+      "sName": "Ethanol",
+      "type": 9,
+      "tier": 1,
+      "nameCN": "乙醇"
+    },
+    {
+      "id": 58,
+      "name": "Lubricant",
+      "sName": "Lubricant",
+      "type": 9,
+      "tier": 1,
+      "nameCN": "润滑剂"
+    },
+    {
+      "id": 59,
+      "name": "Electronic Circuit",
+      "sName": "El. Circuit",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "电子电路"
+    },
+    {
+      "id": 60,
+      "name": "Lithium",
+      "sName": "Lithium",
+      "type": 1,
+      "tier": 2,
+      "nameCN": "锂"
+    },
+    {
+      "id": 61,
+      "name": "Sulfuric Acid",
+      "sName": "Sulfuric Acid",
+      "type": 9,
+      "tier": 2,
+      "nameCN": "硫酸"
+    },
+    {
+      "id": 62,
+      "name": "Copper Wire",
+      "sName": "Copper Wire",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "铜线"
+    },
+    {
+      "id": 63,
+      "name": "Consumer Electronics",
+      "sName": "Electronics",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "消费电子产品"
+    },
+    {
+      "id": 64,
+      "name": "Research Data",
+      "sName": "Research",
+      "type": 12,
+      "tier": 1,
+      "nameCN": "研究数据"
+    },
+    {
+      "id": 65,
+      "name": "Advanced Research Data",
+      "sName": "Advanced Research",
+      "type": 12,
+      "tier": 2,
+      "nameCN": "高级研究数据"
+    },
+    {
+      "id": 66,
+      "name": "Office Supplies",
+      "sName": "Office Supplies",
+      "type": 6,
+      "tier": 1,
+      "nameCN": "办公用品"
+    },
+    {
+      "id": 67,
+      "name": "Aeridium Ore",
+      "sName": "Aeridium Ore",
+      "type": 4,
+      "tier": 3,
+      "nameCN": "气态矿石"
+    },
+    {
+      "id": 68,
+      "name": "Pipes",
+      "sName": "Pipes",
+      "type": 6,
+      "tier": 1,
+      "nameCN": "管道"
+    },
+    {
+      "id": 69,
+      "name": "Argon",
+      "sName": "Argon",
+      "type": 5,
+      "tier": 2,
+      "nameCN": "氩"
+    },
+    {
+      "id": 70,
+      "name": "Kryon",
+      "sName": "Kryon",
+      "type": 5,
+      "tier": 4,
+      "nameCN": "氪离子"
+    },
+    {
+      "id": 71,
+      "name": "Coolant",
+      "sName": "Coolant",
+      "type": 9,
+      "tier": 2,
+      "nameCN": "冷却剂"
+    },
+    {
+      "id": 72,
+      "name": "Epoxy",
+      "sName": "Epoxy",
+      "type": 9,
+      "tier": 2,
+      "nameCN": "环氧树脂"
+    },
+    {
+      "id": 73,
+      "name": "Fission Fuel",
+      "sName": "Fission Fuel",
+      "type": 13,
+      "tier": 3,
+      "nameCN": "裂变燃料"
+    },
+    {
+      "id": 74,
+      "name": "Kevlar",
+      "sName": "Kevlar",
+      "type": 8,
+      "tier": 2,
+      "nameCN": "凯夫拉"
+    },
+    {
+      "id": 75,
+      "name": "Platinum Ore",
+      "sName": "Platinum Ore",
+      "type": 4,
+      "tier": 3,
+      "nameCN": "铂矿石"
+    },
+    {
+      "id": 76,
+      "name": "Platinum",
+      "sName": "Platinum",
+      "type": 1,
+      "tier": 3,
+      "nameCN": "铂"
+    },
+    {
+      "id": 77,
+      "name": "Graphene",
+      "sName": "Graphene",
+      "type": 6,
+      "tier": 3,
+      "nameCN": "石墨烯"
+    },
+    {
+      "id": 78,
+      "name": "Carbon Nanotubes",
+      "sName": "Carbon Nanotubes",
+      "type": 6,
+      "tier": 3,
+      "nameCN": "碳纳米管"
+    },
+    {
+      "id": 79,
+      "name": "Aerogel",
+      "sName": "Aerogel",
+      "type": 9,
+      "tier": 2,
+      "nameCN": "气凝胶"
+    },
+    {
+      "id": 80,
+      "name": "Graphenium Wire",
+      "sName": "Graphenium Wire",
+      "type": 11,
+      "tier": 4,
+      "nameCN": "石墨烯合金线"
+    },
+    {
+      "id": 81,
+      "name": "Radiation Shielding",
+      "sName": "Radiation Shielding",
+      "type": 13,
+      "tier": 3,
+      "nameCN": "辐射屏蔽"
+    },
+    {
+      "id": 82,
+      "name": "Life Support System",
+      "sName": "Life Support System",
+      "type": 10,
+      "tier": 2,
+      "nameCN": "生命支持系统"
+    },
+    {
+      "id": 83,
+      "name": "Reinforced Glass",
+      "sName": "Reinforced Glass",
+      "type": 6,
+      "tier": 2,
+      "nameCN": "强化玻璃"
+    },
+    {
+      "id": 84,
+      "name": "Color Compound",
+      "sName": "Color Compound",
+      "type": 9,
+      "tier": 1,
+      "nameCN": "颜色化合物"
+    },
+    {
+      "id": 85,
+      "name": "Spectra Modulator",
+      "sName": "Spectra Modulator",
+      "type": 7,
+      "tier": 3,
+      "nameCN": "光谱调制器"
+    },
+    {
+      "id": 86,
+      "name": "Mining Vehicle",
+      "sName": "Mining Vehicle",
+      "type": 10,
+      "tier": 2,
+      "nameCN": "采矿车辆"
+    },
+    {
+      "id": 87,
+      "name": "Drill",
+      "sName": "Drill",
+      "type": 10,
+      "tier": 1,
+      "nameCN": "钻头"
+    },
+    {
+      "id": 88,
+      "name": "Chickens",
+      "sName": "Chickens",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "鸡"
+    },
+    {
+      "id": 89,
+      "name": "Insulation Panels",
+      "sName": "Insulation Panels",
+      "type": 6,
+      "tier": 2,
+      "nameCN": "隔热板"
+    },
+    {
+      "id": 90,
+      "name": "Pressure Sealant Kit",
+      "sName": "Pressure Sealant",
+      "type": 2,
+      "tier": 2,
+      "nameCN": "压力密封套件"
+    },
+    {
+      "id": 91,
+      "name": "Structural Elements",
+      "sName": "Structural Elements",
+      "type": 2,
+      "tier": 2,
+      "nameCN": "结构元件"
+    },
+    {
+      "id": 92,
+      "name": "Prefab Kit",
+      "sName": "Prefab Kit",
+      "type": 2,
+      "tier": 1,
+      "nameCN": "预制套件"
+    },
+    {
+      "id": 93,
+      "name": "Amenities",
+      "sName": "Amenities",
+      "type": 2,
+      "tier": 1,
+      "nameCN": "便利设施"
+    },
+    {
+      "id": 94,
+      "name": "Advanced Construction Kit",
+      "sName": "Advanced Constr. Kit",
+      "type": 2,
+      "tier": 3,
+      "nameCN": "高级建筑套件"
+    },
+    {
+      "id": 95,
+      "name": "Apex Structural Elements",
+      "sName": "Apex Struct. Element",
+      "type": 2,
+      "tier": 4,
+      "nameCN": "顶点结构元件"
+    },
+    {
+      "id": 96,
+      "name": "Advanced Prefab Kit",
+      "sName": "Advanced Prefab Kit",
+      "type": 2,
+      "tier": 3,
+      "nameCN": "高级预制套件"
+    },
+    {
+      "id": 97,
+      "name": "Advanced Amenities",
+      "sName": "Advanced Amenities",
+      "type": 2,
+      "tier": 3,
+      "nameCN": "高级便利设施"
+    },
+    {
+      "id": 98,
+      "name": "Truss",
+      "sName": "Truss",
+      "type": 6,
+      "tier": 1,
+      "nameCN": "桁架"
+    },
+    {
+      "id": 99,
+      "name": "Composite Truss",
+      "sName": "Composite Truss",
+      "type": 6,
+      "tier": 2,
+      "nameCN": "复合桁架"
+    },
+    {
+      "id": 100,
+      "name": "Titanium Carbide Drill",
+      "sName": "TiC Drill",
+      "type": 10,
+      "tier": 3,
+      "nameCN": "碳化钛钻头"
+    },
+    {
+      "id": 101,
+      "name": "Hydrogen Generator",
+      "sName": "Hydrogen Generator",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "氢气发生器"
+    },
+    {
+      "id": 102,
+      "name": "Control Console",
+      "sName": "Console",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "控制台"
+    },
+    {
+      "id": 103,
+      "name": "Ship Interior Kit",
+      "sName": "Ship Interior Kit",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "飞船内部套件"
+    },
+    {
+      "id": 104,
+      "name": "Hull Plate",
+      "sName": "Hull Plate",
+      "type": 13,
+      "tier": 1,
+      "nameCN": "船体板"
+    },
+    {
+      "id": 105,
+      "name": "Cargo Bay Segment",
+      "sName": "Cargo Bay",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "货舱段"
+    },
+    {
+      "id": 106,
+      "name": "Fuel Tank Segment",
+      "sName": "Fuel Tank",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "燃料箱段"
+    },
+    {
+      "id": 107,
+      "name": "Pump",
+      "sName": "Pump",
+      "type": 10,
+      "tier": 2,
+      "nameCN": "泵"
+    },
+    {
+      "id": 108,
+      "name": "Welding Kit",
+      "sName": "Welding Kit",
+      "type": 10,
+      "tier": 1,
+      "nameCN": "焊接套件"
+    },
+    {
+      "id": 109,
+      "name": "Linear FTL Emitter",
+      "sName": "Linear Emitter",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "线性FTL发射器"
+    },
+    {
+      "id": 110,
+      "name": "Hydrogen Fuel",
+      "sName": "Hydrogen Fuel",
+      "type": 13,
+      "tier": 1,
+      "nameCN": "氢燃料"
+    },
+    {
+      "id": 111,
+      "name": "Heat Shielding",
+      "sName": "Heat Shielding",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "热屏蔽"
+    },
+    {
+      "id": 112,
+      "name": "Advanced Circuit Board",
+      "sName": "ACB",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "高级电路板"
+    },
+    {
+      "id": 113,
+      "name": "Ship Repair Kit",
+      "sName": "Repair Kit",
+      "type": 13,
+      "tier": 1,
+      "nameCN": "飞船维修套件"
+    },
+    {
+      "id": 114,
+      "name": "Starglass Hull Plate",
+      "sName": "Starglass Plate",
+      "type": 13,
+      "tier": 4,
+      "nameCN": "星玻璃船体板"
+    },
+    {
+      "id": 115,
+      "name": "FTL Field Controller",
+      "sName": "FTL FC",
+      "type": 11,
+      "tier": 3,
+      "nameCN": "FTL场控制器"
+    },
+    {
+      "id": 116,
+      "name": "Sensor Array",
+      "sName": "Sensor Array",
+      "type": 11,
+      "tier": 3,
+      "nameCN": "传感器阵列"
+    },
+    {
+      "id": 117,
+      "name": "Cooling System",
+      "sName": "Cooling",
+      "type": 10,
+      "tier": 2,
+      "nameCN": "冷却系统"
+    },
+    {
+      "id": 118,
+      "name": "Shuttle Bridge",
+      "sName": "Shuttle Bridge",
+      "type": 13,
+      "tier": 2,
+      "nameCN": "穿梭机桥"
+    },
+    {
+      "id": 119,
+      "name": "VR Headset",
+      "sName": "VR Headset",
+      "type": 11,
+      "tier": 3,
+      "nameCN": "VR头显"
+    },
+    {
+      "id": 120,
+      "name": "Composite Shielding",
+      "sName": "Composite Shielding",
+      "type": 2,
+      "tier": 3,
+      "nameCN": "复合屏蔽"
+    },
+    {
+      "id": 121,
+      "name": "Nanoweave Shielding",
+      "sName": "Nanoweave Shielding",
+      "type": 2,
+      "tier": 4,
+      "nameCN": "纳米编织屏蔽"
+    },
+    {
+      "id": 122,
+      "name": "Durablend",
+      "sName": "Durablend",
+      "type": 6,
+      "tier": 2,
+      "nameCN": "耐久混合材料"
+    },
+    {
+      "id": 123,
+      "name": "Neoplast Sheet",
+      "sName": "Neoplast Sheet",
+      "type": 8,
+      "tier": 2,
+      "nameCN": "新塑料板"
+    },
+    {
+      "id": 124,
+      "name": "Transistor",
+      "sName": "Transistor",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "晶体管"
+    },
+    {
+      "id": 125,
+      "name": "Chip",
+      "sName": "Chip",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "芯片"
+    },
+    {
+      "id": 126,
+      "name": "Silicon Wafer",
+      "sName": "Silicon Wafer",
+      "type": 11,
+      "tier": 2,
+      "nameCN": "硅片"
+    },
+    {
+      "id": 127,
+      "name": "Apex Research Data",
+      "sName": "Apex Research",
+      "type": 12,
+      "tier": 3,
+      "nameCN": "顶点研究数据"
+    },
+    {
+      "id": 128,
+      "name": "Honeycaps",
+      "sName": "Honeycaps",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "蜜帽"
+    },
+    {
+      "id": 129,
+      "name": "Sugar",
+      "sName": "Sugar",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "糖"
+    },
+    {
+      "id": 130,
+      "name": "Pie",
+      "sName": "Pie",
+      "type": 7,
+      "tier": 2,
+      "nameCN": "派"
+    },
+    {
+      "id": 131,
+      "name": "Eggs",
+      "sName": "Eggs",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "鸡蛋"
+    },
+    {
+      "id": 132,
+      "name": "Modern Prefab Kit",
+      "sName": "Modern Prefab Kit",
+      "type": 2,
+      "tier": 2,
+      "nameCN": "现代预制套件"
+    },
+    {
+      "id": 133,
+      "name": "Fission Reactor",
+      "sName": "Fission Reactor",
+      "type": 13,
+      "tier": 3,
+      "nameCN": "裂变反应堆"
+    },
+    {
+      "id": 134,
+      "name": "Quantum FTL Emitter",
+      "sName": "Quantum Emitter",
+      "type": 13,
+      "tier": 3,
+      "nameCN": "量子FTL发射器"
+    },
+    {
+      "id": 135,
+      "name": "Aeridium",
+      "sName": "Aeridium",
+      "type": 1,
+      "tier": 3,
+      "nameCN": "气态矿"
+    },
+    {
+      "id": 136,
+      "name": "Tiridium Alloy",
+      "sName": "Tiridium",
+      "type": 1,
+      "tier": 3,
+      "nameCN": "钛铱合金"
+    },
+    {
+      "id": 137,
+      "name": "Tiridium Hull Plate",
+      "sName": "Tiridium Plate",
+      "type": 13,
+      "tier": 3,
+      "nameCN": "钛铱船体板"
+    },
+    {
+      "id": 138,
+      "name": "AICore",
+      "sName": "AICore",
+      "type": 11,
+      "tier": 4,
+      "nameCN": "AI核心"
+    },
+    {
+      "id": 139,
+      "name": "Hauler Bridge",
+      "sName": "Hauler Bridge",
+      "type": 13,
+      "tier": 3,
+      "nameCN": "运输机桥"
+    },
+    {
+      "id": 140,
+      "name": "Mainframe",
+      "sName": "Mainframe",
+      "type": 11,
+      "tier": 3,
+      "nameCN": "大型机"
+    },
+    {
+      "id": 141,
+      "name": "Nanopolyne",
+      "sName": "Nanopolyne",
+      "type": 8,
+      "tier": 3,
+      "nameCN": "纳米聚合物"
+    },
+    {
+      "id": 142,
+      "name": "Nanoweave",
+      "sName": "Nanoweave",
+      "type": 8,
+      "tier": 3,
+      "nameCN": "纳米编织"
+    },
+    {
+      "id": 143,
+      "name": "Drone",
+      "sName": "Drone",
+      "type": 10,
+      "tier": 2,
+      "nameCN": "无人机"
+    },
+    {
+      "id": 144,
+      "name": "Apex Prefab Kit",
+      "sName": "Apex Prefab Kit",
+      "type": 2,
+      "tier": 4,
+      "nameCN": "顶点预制套件"
+    },
+    {
+      "id": 145,
+      "name": "Cohesilite",
+      "sName": "Cohesilite",
+      "type": 6,
+      "tier": 3,
+      "nameCN": "凝聚石"
+    },
+    {
+      "id": 146,
+      "name": "Operating System",
+      "sName": "Operating System",
+      "type": 12,
+      "tier": 3,
+      "nameCN": "操作系统"
+    },
+    {
+      "id": 147,
+      "name": "Artificial Intelligence",
+      "sName": "AI",
+      "type": 12,
+      "tier": 3,
+      "nameCN": "人工智能"
+    },
+    {
+      "id": 148,
+      "name": "AI Training Data",
+      "sName": "Training Data",
+      "type": 12,
+      "tier": 3,
+      "nameCN": "AI训练数据"
+    },
+    {
+      "id": 149,
+      "name": "Antimatter",
+      "sName": "Antimatter",
+      "type": 13,
+      "tier": 4,
+      "nameCN": "反物质"
+    },
+    {
+      "id": 150,
+      "name": "Antimatter Reactor",
+      "sName": "Antimatter Reactor",
+      "type": 13,
+      "tier": 4,
+      "nameCN": "反物质反应堆"
+    },
+    {
+      "id": 151,
+      "name": "Antimatter Containment",
+      "sName": "Antimatter Cont.",
+      "type": 10,
+      "tier": 4,
+      "nameCN": "反物质容器"
+    },
+    {
+      "id": 152,
+      "name": "Superconducting Coil",
+      "sName": "SuperCoil",
+      "type": 11,
+      "tier": 4,
+      "nameCN": "超导线圈"
+    },
+    {
+      "id": 153,
+      "name": "Gourmet Rations",
+      "sName": "Gourmet Rations",
+      "type": 7,
+      "tier": 3,
+      "nameCN": "美食口粮"
+    },
+    {
+      "id": 154,
+      "name": "Exotic Spices",
+      "sName": "Exotic Spices",
+      "type": 3,
+      "tier": 3,
+      "nameCN": "异域香料"
+    },
+    {
+      "id": 155,
+      "name": "Lobster",
+      "sName": "Lobster",
+      "type": 3,
+      "tier": 3,
+      "nameCN": "龙虾"
+    },
+    {
+      "id": 156,
+      "name": "Herbs",
+      "sName": "Herbs",
+      "type": 3,
+      "tier": 2,
+      "nameCN": "草药"
+    },
+    {
+      "id": 157,
+      "name": "Rejuvaline",
+      "sName": "Rejuvaline",
+      "type": 7,
+      "tier": 3,
+      "nameCN": "再生液"
+    },
+    {
+      "id": 158,
+      "name": "Vitaqua",
+      "sName": "Vitaqua",
+      "type": 7,
+      "tier": 2,
+      "nameCN": "维他水"
+    },
+    {
+      "id": 159,
+      "name": "Quadranium",
+      "sName": "Quadranium",
+      "type": 6,
+      "tier": 4,
+      "nameCN": "四元合金"
+    },
+    {
+      "id": 160,
+      "name": "Extra-dimensional FTL Emitter",
+      "sName": "4D Emitter",
+      "type": 13,
+      "tier": 4,
+      "nameCN": "超维度FTL发射器"
+    },
+    {
+      "id": 161,
+      "name": "Industrial Machinery",
+      "sName": "Industrial Machinery",
+      "type": 2,
+      "tier": 3,
+      "nameCN": "工业机械"
+    },
+    {
+      "id": 162,
+      "name": "Biopolyne",
+      "sName": "Biopolyne",
+      "type": 8,
+      "tier": 4,
+      "nameCN": "生物聚合物"
+    },
+    {
+      "id": 163,
+      "name": "Nanites",
+      "sName": "Nanites",
+      "type": 7,
+      "tier": 4,
+      "nameCN": "纳米机器人"
+    },
+    {
+      "id": 164,
+      "name": "Quantum Research Data",
+      "sName": "Quantum Research",
+      "type": 12,
+      "tier": 4,
+      "nameCN": "量子研究数据"
+    },
+    {
+      "id": 165,
+      "name": "Filtration System",
+      "sName": "Filtration System",
+      "type": 10,
+      "tier": 3,
+      "nameCN": "过滤系统"
+    },
+    {
+      "id": 166,
+      "name": "Freighter Bridge",
+      "sName": "Freighter Bridge",
+      "type": 13,
+      "tier": 4,
+      "nameCN": "货船桥"
+    },
+    {
+      "id": 167,
+      "name": "Neural Interface",
+      "sName": "Neural Interface",
+      "type": 11,
+      "tier": 4,
+      "nameCN": "神经接口"
+    },
+    {
+      "id": 168,
+      "name": "TEMP",
+      "sName": "TEMP",
+      "type": 0,
+      "tier": 2,
+      "nameCN": "临时"
+    },
+    {
+      "id": 169,
+      "name": "Advanced Processing Unit",
+      "sName": "APU",
+      "type": 11,
+      "tier": 3,
+      "nameCN": "高级处理单元"
+    },
+    {
+      "id": 170,
+      "name": "Starglass",
+      "sName": "Starglass",
+      "type": 6,
+      "tier": 4,
+      "nameCN": "星玻璃"
+    },
+    {
+      "id": 171,
+      "name": "Starlifter Structural Elements",
+      "sName": "Starlifter Elements",
+      "type": 13,
+      "tier": 4,
+      "nameCN": "星际运输机结构元件"
+    },
+    {
+      "id": 172,
+      "name": "Graphenium",
+      "sName": "Graphenium",
+      "type": 6,
+      "tier": 4,
+      "nameCN": "石墨烯合金"
+    },
+    {
+      "id": 173,
+      "name": "Quantum Mainframe",
+      "sName": "Quantum Mainframe",
+      "type": 11,
+      "tier": 4,
+      "nameCN": "量子大型机"
+    },
+    {
+      "id": 174,
+      "name": "Field Cooling System",
+      "sName": "Field Cooling",
+      "type": 10,
+      "tier": 4,
+      "nameCN": "场冷却系统"
+    },
+    {
+      "id": 175,
+      "name": "Bio-Nutrient Blend",
+      "sName": "Nutrient Blend",
+      "type": 9,
+      "tier": 3,
+      "nameCN": "生物营养混合物"
+    },
+    {
+      "id": 176,
+      "name": "Medicine Shipment",
+      "sName": "Medicine",
+      "type": 14,
+      "tier": 9,
+      "nameCN": "货物（药品）"
+    },
+    {
+      "id": 177,
+      "name": "Food Shipment",
+      "sName": "Food Shipment",
+      "type": 14,
+      "tier": 9,
+      "nameCN": "货物（食品）"
+    },
+    {
+      "id": 178,
+      "name": "Ship Parts Shipment",
+      "sName": "Ship Parts",
+      "type": 14,
+      "tier": 9,
+      "nameCN": "货物（飞船零件）"
+    },
+    {
+      "id": 179,
+      "name": "Defense systems pack",
+      "sName": "Defense pack",
+      "type": 14,
+      "tier": 9,
+      "nameCN": "防御系统包"
+    },
+    {
+      "id": 180,
+      "name": "Habitats shipment",
+      "sName": "Habitats",
+      "type": 14,
+      "tier": 9,
+      "nameCN": "货物（栖息地？）"
+    },
+    {
+      "id": 181,
+      "name": "Scientific Instruments Shipment",
+      "sName": "Scientific Shipment",
+      "type": 14,
+      "tier": 9,
+      "nameCN": "货物（科研仪器）"
+    }
+  ]
+}

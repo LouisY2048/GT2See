@@ -1,0 +1,1702 @@
+{
+  "total": 42,
+  "buildings": [
+    {
+      "id": 1,
+      "name": "Mine",
+      "description": "Extracts solid resources.",
+      "cost": 500,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 1
+        },
+        {
+          "id": 26,
+          "am": 5
+        },
+        {
+          "id": 92,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        70,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 4,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        1,
+        2,
+        3,
+        24,
+        36,
+        39
+      ],
+      "nameCN": "矿场",
+      "specializationCN": "资源开采"
+    },
+    {
+      "id": 2,
+      "name": "Smelter",
+      "description": "",
+      "cost": 2000,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 92,
+          "am": 6
+        }
+      ],
+      "workersNeeded": [
+        60,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 5,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        5,
+        6,
+        20,
+        25,
+        40,
+        196
+      ],
+      "nameCN": "冶炼厂",
+      "specializationCN": "冶金"
+    },
+    {
+      "id": 3,
+      "name": "Pump",
+      "description": "Extracts liquid resources.",
+      "cost": 1500,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 1
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        50,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 4,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        10
+      ],
+      "nameCN": "泵",
+      "specializationCN": "资源开采"
+    },
+    {
+      "id": 4,
+      "name": "Colony Barracks",
+      "description": "",
+      "cost": 800,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 4
+        },
+        {
+          "id": 26,
+          "am": 2
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": null,
+      "workersHousing": [
+        125,
+        0,
+        0,
+        0
+      ],
+      "specialization": 0,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": null,
+      "nameCN": "殖民地兵营",
+      "specializationCN": "无"
+    },
+    {
+      "id": 5,
+      "name": "Gas Collector",
+      "description": "Extracts gaseous resources.",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 1
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        50,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 4,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        4,
+        14,
+        18,
+        76
+      ],
+      "nameCN": "气体收集器",
+      "specializationCN": "资源开采"
+    },
+    {
+      "id": 6,
+      "name": "Prefab Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        75,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 1,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        7,
+        95,
+        96,
+        107,
+        133,
+        143,
+        144,
+        150
+      ],
+      "nameCN": "预制件厂",
+      "specializationCN": "建筑"
+    },
+    {
+      "id": 7,
+      "name": "Refinery",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        60,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 6,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        8,
+        37,
+        38,
+        48,
+        56,
+        58,
+        59,
+        89
+      ],
+      "nameCN": "精炼厂",
+      "specializationCN": "化学"
+    },
+    {
+      "id": 8,
+      "name": "Food Processing Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 4
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        75,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 8,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        9,
+        11,
+        29,
+        33,
+        34,
+        137
+      ],
+      "nameCN": "食品加工厂",
+      "specializationCN": "食品生产"
+    },
+    {
+      "id": 9,
+      "name": "Headquarters",
+      "description": "The nerve center of your operations. A unique structure that can be relocated to any company base. Upgrade to enable colonization of additional planets.",
+      "cost": 500,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 5
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 6
+        }
+      ],
+      "workersNeeded": null,
+      "workersHousing": null,
+      "specialization": 0,
+      "tier": 0,
+      "requiredResearch": 0,
+      "recipesIds": null,
+      "nameCN": "总部",
+      "specializationCN": "无"
+    },
+    {
+      "id": 10,
+      "name": "Farm",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 5
+        },
+        {
+          "id": 92,
+          "am": 3
+        }
+      ],
+      "workersNeeded": [
+        50,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 3,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        21,
+        22,
+        27,
+        28,
+        30,
+        35,
+        47,
+        60
+      ],
+      "nameCN": "农场",
+      "specializationCN": "农业"
+    },
+    {
+      "id": 11,
+      "name": "Assembly Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        80,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 2,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        15,
+        19,
+        55,
+        57,
+        69,
+        75,
+        91,
+        106,
+        194
+      ],
+      "nameCN": "装配厂",
+      "specializationCN": "制造"
+    },
+    {
+      "id": 12,
+      "name": "Polymer Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 132,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        35,
+        35,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 6,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        16,
+        87,
+        88,
+        112,
+        128,
+        129
+      ],
+      "nameCN": "聚合物工厂",
+      "specializationCN": "化学"
+    },
+    {
+      "id": 13,
+      "name": "Chemical Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 3
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 132,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        60,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 6,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        26,
+        61,
+        62,
+        63,
+        78,
+        79,
+        80,
+        174,
+        192
+      ],
+      "nameCN": "化工厂",
+      "specializationCN": "化学"
+    },
+    {
+      "id": 14,
+      "name": "Warehouse",
+      "description": "Increases base warehouse capacity by 1500t per level",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 6
+        }
+      ],
+      "workersNeeded": null,
+      "workersHousing": null,
+      "specialization": 0,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": null,
+      "nameCN": "仓库",
+      "specializationCN": "无"
+    },
+    {
+      "id": 15,
+      "name": "Textile Mill",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 3
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        75,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 2,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        50,
+        51,
+        52,
+        82,
+        97
+      ],
+      "nameCN": "纺织厂",
+      "specializationCN": "制造"
+    },
+    {
+      "id": 16,
+      "name": "Advanced Assembly Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 4
+        },
+        {
+          "id": 132,
+          "am": 7
+        }
+      ],
+      "workersNeeded": [
+        0,
+        75,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 2,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        44,
+        46,
+        90,
+        92,
+        103,
+        104,
+        114,
+        116,
+        121,
+        122
+      ],
+      "nameCN": "高级装配厂",
+      "specializationCN": "制造"
+    },
+    {
+      "id": 17,
+      "name": "Ranch",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        50,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 3,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        31,
+        32,
+        49,
+        72,
+        139,
+        186
+      ],
+      "nameCN": "牧场",
+      "specializationCN": "农业"
+    },
+    {
+      "id": 18,
+      "name": "Survey Station",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 3
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        70,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 10,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        68,
+        70,
+        71,
+        94
+      ],
+      "nameCN": "勘探站",
+      "specializationCN": "科学"
+    },
+    {
+      "id": 19,
+      "name": "Orchard",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 4
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 4
+        },
+        {
+          "id": 132,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        0,
+        75,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 3,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        53,
+        136,
+        140,
+        141,
+        142,
+        171
+      ],
+      "nameCN": "果园",
+      "specializationCN": "农业"
+    },
+    {
+      "id": 20,
+      "name": "Laboratory",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 4
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 132,
+          "am": 6
+        }
+      ],
+      "workersNeeded": [
+        0,
+        70,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 10,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        81,
+        134
+      ],
+      "nameCN": "实验室",
+      "specializationCN": "科学"
+    },
+    {
+      "id": 21,
+      "name": "Residential Complex",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 6
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 92,
+          "am": 5
+        },
+        {
+          "id": 91,
+          "am": 3
+        }
+      ],
+      "workersNeeded": null,
+      "workersHousing": [
+        0,
+        100,
+        0,
+        0
+      ],
+      "specialization": 0,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": null,
+      "nameCN": "住宅综合体",
+      "specializationCN": "无"
+    },
+    {
+      "id": 22,
+      "name": "Comfort Quarters",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 97,
+          "am": 5
+        },
+        {
+          "id": 94,
+          "am": 2
+        },
+        {
+          "id": 96,
+          "am": 4
+        }
+      ],
+      "workersNeeded": null,
+      "workersHousing": [
+        0,
+        0,
+        80,
+        0
+      ],
+      "specialization": 0,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": null,
+      "nameCN": "舒适宿舍",
+      "specializationCN": "无"
+    },
+    {
+      "id": 23,
+      "name": "Stellar Suites",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 97,
+          "am": 6
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 95,
+          "am": 2
+        },
+        {
+          "id": 144,
+          "am": 5
+        }
+      ],
+      "workersNeeded": null,
+      "workersHousing": [
+        0,
+        0,
+        0,
+        70
+      ],
+      "specialization": 0,
+      "tier": 4,
+      "requiredResearch": 0,
+      "recipesIds": null,
+      "nameCN": "星际套房",
+      "specializationCN": "无"
+    },
+    {
+      "id": 24,
+      "name": "Semiconductor Foundry",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 132,
+          "am": 6
+        }
+      ],
+      "workersNeeded": [
+        0,
+        75,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 7,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        45,
+        66,
+        99,
+        130,
+        132,
+        193,
+        197
+      ],
+      "nameCN": "半导体铸造厂",
+      "specializationCN": "电子"
+    },
+    {
+      "id": 25,
+      "name": "Electronics Factory",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 2
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 132,
+          "am": 6
+        }
+      ],
+      "workersNeeded": [
+        40,
+        40,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 7,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        64,
+        67,
+        111,
+        115,
+        118,
+        119,
+        163
+      ],
+      "nameCN": "电子工厂",
+      "specializationCN": "电子"
+    },
+    {
+      "id": 26,
+      "name": "Welding Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 1
+        },
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 92,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        60,
+        0,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 5,
+      "tier": 1,
+      "requiredResearch": 0,
+      "recipesIds": [
+        65,
+        73,
+        74,
+        109
+      ],
+      "nameCN": "焊接厂",
+      "specializationCN": "冶金"
+    },
+    {
+      "id": 27,
+      "name": "Quarry Complex",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 26,
+          "am": 5
+        },
+        {
+          "id": 91,
+          "am": 6
+        },
+        {
+          "id": 132,
+          "am": 2
+        }
+      ],
+      "workersNeeded": [
+        40,
+        40,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 4,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        12,
+        42,
+        83,
+        148,
+        149,
+        151
+      ],
+      "nameCN": "采石场综合体",
+      "specializationCN": "资源开采"
+    },
+    {
+      "id": 28,
+      "name": "Science Institute",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 97,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 2
+        },
+        {
+          "id": 96,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        70,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 10,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        105,
+        135,
+        166,
+        167,
+        168
+      ],
+      "nameCN": "科学研究所",
+      "specializationCN": "科学"
+    },
+    {
+      "id": 29,
+      "name": "Advanced Prefab Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 26,
+          "am": 4
+        },
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 132,
+          "am": 6
+        }
+      ],
+      "workersNeeded": [
+        0,
+        75,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 1,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        23,
+        108,
+        110,
+        113,
+        124,
+        125,
+        126,
+        127,
+        155,
+        177,
+        183
+      ],
+      "nameCN": "高级预制件厂",
+      "specializationCN": "建筑"
+    },
+    {
+      "id": 30,
+      "name": "Shipyard",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 161,
+          "am": 4
+        },
+        {
+          "id": 144,
+          "am": 3
+        },
+        {
+          "id": 95,
+          "am": 8
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "workersHousing": null,
+      "specialization": 2,
+      "tier": 4,
+      "requiredResearch": 0,
+      "recipesIds": [
+        169,
+        182,
+        185
+      ],
+      "nameCN": "船厂",
+      "specializationCN": "制造"
+    },
+    {
+      "id": 31,
+      "name": "Micronics Factory",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 97,
+          "am": 2
+        },
+        {
+          "id": 94,
+          "am": 2
+        },
+        {
+          "id": 96,
+          "am": 6
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        75,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 7,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        98,
+        117,
+        120,
+        145,
+        147,
+        156
+      ],
+      "nameCN": "微电子工厂",
+      "specializationCN": "电子"
+    },
+    {
+      "id": 32,
+      "name": "Advanced Materials Lab",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 4
+        },
+        {
+          "id": 161,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 4
+        },
+        {
+          "id": 96,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        40,
+        40,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 5,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        100,
+        152,
+        153,
+        188
+      ],
+      "nameCN": "高级材料实验室",
+      "specializationCN": "冶金"
+    },
+    {
+      "id": 33,
+      "name": "Exotic Matter Lab",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 161,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 144,
+          "am": 5
+        },
+        {
+          "id": 95,
+          "am": 3
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        0,
+        60
+      ],
+      "workersHousing": null,
+      "specialization": 6,
+      "tier": 4,
+      "requiredResearch": 0,
+      "recipesIds": [
+        17,
+        93,
+        162,
+        178,
+        187
+      ],
+      "nameCN": "奇异物质实验室",
+      "specializationCN": "化学"
+    },
+    {
+      "id": 34,
+      "name": "Aquaponics Farm",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 97,
+          "am": 2
+        },
+        {
+          "id": 94,
+          "am": 4
+        },
+        {
+          "id": 96,
+          "am": 3
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        75,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 3,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        170,
+        172
+      ],
+      "nameCN": "鱼菜共生农场",
+      "specializationCN": "农业"
+    },
+    {
+      "id": 35,
+      "name": "Robotics Facility",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 161,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 96,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        75,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 2,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        41,
+        101,
+        102,
+        146,
+        159,
+        181,
+        191
+      ],
+      "nameCN": "机器人设施",
+      "specializationCN": "制造"
+    },
+    {
+      "id": 36,
+      "name": "Culinary Studio",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 93,
+          "am": 5
+        },
+        {
+          "id": 26,
+          "am": 3
+        },
+        {
+          "id": 91,
+          "am": 2
+        },
+        {
+          "id": 132,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        70,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 8,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        54,
+        138,
+        173,
+        175
+      ],
+      "nameCN": "烹饪工作室",
+      "specializationCN": "食品生产"
+    },
+    {
+      "id": 37,
+      "name": "Apex Prefab Plant",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 161,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 96,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        80,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 1,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        123,
+        154,
+        164,
+        165,
+        195
+      ],
+      "nameCN": "顶点预制件厂",
+      "specializationCN": "建筑"
+    },
+    {
+      "id": 38,
+      "name": "Quantum Nexus",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 97,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 144,
+          "am": 4
+        },
+        {
+          "id": 95,
+          "am": 3
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        0,
+        80
+      ],
+      "workersHousing": null,
+      "specialization": 10,
+      "tier": 4,
+      "requiredResearch": 0,
+      "recipesIds": [
+        180,
+        189
+      ],
+      "nameCN": "量子枢纽",
+      "specializationCN": "科学"
+    },
+    {
+      "id": 39,
+      "name": "Advanced Gas Collector",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 5
+        },
+        {
+          "id": 161,
+          "am": 2
+        },
+        {
+          "id": 94,
+          "am": 4
+        },
+        {
+          "id": 96,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        40,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 4,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        13,
+        77
+      ],
+      "nameCN": "高级气体收集器",
+      "specializationCN": "资源开采"
+    },
+    {
+      "id": 40,
+      "name": "Foundry",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 26,
+          "am": 5
+        },
+        {
+          "id": 91,
+          "am": 5
+        },
+        {
+          "id": 132,
+          "am": 5
+        }
+      ],
+      "workersNeeded": [
+        0,
+        75,
+        0,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 5,
+      "tier": 2,
+      "requiredResearch": 0,
+      "recipesIds": [
+        43,
+        84,
+        131
+      ],
+      "nameCN": "铸造厂",
+      "specializationCN": "冶金"
+    },
+    {
+      "id": 41,
+      "name": "Nanomaterial Lab",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 91,
+          "am": 3
+        },
+        {
+          "id": 161,
+          "am": 2
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 96,
+          "am": 4
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        75,
+        0
+      ],
+      "workersHousing": null,
+      "specialization": 6,
+      "tier": 3,
+      "requiredResearch": 0,
+      "recipesIds": [
+        85,
+        86,
+        158,
+        160,
+        161
+      ],
+      "nameCN": "纳米材料实验室",
+      "specializationCN": "化学"
+    },
+    {
+      "id": 42,
+      "name": "Quantum Factory",
+      "description": "",
+      "cost": 0,
+      "constructionMaterials": [
+        {
+          "id": 161,
+          "am": 3
+        },
+        {
+          "id": 94,
+          "am": 3
+        },
+        {
+          "id": 144,
+          "am": 5
+        },
+        {
+          "id": 95,
+          "am": 3
+        }
+      ],
+      "workersNeeded": [
+        0,
+        0,
+        40,
+        40
+      ],
+      "workersHousing": null,
+      "specialization": 7,
+      "tier": 4,
+      "requiredResearch": 0,
+      "recipesIds": [
+        157,
+        176,
+        179,
+        184,
+        190
+      ],
+      "nameCN": "量子工厂",
+      "specializationCN": "电子"
+    }
+  ]
+}

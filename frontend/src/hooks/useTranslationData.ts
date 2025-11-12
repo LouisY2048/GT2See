@@ -6,6 +6,11 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getTranslationData, getTranslatedNameSync } from '../services/translation'
+import buildingTranslations from '../data/buildingTranslations.json'
+import materialTranslations from '../data/materialTranslations.json'
+
+const BUILDING_TRANSLATIONS: Record<string, string> = buildingTranslations
+const MATERIAL_TRANSLATIONS: Record<string, string> = materialTranslations
 
 export function useTranslationData() {
   const { i18n } = useTranslation()
@@ -50,6 +55,17 @@ export function useTranslationData() {
    */
   const getTranslatedName = (enName: string): string => {
     if (!enName) return enName
+
+    if (i18n.language === 'zh-CN') {
+      const trimmedName = enName.trim()
+      if (trimmedName in MATERIAL_TRANSLATIONS) {
+        return MATERIAL_TRANSLATIONS[trimmedName]
+      }
+      if (trimmedName in BUILDING_TRANSLATIONS) {
+        return BUILDING_TRANSLATIONS[trimmedName]
+      }
+    }
+
     try {
       return getTranslatedNameSync(enName, i18n.language, translations)
     } catch (error) {

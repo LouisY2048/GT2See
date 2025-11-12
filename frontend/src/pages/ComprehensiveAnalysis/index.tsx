@@ -691,18 +691,18 @@ const ComprehensiveAnalysis = () => {
 
             {/* 右侧：收益分析和饼图 */}
             <Col xs={24} md={12}>
-              <Card size="small" title="收益分析" style={{ marginBottom: 16 }}>
+              <Card size="small" title={t('comprehensive.details.profitAnalysis')} style={{ marginBottom: 16 }}>
                 <Space direction="vertical" style={{ width: '100%' }} size="large">
                   <div style={{ 
                     padding: '12px', 
                     background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
                     borderRadius: '8px'
                   }}>
-                    <div style={{ color: '#666', marginBottom: 4 }}>输出价值</div>
+                    <div style={{ color: '#666', marginBottom: 4 }}>{t('comprehensive.details.outputValue')}</div>
                     <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#1976d2' }}>
                       {selectedRecipe.priceAvailable && selectedRecipe.outputValue !== null 
                         ? formatPrice(selectedRecipe.outputValue) 
-                        : '未知'}
+                        : t('common.unknown')}
                     </div>
                   </div>
 
@@ -711,11 +711,11 @@ const ComprehensiveAnalysis = () => {
                     background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)',
                     borderRadius: '8px'
                   }}>
-                    <div style={{ color: '#666', marginBottom: 4 }}>配方收益/小时</div>
+                    <div style={{ color: '#666', marginBottom: 4 }}>{t('comprehensive.details.recipeProfitPerHour')}</div>
                     <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#f57c00' }}>
                       {selectedRecipe.priceAvailable && selectedRecipe.profitPerHour !== null 
                         ? formatPrice(selectedRecipe.profitPerHour) 
-                        : '未知'}/h
+                        : t('common.unknown')}/h
                     </div>
                   </div>
 

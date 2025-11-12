@@ -107,11 +107,15 @@ export const analyzerApi = {
   },
   systemGroupSearch: (params: {
     materialFilters: Array<{materialId: number, minAbundance: number}>
+    excludedPlanetTiers?: number[]
     exchangeX?: number
     exchangeY?: number
   }) => {
     const queryParams: any = {
       material_filters: JSON.stringify(params.materialFilters)
+    }
+    if (params.excludedPlanetTiers && params.excludedPlanetTiers.length > 0) {
+      queryParams.excluded_planet_tiers = JSON.stringify(params.excludedPlanetTiers)
     }
     if (params.exchangeX !== undefined) queryParams.exchange_x = params.exchangeX
     if (params.exchangeY !== undefined) queryParams.exchange_y = params.exchangeY

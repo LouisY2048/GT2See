@@ -6,6 +6,7 @@ import Landing from './pages/Landing'
 import BuildingAnalysis from './pages/BuildingAnalysis'
 import RecipeAnalysis from './pages/RecipeAnalysis'
 import ComprehensiveAnalysis from './pages/ComprehensiveAnalysis'
+import CustomPanel from './pages/CustomPanel'
 import SystemPlanning from './pages/SystemPlanning'
 
 const { Content } = Layout
@@ -54,6 +55,16 @@ function App() {
           <AppLayout>
             <Content>
               <ComprehensiveAnalysis />
+            </Content>
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/custom"
+        element={
+          <AppLayout>
+            <Content>
+              <CustomPanel />
             </Content>
           </AppLayout>
         }
