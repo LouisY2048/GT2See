@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Statistic, Row, Col, Space, message, Spin, Badge, Tag, Tooltip, Modal, Table, Alert } from 'antd'
+import { Card, Statistic, Row, Col, Space, message, Spin, Badge, Tag, Modal, Table, Alert } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { 
   PieChart, 
@@ -84,7 +84,6 @@ interface RecipeWithMarketSize extends ComprehensiveProfit {
 const MarketOverview = () => {
   const { t } = useTranslation()
   const { getTranslatedName } = useTranslationData()
-  const [loading, setLoading] = useState(false)
   const [prices, setPrices] = useState<MaterialPriceWithDiff[]>([])
   const [topRecipes, setTopRecipes] = useState<ComprehensiveProfit[]>([])
   const [topMarketSizeRecipes, setTopMarketSizeRecipes] = useState<RecipeWithMarketSize[]>([])
@@ -198,7 +197,7 @@ const MarketOverview = () => {
       // 一次性获取所有材料详情（减少API请求）
       let allDetailsMap: Map<number, any> = new Map()
       try {
-        const allDetails = await exchangeApi.getMaterialDetails()
+        const allDetails = await exchangeApi.getMaterialDetails() as any
         // 处理返回的数据格式
         if (allDetails && typeof allDetails === 'object') {
           if (Array.isArray(allDetails)) {

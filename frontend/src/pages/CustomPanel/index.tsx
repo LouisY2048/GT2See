@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { SyncOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { calculatorApi, comprehensiveApi, exchangeApi, gameDataApi } from '../../services/api'
 import { useTranslationData } from '../../hooks/useTranslationData'
-import type { Building, Material, Recipe, RecipeProfit } from '../../types'
+import type { Building, Material, RecipeProfit } from '../../types'
 import { formatPrice, formatNumber } from '../../utils/format'
 
 const { Option } = Select
@@ -41,7 +41,6 @@ const CustomPanel = () => {
 
   const [buildings, setBuildings] = useState<Building[]>([])
   const [materials, setMaterials] = useState<Material[]>([])
-  const [recipes, setRecipes] = useState<Recipe[]>([])
 
   const [selectedBuildingId, setSelectedBuildingId] = useState<number | undefined>(undefined)
 
@@ -59,15 +58,13 @@ const CustomPanel = () => {
   const loadInitialData = async () => {
     setLoadingInitial(true)
     try {
-      const [buildingsRes, materialsRes, recipesRes] = await Promise.all([
+      const [buildingsRes, materialsRes] = await Promise.all([
         gameDataApi.getBuildings(),
         gameDataApi.getMaterials(),
-        gameDataApi.getRecipes(),
       ])
 
       setBuildings(((buildingsRes as any)?.buildings) || [])
       setMaterials(((materialsRes as any)?.materials) || [])
-      setRecipes(((recipesRes as any)?.recipes) || [])
     } catch (error) {
       console.error('Failed to load custom panel data', error)
       message.error(t('customPanel.messages.loadError'))
